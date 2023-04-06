@@ -7,6 +7,7 @@
         $user = new User();
         if($user->canLogin($username, $password)){
             $_SESSION['username'] = $username;
+            $_SESSION['loggedin'] = true;
             $loginwarning = "";
             header("Location: index.php");
         }
