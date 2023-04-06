@@ -1,5 +1,19 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
+    $loginwarning = " ";
+    if(!empty($_POST)){
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $user = new User();
+        if($user->canLogin($username, $password)){
+            $_SESSION['username'] = $username;
+            $loginwarning = "";
+            header("Location: index.php");
+        }
+        else{
+            $loginwarning = "Username or password is incorrect";
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +32,7 @@
         <form action="" method="post">
             <h1>Log in</h1>
             <ul>
-                <li><input type="text" name="email" placeholder="Email" required></li>
+                <li><input type="text" name="username" placeholder="Username" required></li>
                 <li><input type="password" name="password" placeholder="Password" required></li>
                 <li><input type="submit" value="Log in"></li>
                 <li><a href="register.php">Create an account</a></li>
