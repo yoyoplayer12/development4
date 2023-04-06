@@ -9,6 +9,7 @@
     <title>Dev4 site</title>
 </head>
 <body>
+    <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1>It works!</h1>
 </body>
 </html>
