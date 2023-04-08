@@ -1,5 +1,11 @@
 <?php
     class User{
+
+        private string $email;
+        private string $password;
+        private string $username;
+        
+
         public function canLogin($p_username, $p_password){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND active = 1");
@@ -40,4 +46,76 @@
         //         return false;
         //     }
         }
+
+        /**
+         * Get the value of email
+         */ 
+        public function getEmail()
+        {
+                return $this->email;
+        }
+
+
+        
+                /**
+         * Get the value of username
+         */ 
+        public function getUsername()
+        {
+                return $this->username;
+        }
+
+        /**
+         * Get the value of password
+         */ 
+        public function getPassword()
+        {
+                return $this->password;
+        }
+
+
+        public function setEmail($email){
+            if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+                throw new Exception("Invalid email format");
+            }
+            else {
+                $this->email = $email;
+            }
+        }
+        
+        public function setUsername($username){
+            if(empty($username)){
+                throw new Exception("Username is required");
+            }
+            else {
+                $this->username = $username;
+            }
+            
+        }
+        
+        public function setPassword($password){
+            if(empty($password)){
+                throw new Exception("Password is required");
+                
+            }
+            else {
+                 //hash password with bcrypt and cost 12
+            $options = [
+                'cost'=>12,
+            ];
+            $password = password_hash($password, PASSWORD_DEFAULT, $options);
+            $this->password = $password;
+            }
+        }
+        
+
+        public function save(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("INSERT INTO users (email, username, password) VALUES (:email, :username, :password)");
+            $statement->bindValue(":email", $this->email); //security sql injection
+            $statement->bindValue(":username", $this->username);
+            $statement->bindValue(":password", $this->password);
+            $statement->execute();
+        }
+
     }
