@@ -19,11 +19,11 @@
 </head>
 <body>
     <form action="" method="post">
-                <h1>Send email</h1>
-                <ul>
-                    <li><input type="text" name="email" required></li>
-                    <li><input type="submit" value="Send email"></li>
-                </ul>
-            </form>
+            <h1>Send email</h1>
+            <ul>
+                <li><input type="text" name="email" required></li>
+                <li><input type="submit" value="Send email"></li>
+            </ul>
+    </form>
 </body>
 </html>
