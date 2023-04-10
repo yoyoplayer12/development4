@@ -28,22 +28,27 @@
     <title>Dev4 - Log in</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#545784]">
+<body class="bg-[#f5f5f5]">
     <?php include_once(__DIR__ . "/nav.php"); ?>
 
-    <div class="loginform">
-        <form action="" method="post">
-            <h1>Log in</h1>
-            <ul>
-                <li><input type="text" name="username" placeholder="Username" required></li>
-                <li><input type="password" name="password" placeholder="Password" required></li>
-                <li><input type="submit" value="Log in"></li>
-                <li><a href="register.php">Create an account</a></li>
-                <li class="warningtext"><?php echo $loginwarning ?></li>
-            </ul>
-        </form>
+    <div class="loginform flex flex-row">
+        <div class = "w-1/2 h-screen">
+            <form action="" method="post">
+                <h1>Log in</h1>
+                <ul>
+                    <li><input type="text" name="username" placeholder="Username" required></li>
+                    <li><input type="password" name="password" placeholder="Password" required></li>
+                    <li><input type="submit" value="Log in"></li>
+                    <li><a href="register.php">Create an account</a></li>
+                    <li class="warningtext"><?php echo $loginwarning ?></li>
+                </ul>
+                <a href="forgotpassword.php">Forgot password?</a>
+            </form>
+        </div>
+        <div class="w-1/2">
+            <img  src="images/loginImg.jpg" alt="0">
+        </div>
     </div>
-    <a href="forgotpassword.php">Forgot password?</a>
 
 </body>
 </html>
