@@ -26,8 +26,9 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
     <title>Dev4 - Log in</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-[#545454]">
     <?php include_once(__DIR__ . "/nav.php"); ?>
 
     <div class="loginform">
