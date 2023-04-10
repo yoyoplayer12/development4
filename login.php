@@ -43,6 +43,7 @@
             </ul>
         </form>
     </div>
+    <a href="forgotpassword.php">Forgot password?</a>
 
 </body>
 </html>
