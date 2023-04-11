@@ -4,6 +4,8 @@
         private string $email;
         private string $password;
         private string $username;
+        private string $bio;
+        private string $avatar;
         
 
         public function canLogin($p_username, $p_password){
@@ -25,7 +27,7 @@
                 return false;
             }
         }
-        public function canLoginAdmin($p_username, $p_password){
+        // public function canLoginAdmin($p_username, $p_password){
             //eventuele code to add admin support
 
         //     $conn = Db::getInstance();
@@ -45,29 +47,56 @@
         //     else{
         //         return false;
         //     }
+        // }
+        public static function getUser(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND active = 1");
+            $statement->bindValue(":username", $_SESSION['username']);
+            $statement->execute();
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
+            return $user;
+        }
+        public function resetBio($p_bio){
+           $this->bio = $p_bio;
+        }
+        public function resetAvatar($p_avatar){
+             $this->avatar = $p_avatar;
+        }
+        public function updateUser(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("UPDATE users SET bio = :bio, avatar_url = :avatar_url WHERE username = :username AND active = 1");
+            $statement->bindValue(":bio", $this->bio);
+            $statement->bindValue(":avatar_url", $this->avatar);
+            $statement->bindValue(":username", $_SESSION['username']);
+            $statement->execute();
+            return $statement;
+
+        }
+        public function updateBio(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("UPDATE users SET bio = :bio WHERE username = :username AND active = 1");
+            $statement->bindValue(":bio", $this->bio);
+            $statement->bindValue(":username", $_SESSION['username']);
+            $statement->execute();
+            return $statement;
+        }
+        public function updateAvatar(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("UPDATE users SET avatar_url = :avatar_url WHERE username = :username AND active = 1");
+            $statement->bindValue(":avatar_url", $this->avatar);
+            $statement->bindValue(":username", $_SESSION['username']);
+            $statement->execute();
+            return $statement;
         }
 
-        /**
-         * Get the value of email
-         */ 
         public function getEmail()
         {
                 return $this->email;
         }
-
-
-        
-                /**
-         * Get the value of username
-         */ 
         public function getUsername()
         {
                 return $this->username;
         }
-
-        /**
-         * Get the value of password
-         */ 
         public function getPassword()
         {
                 return $this->password;

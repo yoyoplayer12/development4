@@ -1,6 +1,6 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php"); 
-    
+    $getUser = User::getUser();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +17,9 @@
 
     <?php if(isset($_SESSION['loggedin'])):?>
         <h1><?php echo $_SESSION['username']?>'s profile</h1>
-        <p>Here you can see your profile</p>
+        <p class="profile-bio">Bio: <?php echo $getUser["bio"];?></p>
+        <img src="<?php echo $getUser["avatar_url"] ?>" alt="Avatar">
+        <a href="editprofile.php">Edit profile</a>
         <a href="logout.php">Log out</a>
 
     <?php else:?>
