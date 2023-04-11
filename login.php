@@ -6,9 +6,6 @@
         $password = $_POST['password'];
         $user = new User();
         if($user->canLogin($username, $password)){
-            //getting basic user info
-            $_SESSION['username'] = $username;
-            $_SESSION['loggedin'] = true;
             $loginwarning = "";
             header("Location: index.php");
         }

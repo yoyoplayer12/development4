@@ -1,3 +1,6 @@
+<?php
+    include_once(__DIR__ . "/bootstrap.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +13,12 @@
 </head>
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
+    <?php if($_SESSION["confirmed_email"] === "0"):?>
+        <h1>Confirm your email</h1>
+        <a href="confirm-email.php">Send confirmation email</a>
+    <?php else:?>
+        <h1>It works!</h1>
+    <?php endif;?>
     <h1>It works!</h1>
 </body>
 </html>

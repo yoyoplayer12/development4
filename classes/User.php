@@ -17,6 +17,11 @@
             if($user){
                 $hash = $user["password"];
                 if(password_verify($p_password, $hash)){
+
+                    //getting basic user info
+                    $_SESSION['username'] = $user["username"];
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION["confirmed_email"] = $user["confirmed_email"];
                     return true;
                 }
                 else{
