@@ -153,14 +153,16 @@
         }
 
         public function sendResetEmail(){
+            
             $email = new \SendGrid\Mail\Mail(); 
-            $email->setFrom("test@example.com", "Example User");
-            $email->setSubject("Sending with SendGrid is Fun");
-            $email->addTo("test@example.com", "Example User");
+            $email->setFrom("r0901961@student.thomasmore.be", "Prompt website");
+            $email->setSubject("Wachtwoord resetten");
+            $email->addTo($this->email);
             $email->addContent("text/plain", "and easy to do anywhere, even with PHP");
             $email->addContent(
                 "text/html", "<strong>and easy to do anywhere, even with PHP</strong>"
             );
+            
             $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
             try {
                 $response = $sendgrid->send($email);
