@@ -1,6 +1,11 @@
 <?php 
     require_once 'vendor/autoload.php';
-    include_once(__DIR__ . "/bootstrap.php");
+    include_once(__DIR__ . "/classes/User.php");
+    include_once(__DIR__ . "/classes/Db.php");
+
+    $config = parse_ini_file('config/config.ini', true);
+    $key = $config['keys']['SENDGRID_API_KEY'];
+    apache_setenv('SENDGRID_API_KEY', $key);
 
     if(!empty($_POST)){
         try {
@@ -9,14 +14,14 @@
             $user->setEmail($_POST['email']);
             $user->sendResetEmail();
         } catch (\Throwable $th) {
-            //throw $th;
+            //throw $th; 
             $nomail = $th->getMessage();
         }
     };
 
 
 
-    var_dump($_POST['email']);
+    
     
 
 
