@@ -3,9 +3,15 @@
     include_once(__DIR__ . "/bootstrap.php");
 
     if(!empty($_POST)){
-        $user = new User();
-        $user->setEmail($_POST['email']);
-        $user->sendResetEmail();
+        try {
+            //code...
+            $user = new User();
+            $user->setEmail($_POST['email']);
+            $user->sendResetEmail();
+        } catch (\Throwable $th) {
+            //throw $th;
+            $nomail = $th->getMessage();
+        }
     };
 
 
