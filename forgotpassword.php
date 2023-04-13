@@ -2,10 +2,16 @@
     require_once 'vendor/autoload.php';
     include_once(__DIR__ . "/bootstrap.php");
 
-    $user = new User();
-    $user->setEmail($_POST['email']);
-    $user->sendResetEmail();
+    if(!empty($_POST)){
+        $user = new User();
+        $user->setEmail($_POST['email']);
+        $user->sendResetEmail();
+    };
 
+
+
+    var_dump($_POST['email']);
+    
 
 
 
