@@ -7,22 +7,24 @@
     $key = $config['keys']['SENDGRID_API_KEY'];
     apache_setenv('SENDGRID_API_KEY', $key);
 
-    if(!empty($_POST)){
-        try {
-            //code...
-            $user = new User();
-            $user->setEmail($_POST['email']);
-            $user->sendResetEmail();
-        } catch (\Throwable $th) {
-            //throw $th; 
-            $nomail = $th->getMessage();
+    if(isset($_POST['btn'])){
+        
+        if(!empty($_POST)){
+            try {
+                //code...
+                $user = new User();
+                $user->setEmail($_POST['email']);
+                $user->sendResetEmail();
+            } catch (\Throwable $th) {
+                //throw $th; 
+                $nomail = $th->getMessage();
+            }
+            
+            
         }
-    };
-
-
-
-    
-    
+        exit("Password reset email sent!");
+       
+    }
 
 
 
@@ -39,8 +41,13 @@
             <h1>Send email</h1>
             <ul>
                 <li><input type="text" name="email" required></li>
-                <li><input type="submit" value="Send email"></li>
+                <li><input type="submit" value="sendEmail" name="btn"></li>
             </ul>
+            
+            <?php if(isset($nomail)): ?>
+                <div> <?php echo $nomail ?></div>        
+            <?php endif; ?>
+
     </form>
 </body>
 </html>
