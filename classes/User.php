@@ -7,7 +7,10 @@
         private string $bio;
         private string $avatar;
         
-
+        private static function getConfig(){
+            // get the config file
+            return parse_ini_file("config/config.ini");
+        }
         public function canLogin($p_username, $p_password){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND active = 1");
@@ -153,9 +156,10 @@
         }
 
         public function sendResetEmail(){
-            
+            $config = self::getConfig();
+            $sender = $config['SENDER_EMAIL'];
             $email = new \SendGrid\Mail\Mail(); 
-            $email->setFrom("r0901961@student.thomasmore.be", "Prompt website");
+            $email->setFrom($sender, "Prompt website");
             $email->setSubject("Wachtwoord resetten");
             $email->addTo($this->email);
             $email->addContent("text/plain", "and easy to do anywhere, even with PHP");
@@ -173,5 +177,4 @@
                 echo 'Caught exception: '. $e->getMessage() ."\n";
             }
         }
-
     }
