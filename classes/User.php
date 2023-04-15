@@ -6,6 +6,7 @@
         private string $username;
         private string $bio;
         private string $avatar;
+        private string $token;
         
         private static function getConfig(){
             // get the config file
@@ -21,11 +22,15 @@
                 $hash = $user["password"];
                 if(password_verify($p_password, $hash)){
 
-                    //getting basic user info
-                    $_SESSION['username'] = $user["username"];
-                    $_SESSION['loggedin'] = true;
-                    $_SESSION["confirmed_email"] = $user["confirmed_email"];
-                    return true;
+                    if($user["active"] == 1){
+                        //getting basic user info
+                        $_SESSION['username'] = $user["username"];
+                        $_SESSION['loggedin'] = true;
+                        $_SESSION["confirmed_email"] = $user["confirmed_email"];
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
                 else{
                     return false;
@@ -148,10 +153,11 @@
 
         public function save(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("INSERT INTO users (email, username, password) VALUES (:email, :username, :password)");
+            $statement = $conn->prepare("INSERT INTO users (email, username, password, activation_code) VALUES (:email, :username, :password, :activation_code)");
             $statement->bindValue(":email", $this->email); //security sql injection
             $statement->bindValue(":username", $this->username);
             $statement->bindValue(":password", $this->password);
+            $statement->bindValue(":activation_code", $this->token);
             $statement->execute();
         }
 
@@ -160,21 +166,81 @@
             $sender = $config['SENDER_EMAIL'];
             $email = new \SendGrid\Mail\Mail(); 
             $email->setFrom($sender, "Prompt website");
-            $email->setSubject("Wachtwoord resetten");
+            $email->setSubject("Password reset");
             $email->addTo($this->email);
-            $email->addContent("text/plain", "and easy to do anywhere, even with PHP");
-            $email->addContent(
-                "text/html", "<strong>and easy to do anywhere, even with PHP</strong>"
-            );
+            $email->addContent("text/plain", "Hey, Click the link below to reset your password.");
+            $email->addContent("text/html", "Hey, Click the link below to reset your password.");
             
             $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
             try {
                 $response = $sendgrid->send($email);
-                print $response->statusCode() . "\n";
-                print_r($response->headers());
-                print $response->body() . "\n";
+                //print $response->statusCode() . "\n";
+                //print_r($response->headers());
+                //print $response->body() . "\n";
+                
             } catch (Exception $e) {
                 echo 'Caught exception: '. $e->getMessage() ."\n";
             }
+        }
+
+        public function sendConfirmEmail(){
+            $config = self::getConfig();
+            $sender = $config['SENDER_EMAIL'];
+            $email = new \SendGrid\Mail\Mail(); 
+            $email->setFrom($sender, "Prompt website");
+            $email->setSubject("Confirm your email");
+            $email->addTo($this->email);
+            $email->addContent("text/plain", "Hey, Click the link below to confirm your account: localhost/php/promptdev/development4/verifyAcc.php?token=$this->token");
+            $email->addContent("text/html", "Hey, Click the link below to confirm your account: localhost/php/promptdev/development4/verifyAcc.php?token=$this->token");
+            
+            $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
+            try {
+                $response = $sendgrid->send($email);
+                //print $response->statusCode() . "\n";
+                //print_r($response->headers());
+                //print $response->body() . "\n";
+                
+            } catch (Exception $e) {
+                echo 'Caught exception: '. $e->getMessage() ."\n";
+            }
+        }
+
+
+
+        /**
+         * Get the value of token
+         */ 
+        public function getToken()
+        {
+                return $this->token;
+        }
+
+        /**
+         * Set the value of token
+         *
+         * @return  self
+         */ 
+        public function setToken($token)
+        {
+                $this->token = $token;
+
+                return $this;
+        }
+
+        public function checkToken($token){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM users WHERE activation_code = :token");
+            $statement->bindValue(":token", $token);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        } 
+
+        public function activateUser($token){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("UPDATE users SET active = 1, activation_code = NULL WHERE activation_code = :token");
+            $statement->bindValue(":token", $token);
+            $statement->execute();
+            header("Location: index.php");
         }
     }

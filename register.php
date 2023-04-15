@@ -1,34 +1,58 @@
 <?php 
 
-include_once(__DIR__ . "/bootstrap.php");
-if(!empty($_POST)){
-    try {
-        $user = new User();
+require_once 'vendor/autoload.php';
+include_once(__DIR__ . "/classes/User.php");
+include_once(__DIR__ . "/classes/Db.php");
+
+$config = parse_ini_file('config/config.ini', true);
+$key = $config['keys']['SENDGRID_API_KEY'];
+apache_setenv('SENDGRID_API_KEY', $key);
+ 
+if(isset($_POST['registerBtn'])){
+    
+    if(!empty($_POST)){
         try {
-        $user->setEmail($_POST['email']);
-        } 
+            $user = new User();
+            try {
+            $user->setEmail($_POST['email']);
+            } 
+            catch (\Throwable $th) {
+                $emailError = $th->getMessage();
+            }
+            try {
+            $user->setUsername($_POST['username']);
+            }
+            catch (\Throwable $th) {
+                $usernameError = $th->getMessage();
+            }
+            try {
+            $user->setPassword($_POST['password']);
+            }
+            catch (\Throwable $th) {
+                $passwordError = $th->getMessage();
+            }
+            
+            $token = bin2hex(openssl_random_pseudo_bytes(32));
+            $user->setToken($token);
+            $user->save();
+            $user->sendConfirmEmail();
+
+
+        
+            header("Location: index.php");
+        }
         catch (\Throwable $th) {
-            $emailError = $th->getMessage();
+            $error = $th->getMessage();
         }
-        try {
-        $user->setUsername($_POST['username']);
-        }
-        catch (\Throwable $th) {
-            $usernameError = $th->getMessage();
-        }
-        try {
-        $user->setPassword($_POST['password']);
-        }
-        catch (\Throwable $th) {
-            $passwordError = $th->getMessage();
-        }
-        $user->save();
-        header("Location: index.php");
+
+
+        
     }
-    catch (\Throwable $th) {
-        $error = $th->getMessage();
-    }
+
 }
+
+
+
 
 
 ?>
@@ -71,7 +95,7 @@ if(!empty($_POST)){
 				</div>
 
 				<div class="">
-					<input type="submit" value="Sign up" class="">
+					<input type="submit" value="Sign up" name="registerBtn" class="">
 				</div>
 			</form>
 		</div>
