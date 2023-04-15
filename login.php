@@ -10,7 +10,7 @@
             header("Location: index.php");
         }
         else{
-            $loginwarning = "Username or password is incorrect";
+            $loginwarning = "Username or password is incorrect, or email is not verified";
         }
     }
 ?>
@@ -25,7 +25,7 @@
     <title>Dev4 - Log in</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#f5f5f5]">
+<body class="bg-[#f5fd8e]">
     <?php include_once(__DIR__ . "/nav.php"); ?>
 
     <div class="loginform flex flex-row">
@@ -33,11 +33,11 @@
             <form action="" method="post">
                 <h1>Log in</h1>
                 <ul>
-                    <li><input type="text" name="username" placeholder="Username" required></li>
-                    <li><input type="password" name="password" placeholder="Password" required></li>
+                    <li ><input class="border-2 " type="text" name="username" placeholder="Username" required></li>
+                    <li><input class="border-2 bg-blue" type="password" name="password" placeholder="Password" required></li>
                     <li><input type="submit" value="Log in"></li>
                     <li><a href="register.php">Create an account</a></li>
-                    <li class="warningtext"><?php echo $loginwarning ?></li>
+                    <li class="text-[#FF0000]"><?php echo $loginwarning ?></li>
                 </ul>
                 <a href="forgotpassword.php">Forgot password?</a>
             </form>
