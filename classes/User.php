@@ -14,7 +14,7 @@
         }
         public function canLogin($p_username, $p_password){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND active = 1");
+            $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND banned = 0");
             $statement->bindValue(":username", $p_username);
             $statement->execute();
             $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -44,7 +44,7 @@
             //eventuele code to add admin support
 
         //     $conn = Db::getInstance();
-        //     $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND active = 1 AND admin = 1");
+        //     $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND banned = 0 AND admin = 1");
         //     $statement->bindValue(":username", $p_username);
         //     $statement->execute();
         //     $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -63,7 +63,7 @@
         // }
         public static function getUser(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND active = 1");
+            $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND banned = 0");
             $statement->bindValue(":username", $_SESSION['username']);
             $statement->execute();
             $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -77,7 +77,7 @@
         }
         public function updateUser(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("UPDATE users SET bio = :bio, avatar_url = :avatar_url WHERE username = :username AND active = 1");
+            $statement = $conn->prepare("UPDATE users SET bio = :bio, avatar_url = :avatar_url WHERE username = :username AND banned = 0");
             $statement->bindValue(":bio", $this->bio);
             $statement->bindValue(":avatar_url", $this->avatar);
             $statement->bindValue(":username", $_SESSION['username']);
@@ -87,7 +87,7 @@
         }
         public function updateBio(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("UPDATE users SET bio = :bio WHERE username = :username AND active = 1");
+            $statement = $conn->prepare("UPDATE users SET bio = :bio WHERE username = :username AND banned = 0");
             $statement->bindValue(":bio", $this->bio);
             $statement->bindValue(":username", $_SESSION['username']);
             $statement->execute();
@@ -95,7 +95,7 @@
         }
         public function updateAvatar(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("UPDATE users SET avatar_url = :avatar_url WHERE username = :username AND active = 1");
+            $statement = $conn->prepare("UPDATE users SET avatar_url = :avatar_url WHERE username = :username AND banned = 0");
             $statement->bindValue(":avatar_url", $this->avatar);
             $statement->bindValue(":username", $_SESSION['username']);
             $statement->execute();
