@@ -21,6 +21,6 @@
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
     
-    <h1>It works!</h1>
+    <h1>Prompt marketplace</h1>
 </body>
 </html>

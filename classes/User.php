@@ -26,7 +26,6 @@
                     if($user["active"] == 1){
                         //getting basic user info
                         $_SESSION['username'] = $user["username"];
-                        $_SESSION['loggedin'] = true;
                         $_SESSION["confirmed_email"] = $user["confirmed_email"];
                         return true;
                     } else {
@@ -41,27 +40,25 @@
                 return false;
             }
         }
-        // public function canLoginAdmin($p_username, $p_password){
-            //eventuele code to add admin support
-
-        //     $conn = Db::getInstance();
-        //     $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND banned = 0 AND admin = 1");
-        //     $statement->bindValue(":username", $p_username);
-        //     $statement->execute();
-        //     $user = $statement->fetch(PDO::FETCH_ASSOC);
-        //     if($user){
-        //         $hash = $user["password"];
-        //         if(password_verify($p_password, $hash)){
-        //             return true;
-        //         }
-        //         else{
-        //             return false;
-        //         }
-        //     }
-        //     else{
-        //         return false;
-        //     }
-        // }
+        public function canLoginAdmin($p_username, $p_password){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND banned = 0 AND admin = 1");
+            $statement->bindValue(":username", $p_username);
+            $statement->execute();
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
+            if($user){
+                $hash = $user["password"];
+                if(password_verify($p_password, $hash)){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        }
         public static function getUser(){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND banned = 0");

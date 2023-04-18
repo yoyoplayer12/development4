@@ -1,22 +1,43 @@
 body{
     font-family: arial, verdana;
+    background-color: #C8C8CC;
 }
 .navbar{
     display: flex;
     justify-content: center;
-    background-color: #000;
+    background-color: #040404;
     list-style: none;
-    color: white;
+    color: #F4F4FC;
+    border-radius: 0 0 50px 50px;
+
     margin: 0;
 }
 .navbar li{
     padding: 10px;
 }
 .navbar a{
-    color: white;
+    color: #F4F4FC;
     text-decoration: none;
 }
 .editprofilewarning{
     color: red;
     font-size: 16px;
+}
+.adminprompt{
+    background-color: #F4F4FC;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 80vw;
+    margin-left: 10vw;
+    margin-bottom: 20px;
+}
+.adminprompt ul{
+    margin-left: 20px;
+}
+h1{
+    text-align: center;
+}
+ul{
+    list-style: none;
+    padding: 0;
 }

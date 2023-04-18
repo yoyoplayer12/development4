@@ -6,8 +6,15 @@
         $password = $_POST['password'];
         $user = new User();
         if($user->canLogin($username, $password)){
-            $loginwarning = "";
-            header("Location: index.php");
+            $_SESSION['loggedin'] = true;
+            if($user->canLoginAdmin($username, $password)){
+                $_SESSION['admin'] = true;
+                header("Location: index.php");
+            }
+            else{
+                $_SESSION['admin'] = false;
+                header("Location: index.php");
+            }
         }
         else{
             $loginwarning = "Username or password is incorrect, or email is not verified";
@@ -37,9 +44,10 @@
                     <li><input class="border-2 bg-blue" type="password" name="password" placeholder="Password" required></li>
                     <li><input type="submit" value="Log in"></li>
                     <li><a href="register.php">Create an account</a></li>
+                    <li><a href="forgotpassword.php">Forgot password?</a></li>
                     <li class="text-[#FF0000]"><?php echo $loginwarning ?></li>
                 </ul>
-                <a href="forgotpassword.php">Forgot password?</a>
+                
             </form>
         </div>
         <div class="w-1/2">
