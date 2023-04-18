@@ -1,6 +1,12 @@
 <?php
-    include_once(__DIR__ . "/bootstrap.php"); 
-    $getUser = User::getUser();
+        include_once(__DIR__ . "/bootstrap.php");
+        //logindetection
+        if(isset($_SESSION["loggedin"])) {
+            $getUser = User::getUser();
+        }
+        else {
+            header("Location: login.php");
+        }
 ?>
 <!DOCTYPE html>
 <html lang="en">

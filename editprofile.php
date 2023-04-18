@@ -1,20 +1,52 @@
 <?php
-    include_once(__DIR__ . "/bootstrap.php"); 
-    $warning = " ";
-    $getUser = User::getUser();
-    if(!empty($_POST)){
-        if(!empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
-
-            if (strlen($_POST['bio']) <= 19){
-                $warning = "Bio is too short, has to have at least 20 characters";
+    include_once(__DIR__ . "/bootstrap.php");
+    //logindetection
+    if(isset($_SESSION["loggedin"])) {
+        $warning = " ";
+        $getUser = User::getUser();
+        if(!empty($_POST)){
+            if(!empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
+    
+                if (strlen($_POST['bio']) <= 19){
+                    $warning = "Bio is too short, has to have at least 20 characters";
+                }
+                elseif (strlen($_POST['bio']) >= 501){
+                    $warning = "Bio is too long, can have a maximum of 500 characters";
+                }
+                else{
+                    $bio = $_POST['bio'];
+                    $user = new User();
+                    $user->resetBio($bio);
+                    //fixing image upload
+                    $username = $_SESSION['username'];
+                    $orig_file = $_FILES["avatar_url"]["tmp_name"];
+                    $ext = pathinfo($_FILES["avatar_url"]["name"], PATHINFO_EXTENSION);
+                    $target_dir = "uploads/users/";
+                    $destination = "$target_dir$username.$ext";
+                    move_uploaded_file($orig_file, $destination);
+                    $user->resetAvatar($destination);
+                    //saving to database
+                    $user->updateUser();
+                    header("Location: profile.php");
+                }
             }
-            elseif (strlen($_POST['bio']) >= 501){
-                $warning = "Bio is too long, can have a maximum of 500 characters";
+            elseif(!empty($_POST['bio']) && empty($_FILES['avatar_url']["name"])){
+                if (strlen($_POST['bio']) <= 19){
+                    $warning = "Bio is too short, has to have at least 20 characters";
+                }
+                elseif (strlen($_POST['bio']) >= 501){
+                    $warning = "Bio is too long, can have a maximum of 500 characters";
+                }
+                else{
+                    $bio = $_POST['bio'];
+                    $user = new User();
+                    $user->resetBio($bio);
+                    $user->updateBio();
+                    header("Location: profile.php");
+                }
             }
-            else{
-                $bio = $_POST['bio'];
+            elseif(empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
                 $user = new User();
-                $user->resetBio($bio);
                 //fixing image upload
                 $username = $_SESSION['username'];
                 $orig_file = $_FILES["avatar_url"]["tmp_name"];
@@ -24,42 +56,16 @@
                 move_uploaded_file($orig_file, $destination);
                 $user->resetAvatar($destination);
                 //saving to database
-                $user->updateUser();
+                $user->updateAvatar();
                 header("Location: profile.php");
-            }
-        }
-        elseif(!empty($_POST['bio']) && empty($_FILES['avatar_url']["name"])){
-            if (strlen($_POST['bio']) <= 19){
-                $warning = "Bio is too short, has to have at least 20 characters";
-            }
-            elseif (strlen($_POST['bio']) >= 501){
-                $warning = "Bio is too long, can have a maximum of 500 characters";
             }
             else{
-                $bio = $_POST['bio'];
-                $user = new User();
-                $user->resetBio($bio);
-                $user->updateBio();
-                header("Location: profile.php");
+                echo "nothing to save";
             }
         }
-        elseif(empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
-            $user = new User();
-            //fixing image upload
-            $username = $_SESSION['username'];
-            $orig_file = $_FILES["avatar_url"]["tmp_name"];
-            $ext = pathinfo($_FILES["avatar_url"]["name"], PATHINFO_EXTENSION);
-            $target_dir = "uploads/users/";
-            $destination = "$target_dir$username.$ext";
-            move_uploaded_file($orig_file, $destination);
-            $user->resetAvatar($destination);
-            //saving to database
-            $user->updateAvatar();
-            header("Location: profile.php");
-        }
-        else{
-            echo "nothing to save";
-        }
+    }
+    else {
+        header("Location: login.php");
     }
 ?>
 <!DOCTYPE html>
