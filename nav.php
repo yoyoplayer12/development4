@@ -1,6 +1,6 @@
 <nav>
     <ul class="navbar">
-        <li><h1>Eve</h1></li>
+        <li><img src="assets/logo.png" alt="Eve" class="navlogo"></li>
         <li><a href="index.php"><h1>Home</h1></a></li>
         <?php if(isset($_SESSION["admin"])): ?>
         <li><a href="adminpanel.php"><h1>Admin panel</h1></a></li>
