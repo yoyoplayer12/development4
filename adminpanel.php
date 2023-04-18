@@ -13,7 +13,7 @@
         header("Location: index.php");
     }
     $unverifiedprompts = [];
-    $unverifiedprompts = Prompt::getPrompt();
+    $unverifiedprompts = Prompt::getUnverifiedPrompt();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +35,7 @@
         }
         else{
             foreach($unverifiedprompts as $prompt): ?>
-                <div class="adminprompt">
+                <div class="prompt">
                     <ul>
                         <li><p><b>Title: </b><?php echo $prompt["title"] ?></p></li>
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
@@ -48,10 +48,7 @@
                             <a href="verify.php?id=<?php echo $prompt["id"] ?>">Approve</a>
                         <?php endif; ?>
                     </ul>
-                    
-
                 </div>
-               
     <?php endforeach;} ?>
 </body>
 </html>

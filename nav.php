@@ -7,6 +7,7 @@
         <?php endif; ?>
         <?php if(isset($_SESSION["loggedin"])): ?>
         <li><a href="profile.php"><h1><?php echo $_SESSION['username']; ?></h1></a></li>
+        <li><a style="position:absolute; left:85vw" href="createprompt.php"><h1>New prompt</h1></a></li>
         <?php else:?>
         <li><a href="login.php"><h1>Log In</h1></a></li>
         <?php endif;?>

@@ -1,12 +1,8 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
     //logindetection
-    if(isset($_SESSION["loggedin"])) {
-        
-    }
-    else {
-        header("Location: login.php");
-    }
+    $prompts = [];
+    $prompts = Prompt::getVerifiedPrompt();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +16,28 @@
 </head>
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
-    
     <h1>Prompt marketplace</h1>
+    <?php 
+        if (empty($prompts)) {
+            echo "<h1 class='noposts'>There are no prompts rightnow, try again later!</h1>";
+        }
+        else{
+            foreach($prompts as $prompt): ?>
+                <div class="prompt">
+                    <ul>
+                        <li><p><b>Title: </b><?php echo $prompt["title"] ?></p></li>
+                        <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
+                        <li><img src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
+                        <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
+                        <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
+                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt-description"] ?></p></li>
+                        <!-- Hier komt de buy button -->
+                        <button>Buy</button>
+                    </ul>
+                    
+
+                </div>
+               
+    <?php endforeach;} ?>
 </body>
 </html>
