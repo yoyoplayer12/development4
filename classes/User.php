@@ -7,6 +7,7 @@
         private string $bio;
         private string $avatar;
         private string $token;
+        private string $psswdtoken;
         
         private static function getConfig(){
             // get the config file
@@ -121,6 +122,7 @@
             $statement->execute();
             $user = $statement->fetch(PDO::FETCH_ASSOC);
             if($user){
+                $_SESSION['id'] = $user["id"];
                 return true;
             }
             else{
@@ -135,6 +137,7 @@
             else {
                 $this->email = $email;
                 if($this->userExcistanceCheck($email) == true){
+                    $this->email = $email;
                     return true;
                 }
                 else{
@@ -180,6 +183,30 @@
             $statement->execute();
         }
 
+        public function setPsswdToken($token){
+            $this->psswdtoken = $token;
+            return $this;
+        }
+        public function getPsswdToken(){
+                return $this->psswdtoken;
+        }
+        public function setRandomString($n){
+            $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $randomString = '';
+            for ($i = 0; $i < $n; $i++) {
+                $index = rand(0, strlen($characters) - 1);
+                $randomString .= $characters[$index];
+            }
+            return $randomString;
+        }
+        public function updatePassword($email){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("UPDATE users SET password = :password WHERE email = :email AND banned = 0");
+            $statement->bindValue(":password", $this->password);
+            $statement->bindValue(":email", $email);
+            $statement->execute();
+            return $statement;
+        }
         public function sendResetEmail(){
             $config = self::getConfig();
             $sender = $config['SENDER_EMAIL'];
@@ -189,8 +216,8 @@
             $email->setFrom($sender, "Prompt website");
             $email->setSubject("Password reset");
             $email->addTo($this->email);
-            $email->addContent("text/plain", "Hey, Click the link below to reset your password.");
-            $email->addContent("text/html", "Hey, Click the link below to reset your password.");
+            $email->addContent("text/plain", "Here's your password reset code: <br> <h1>$this->psswdtoken</h1>");
+            $email->addContent("text/html", "Here's your password reset code: <br> <h1>$this->psswdtoken</h1>");
             
             $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
             try {
