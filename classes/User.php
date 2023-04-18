@@ -137,7 +137,6 @@
             else {
                 $this->email = $email;
                 if($this->userExcistanceCheck($email) == true){
-                    $this->email = $email;
                     return true;
                 }
                 else{
@@ -199,11 +198,11 @@
             }
             return $randomString;
         }
-        public function updatePassword($email){
+        public function updatePassword(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("UPDATE users SET password = :password WHERE email = :email AND banned = 0");
+            $statement = $conn->prepare("UPDATE users SET `password` = :password WHERE email = :email AND banned = 0");
             $statement->bindValue(":password", $this->password);
-            $statement->bindValue(":email", $email);
+            $statement->bindValue(":email", $_SESSION['email']);
             $statement->execute();
             return $statement;
         }

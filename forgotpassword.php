@@ -3,23 +3,23 @@
     include_once(__DIR__ . "/classes/User.php");
     include_once(__DIR__ . "/classes/Db.php");
     $error = " ";
+    $changed = false;
     $n = 5;
     $config = parse_ini_file('config/config.ini', true);
     $key = $config['keys']['SENDGRID_API_KEY'];
-    $user = new User();
-    $email;
     apache_setenv('SENDGRID_API_KEY', $key);
+    $user = new User();
     session_start();
     if(isset($_POST)){
         if(isset($_POST['btn'])){
                 try {
                     //code...
                     if($user->setEmail($_POST['email']) == true){
-                        $email = $_POST['email'];
+                        $user->setEmail($_POST['email']);
+                        $_SESSION["email"] = $user->getEmail();
                         $confirmation_code = $user->setRandomString($n).$_SESSION['id'];
                         $user->setPsswdToken($confirmation_code);
                         $user->sendResetEmail();
-                        $_SESSION['resetting'] = true;
                         $_SESSION['psswdToken'] = $confirmation_code;
                         $code = false;
                     }
@@ -44,9 +44,8 @@
             $password2 = $_POST['password2'];
             if($password == $password2){
                 $user->setPassword($password);
-                $user->updatePassword($email);
-                $_SESSION['resetting'] = false;
-                // header("Location: login.php");
+                $user->updatePassword();
+                $changed = true;
             }
             else{
                 $error = "Passwords don't match";
@@ -68,7 +67,10 @@
 </head>
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
-    <?php if(!isset($code)): ?>
+    <?php if($changed == true):?>
+        <h1>Password changed</h1>
+        <a href="login.php">Log in</a>
+    <?php elseif(!isset($code)): ?>
     <form action="" method="post">
             <h1>Reset password</h1>
             <ul>
@@ -80,6 +82,15 @@
                 <div> <?php echo $nomail ?></div>        
             <?php endif; ?>
     </form>
+    <?php elseif($code == false): ?>
+    <form action="" method="post">
+        <h1>Email has been sent!</h1>
+        <ul>
+            <li><input type="text" name="code" placeholder="code" required></li>
+            <li><input type="submit" value="reset password" name="reset-code"></li>
+            <li><p><?php echo $error ?></p></li>
+        </ul>
+    </form>
     <?php elseif($code == true):?>
     <form action="" method="post">
         <h1>Reset your password</h1>
@@ -87,15 +98,6 @@
             <li><input type="password" name="password" placeholder="password" required></li>
             <li><input type="password" name="password2" placeholder="confirm password" required></li>
             <li><input type="submit" value="reset password" name="reset-password"></li>
-            <li><p><?php echo $error ?></p></li>
-        </ul>
-    </form>
-    <?php elseif($code == false): ?>
-    <form action="" method="post">
-        <h1>Email has been sent!</h1>
-        <ul>
-            <li><input type="text" name="code" placeholder="code" required></li>
-            <li><input type="submit" value="reset password" name="reset-code"></li>
             <li><p><?php echo $error ?></p></li>
         </ul>
     </form>
