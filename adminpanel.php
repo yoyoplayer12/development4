@@ -28,6 +28,7 @@
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1>Admin panel</h1>
+    <h1>To verify</h1>
     <?php 
         if (empty($unverifiedprompts)) {
             echo "<h1 class='noposts'>Congrats, you verified them all!</h1>";
@@ -43,6 +44,9 @@
                         <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
                         <li><p><b>Prompt description: </b><?php echo $prompt["prompt-description"] ?></p></li>
                         <!-- Hier komt de verify button ==> if verify = 0 ==> andere backgroundcolor en text -->
+                        <?php if($prompt["verified"] == 0):?>
+                            <a href="verify.php?id=<?php echo $prompt["id"] ?>">Approve</a>
+                        <?php endif; ?>
                     </ul>
                     
 
