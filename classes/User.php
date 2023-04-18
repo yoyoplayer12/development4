@@ -114,14 +114,33 @@
         {
                 return $this->password;
         }
-
+        public function userExcistanceCheck($email){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM users WHERE email = :email AND banned = 0");
+            $statement->bindValue(":email", $email);
+            $statement->execute();
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
+            if($user){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
 
         public function setEmail($email){
             if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-                throw new Exception("Invalid email format");
+                return false;
             }
             else {
                 $this->email = $email;
+                if($this->userExcistanceCheck($email) == true){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+                
             }
         }
         
@@ -164,6 +183,8 @@
         public function sendResetEmail(){
             $config = self::getConfig();
             $sender = $config['SENDER_EMAIL'];
+            
+            //using sengrid api to send email
             $email = new \SendGrid\Mail\Mail(); 
             $email->setFrom($sender, "Prompt website");
             $email->setSubject("Password reset");

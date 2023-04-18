@@ -13,17 +13,18 @@
             try {
                 //code...
                 $user = new User();
-                $user->setEmail($_POST['email']);
-                $user->sendResetEmail();
+                if($user->setEmail($_POST['email']) == true){
+                    $user->sendResetEmail();
+                    exit("Password reset email sent!");
+                }
+                else{
+                    echo "User does not exist!";
+                }
             } catch (\Throwable $th) {
                 //throw $th; 
                 $nomail = $th->getMessage();
             }
-            
-            
         }
-        exit("Password reset email sent!");
-       
     }
 
 
@@ -40,8 +41,8 @@
     <form action="" method="post">
             <h1>Send email</h1>
             <ul>
-                <li><input type="text" name="email" required></li>
-                <li><input type="submit" value="sendEmail" name="btn"></li>
+                <li><input type="text" name="email" placeholder="email" required></li>
+                <li><input type="submit" value="send Email" name="btn"></li>
             </ul>
             
             <?php if(isset($nomail)): ?>
