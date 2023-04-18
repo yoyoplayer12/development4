@@ -31,7 +31,7 @@
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
                         <li><p><b>Prompt description: </b><?php echo $prompt["prompt-description"] ?></p></li>
-                        <!-- Hier komt de buy button -->
+                        <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <button>Buy</button>
                     </ul>
                     
