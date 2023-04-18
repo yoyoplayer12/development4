@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
-    <title>Dev4 site</title>
+    <title>Eve - Home</title>
 </head>
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>

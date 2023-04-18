@@ -76,7 +76,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
-    <title><?php echo $_SESSION['username']?> - Profile</title>
+    <title>Eve - <?php echo $_SESSION['username']?>'s profile</title>
 </head>
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>

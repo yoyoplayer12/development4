@@ -12,7 +12,6 @@
     
             if($result){
                 $user->activateUser($token);
-    
             } 
             else{
                 echo "invalid token";

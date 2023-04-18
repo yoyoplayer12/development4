@@ -22,7 +22,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
-    <title>Dev4 - Log in</title>
+    <title>Eve - Log in</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#f5fd8e]">
