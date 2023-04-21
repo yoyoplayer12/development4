@@ -1,16 +1,23 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
+    include_once(__DIR__ . "/classes/Db.php");
     //logindetection
     $prompts = [];
+
+    if (!empty($_GET['search_query'])) {
+        $search_query = $_GET['search_query'];
+    } else {
+        $search_query = "";
+    }
 
     $limit = 2; // number of prompts to display per page
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // current page number
     $offset = ($page - 1) * $limit;
 
-    $prompts = Prompt::getVerifiedPrompts($limit, $offset);
+    $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query);
 
     // count the total number of prompts with the selected filter
-    $totalPrompts = count(Prompt::countAllVerifiedPrompts());
+    $totalPrompts = count(Prompt::countAllVerifiedPrompts($search_query));
 
     $totalPages = ceil($totalPrompts / $limit);
 
@@ -29,6 +36,26 @@
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1>Prompt marketplace</h1>
+    <form method="get">
+		<input type="text" name="search_query">
+		<input type="submit" name="submit" value="Search">
+	</form>
+
+	<?php
+//    if (isset($_GET['submit'])) {
+//     echo "You searched for: " . $search_query;
+//     if ($result->rowCount() > 0) {
+
+//         while ($row = $result->fetch()) {
+//             echo "<h2>" . $row["title"] . "</h2>";
+//             echo "<p>" . $row["description"] . "</p>";
+//             //echo "<p>Tags: " . $row["tags"] . "</p>";
+//         }
+//     } else {
+//         echo "No results found.";
+//     }
+// }
+	?>
     <?php if(isset($notPrompt)): ?>
         <p><?php echo $notPrompt ?></p>
     <?php endif; ?>

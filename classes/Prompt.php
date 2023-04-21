@@ -86,21 +86,40 @@
             }
             return $randomString;
         }
-        public static function getVerifiedPrompts($limit, $offset){
+        public static function getVerifiedPrompts($limit, $offset, $search_query){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 ORDER BY postdate DESC LIMIT :limit OFFSET :offset");
+            $sql = "SELECT * FROM prompts WHERE verified = 1 AND active = 1 AND deleted = 0 AND rejected = 0";
+            if ($search_query != '') {
+                $sql .= " AND title LIKE :search_query";
+            }
+            //add limit & offset
+            $sql .= " ORDER BY postdate DESC LIMIT :limit OFFSET :offset";
+            
+            $statement = $conn->prepare($sql);
+            if ($search_query != '') {
+                $statement->bindValue(":search_query", "%".$search_query."%");
+            }
             $statement->bindValue(":limit", intval($limit), PDO::PARAM_INT);
             $statement->bindValue(":offset", intval($offset), PDO::PARAM_INT);
             $statement->execute();
             $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $prompt;
+
         }
-        public static function countAllVerifiedPrompts(){
+        public static function countAllVerifiedPrompts($search_query){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 ORDER BY postdate DESC");
+            $sql = "SELECT * FROM prompts WHERE verified = 1 AND active = 1 AND deleted = 0 AND rejected = 0";
+            if ($search_query != '') {
+                $sql .= " AND title LIKE :search_query";
+            }
+                        
+            $statement = $conn->prepare($sql);
+            if ($search_query != '') {
+                $statement->bindValue(":search_query", "%".$search_query."%");
+            }
             $statement->execute();
-            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-            return $result;
+            $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $prompt;
         }
 
     }
