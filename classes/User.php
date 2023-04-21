@@ -287,4 +287,27 @@
             $statement->execute();
             header("Location: index.php");
         }
+
+  public function deleteProfile($username, $password) {
+    $conn = Db::getInstance();
+    $statement = $conn->prepare('SELECT id, password FROM users WHERE username = :username');
+    $statement->bindValue(':username', $username);
+    $statement->execute();
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    if (!$result) {
+        return false;
+      }
+    
+      // Verify the password
+      if (!password_verify($password, $result['password'])) {
+        return false;
+      }
+    
+      // Delete the user account
+      $statement = $conn->prepare('DELETE FROM users WHERE id = :id');
+      $statement->bindValue(':id', $result['id']);
+      $statement->execute();
+    
+      return true;
+  }
     }
