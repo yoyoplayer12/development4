@@ -78,8 +78,8 @@
             <form action="" method="post">
                     <h1 class="mb-15 text-[#0464A4] text-5xl">Reset your password</h1>
                     <ul>
-                        <li><input class="border-2 flex w-full justify-center rounded-md mb-5 mt-20 py-2" type="text" name="email" placeholder="email" required></li>
-                        <li><input class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer" type="submit" value="send Email" name="btn"></li>
+                        <li><input class="border-2 flex w-full justify-center rounded-md mb-5 mt-20 py-2" type="text" name="email" placeholder="Email" required></li>
+                        <li><input class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer" type="submit" value="Send email" name="btn"></li>
                     </ul>
                     
                     <?php if(isset($nomail)): ?>
