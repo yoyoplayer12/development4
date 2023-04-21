@@ -61,46 +61,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
     <title>Reset your password</title>
 </head>
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
-    <?php if($changed == true):?>
-        <h1>Password changed</h1>
-        <a href="login.php">Log in</a>
-    <?php elseif(!isset($code)): ?>
-    <form action="" method="post">
-            <h1>Reset password</h1>
-            <ul>
-                <li><input type="text" name="email" placeholder="email" required></li>
-                <li><input type="submit" value="send Email" name="btn"></li>
-            </ul>
-            
-            <?php if(isset($nomail)): ?>
-                <div> <?php echo $nomail ?></div>        
+    
+    <div class = "w-full h-80 flex justify-center items-center">
+            <?php if($changed == true):?>
+                <h1>Password changed</h1>
+                <a href="login.php">Log in</a>
+            <?php elseif(!isset($code)): ?>
+
+            <form action="" method="post">
+                    <h1 class="mb-15 text-[#0464A4] text-5xl">Reset your password</h1>
+                    <ul>
+                        <li><input class="border-2 flex w-full justify-center rounded-md mb-5 mt-20 py-2" type="text" name="email" placeholder="email" required></li>
+                        <li><input class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer" type="submit" value="send Email" name="btn"></li>
+                    </ul>
+                    
+                    <?php if(isset($nomail)): ?>
+                        <div> <?php echo $nomail ?></div>        
+                    <?php endif; ?>
+            </form>
+            <?php elseif($code == false): ?>
+            <form action="" method="post">
+                <h1>Email has been sent!</h1>
+                <ul>
+                    <li><input type="text" name="code" placeholder="code" required></li>
+                    <li><input type="submit" value="reset password" name="reset-code"></li>
+                    <li><p><?php echo $error ?></p></li>
+                </ul>
+            </form>
+            <?php elseif($code == true):?>
+            <form action="" method="post">
+                <h1>Reset your password</h1>
+                <ul>
+                    <li><input type="password" name="password" placeholder="password" required></li>
+                    <li><input type="password" name="password2" placeholder="confirm password" required></li>
+                    <li><input type="submit" value="reset password" name="reset-password"></li>
+                    <li><p><?php echo $error ?></p></li>
+                </ul>
+            </form>
             <?php endif; ?>
-    </form>
-    <?php elseif($code == false): ?>
-    <form action="" method="post">
-        <h1>Email has been sent!</h1>
-        <ul>
-            <li><input type="text" name="code" placeholder="code" required></li>
-            <li><input type="submit" value="reset password" name="reset-code"></li>
-            <li><p><?php echo $error ?></p></li>
-        </ul>
-    </form>
-    <?php elseif($code == true):?>
-    <form action="" method="post">
-        <h1>Reset your password</h1>
-        <ul>
-            <li><input type="password" name="password" placeholder="password" required></li>
-            <li><input type="password" name="password2" placeholder="confirm password" required></li>
-            <li><input type="submit" value="reset password" name="reset-password"></li>
-            <li><p><?php echo $error ?></p></li>
-        </ul>
-    </form>
-    <?php endif; ?>
+        </div>
 </body>
 </html>
