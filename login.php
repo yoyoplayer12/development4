@@ -39,7 +39,7 @@
         <div class = "w-1/2 h-100 flex justify-center items-center">
             <form action="" method="post">
             <img  src="assets/logo.png" class="flex justify-center w-50 ml-10 mb-10">
-                <h1 class="text-4xl mb-20">Log in</h1>
+                <h1 class="mb-15 text-[#0464A4] text-5xl mb-10">Log in</h1>
                 <ul>
                     <li ><input class="border-2 flex w-full justify-center rounded-md mb-5 py-2" type="text" name="username" placeholder="Username" required></li>
                     <li><input class="border-2 flex w-full justify-center rounded-md mb-10 py-2" type="password" name="password" placeholder="Password" required></li>
