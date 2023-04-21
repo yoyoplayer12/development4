@@ -1,18 +1,26 @@
 <?php 
 
     include_once(__DIR__ . "/bootstrap.php");
+    include_once(__DIR__ . "/classes/User.php");
+    include_once(__DIR__ . "/classes/Db.php");
+
+
+   
 
     if(!empty($_POST)){
         if(!empty($_POST['currentPassword']) && !empty($_POST['newPassword']) && !empty($_POST['newPassword2'])){
             
-            try {
-                //code...
-            } catch (\Throwable $th) {
-                //throw $th;
+            $user = new User();
+            $user->comparePassword();
+            
+            if($user->comparePassword() == true && $_POST['newPassword'] == $_POST['newPassword2']){
+                $user->setPassword($_POST['newPassword']);
+                $user->updatePassword();
+                $success = "Password changed successfully";
             }
-
-
-
+            else{
+                $error2 = "Current password is incorrect or new passwords don't match";
+            }
 
         }
         else{
@@ -43,6 +51,15 @@
             <?php if(isset($error)): ?>
                 <div> <?php echo $error ?></div>
             <?php endif; ?>
+
+            <?php if(isset($success)): ?>
+                <div> <?php echo $success ?></div>
+            <?php endif; ?>
+
+            <?php if(isset($error2)): ?>
+                <div> <?php echo $error2 ?></div>
+            <?php endif; ?>
+
 
         </ul>
 
