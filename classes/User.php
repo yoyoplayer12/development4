@@ -310,4 +310,25 @@
     
       return true;
   }
+
+    public function comparePassword(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT password FROM users WHERE email = :email AND banned = 0");
+        $statement->bindValue(":email", $_SESSION['email']);
+        $statement->execute();
+        $result = $statement->fetch();
+
+
+
+        $password = $result['password'];
+        
+        if(password_verify($_POST['currentPassword'], $password )){
+            return true;
+        } else {
+            return false;
+        }
+
+        
+
     }
+}
