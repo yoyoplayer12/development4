@@ -3,6 +3,7 @@
 require_once 'vendor/autoload.php';
 include_once(__DIR__ . "/classes/User.php");
 include_once(__DIR__ . "/classes/Db.php");
+include_once(__DIR__ . "/nav.php");
 
 $config = parse_ini_file('config/config.ini', true);
 $key = $config['keys']['SENDGRID_API_KEY'];
@@ -63,42 +64,45 @@ if(isset($_POST['registerBtn'])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eve - Sign up</title>
-    <script src="https://cdn.tailwindcss.com/%22%3E"></script>
     <link href="normalize.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<div class="">
-		<div class="">
+<div class="form flex flex-row justify-center items-center">
+		<div class="w-1/2 h-screen flex justify-center items-center">
 			<form action="" method="post">
-				<h2 form__title>Sign Up</h2>
-
+            <img  src="assets/logo.png" class="flex justify-center w-50 ml-10 mb-10">
+				<h1 class="text-4xl mb-20">Sign Up</h1>
 				<div class="">
-					<label for="Email">Email</label>
-					<input type="text" name="email">
+					<input type="text" name="email" placeholder="Email" class="border-2 py-2 flex w-full justify-center rounded-md mb-5">
                     <?php if (isset($emailError)) : ?>
                         <p><?php echo $emailError; ?></p>
                     <?php endif; ?>
 				</div>
                 <div class="">
-					<label for="Username">Username</label>
-					<input type="text" name="username">
+					<input type="text" name="username" placeholder="Username" class="border-2 py-2 flex w-full justify-center rounded-md mb-5">
                     <?php if (isset($usernameError)) : ?>
                         <p><?php echo $usernameError; ?></p>
                     <?php endif; ?>
 				</div>
 				<div class="">
-					<label for="Password">Password</label>
-					<input type="password" name="password">
+					<input type="password" name="password" placeholder="Password" class="border-2 py-2 flex w-full justify-center rounded-md mb-10">
                     <?php if (isset($passwordError)) : ?>
                         <p><?php echo $passwordError; ?></p>
                     <?php endif; ?>
 				</div>
 
 				<div class="">
-					<input type="submit" value="Sign up" name="registerBtn" class="">
+					<input type="submit" value="Sign up" name="registerBtn" class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer">
 				</div>
+                <p>already have an account? <a href="login.php" class="text-[#0464A4]">Log in</a></p> 
 			</form>
+           
 		</div>
+        <div class="w-1/2">
+        <img  src="images/background.jpg" class="w-full h-screen">
+        </div>
 	</div>
 </body>
 </html>

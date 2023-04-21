@@ -2,23 +2,10 @@ body{
     font-family: arial, verdana;
     background-color: #C8C8CC;
 }
-.navbar{
-    display: flex;
-    justify-content: center;
-    background-color: #040404;
-    list-style: none;
-    color: #F4F4FC;
-    border-radius: 0 0 50px 50px;
-
-    margin: 0;
-}
 .navbar li{
     padding: 15px 25px;
 }
-.navbar a{
-    color: #F4F4FC;
-    text-decoration: none;
-}
+
 .editprofilewarning{
     color: red;
     font-size: 16px;
@@ -34,14 +21,8 @@ body{
 .prompt ul{
     margin-left: 20px;
 }
-h1{
-    text-align: center;
-}
+
 ul{
     list-style: none;
     padding: 0;
-}
-.navlogo{
-    height: 20px;
-    width: auto;
 }

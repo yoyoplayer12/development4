@@ -32,26 +32,27 @@
     <title>Eve - Log in</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#f5fd8e]">
+<body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
 
-    <div class="loginform flex flex-row">
-        <div class = "w-1/2 h-screen">
+    <div class="form flex flex-row">
+        <div class = "w-1/2 h-100 flex justify-center items-center">
             <form action="" method="post">
-                <h1>Log in</h1>
+            <img  src="assets/logo.png" class="flex justify-center w-50 ml-10 mb-10">
+                <h1 class="text-4xl mb-20">Log in</h1>
                 <ul>
-                    <li ><input class="border-2 " type="text" name="username" placeholder="Username" required></li>
-                    <li><input class="border-2 bg-blue" type="password" name="password" placeholder="Password" required></li>
-                    <li><input type="submit" value="Log in"></li>
-                    <li><a href="register.php">Create an account</a></li>
-                    <li><a href="forgotpassword.php">Forgot password?</a></li>
+                    <li ><input class="border-2 flex w-full justify-center rounded-md mb-5 py-2" type="text" name="username" placeholder="Username" required></li>
+                    <li><input class="border-2 flex w-full justify-center rounded-md mb-10 py-2" type="password" name="password" placeholder="Password" required></li>
+                    <li><input type="submit" value="Log in" class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer"></li>
+                    <li class="mb-5 text-[#0464A4]"><a href="forgotpassword.php" >Forgot password?</a></li>
+                    <li>Don't have an account? <a href="register.php" class="text-[#0464A4]">Register</a></li>
                     <li class="text-[#FF0000]"><?php echo $loginwarning ?></li>
                 </ul>
                 
             </form>
         </div>
         <div class="w-1/2">
-            <img  src="images/loginImg.jpg" alt="0">
+            <img  src="images/background.jpg" class="w-full h-screen">
         </div>
     </div>
 
