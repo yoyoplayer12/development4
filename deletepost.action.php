@@ -9,7 +9,6 @@
         $statement->bindValue(":id", $post_id);
         $statement->execute();
         var_dump($statement->execute());
-        die();
         header("Location: index.php");
     }
     else {

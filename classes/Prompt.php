@@ -28,6 +28,13 @@
             $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $prompt;
         }
+        public static function getPromptsByUser($id){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prompts WHERE user_id = $id AND active = 1 AND deleted = 0 AND rejected = 0 AND verified = 1");                  
+            $statement->execute();
+            $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $prompt;
+        }
         public static function getPromptUser($id){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT id, username, avatar_url FROM users WHERE active=1 AND id = $id AND banned = 0");

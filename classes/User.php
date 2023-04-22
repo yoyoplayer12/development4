@@ -60,10 +60,18 @@
                 return false;
             }
         }
-        public static function getUser(){
+        public static function getSessionUser(){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND banned = 0");
             $statement->bindValue(":username", $_SESSION['username']);
+            $statement->execute();
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
+            return $user;
+        }
+        public static function getUser($userid){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM users WHERE id = :id AND banned = 0");
+            $statement->bindValue(":id", $userid);
             $statement->execute();
             $user = $statement->fetch(PDO::FETCH_ASSOC);
             return $user;

@@ -57,11 +57,11 @@
         <label for="prices">Price</label>
         <select name="prices" id="prices" required>
             <option value="0">€0</option>
-            <option value="1,99">€1,99</option>
-            <option value="3,99">€3,99</option>
-            <option value="5,99">€5,99</option>
-            <option value="7,99">€7,99</option>
-            <option value="9,99">€9,99</option>
+            <option value="1.99">€1,99</option>
+            <option value="3.99">€3,99</option>
+            <option value="5.99">€5,99</option>
+            <option value="7.99">€7,99</option>
+            <option value="9.99">€9,99</option>
         </select>
         <label for="description" required>Description</label>
         <input type="text" name="description">

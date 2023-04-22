@@ -3,7 +3,7 @@
     //logindetection
     if(isset($_SESSION["loggedin"])) {
         $warning = " ";
-        $getUser = User::getUser();
+        $getUser = User::getSessionUser();
         if(!empty($_POST)){
             if(!empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
     
