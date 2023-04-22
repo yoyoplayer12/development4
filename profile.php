@@ -28,7 +28,7 @@
         <img src="<?php echo $getUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover">
         <a href="editprofile.php">Edit profile</a>
         <a href="logout.php">Log out</a>
-        <a href="deleteprofile.php">Delete profile</a>
+        <a href="deleteprofile.action.php">Delete profile</a>
 
     <?php else:?>
         <h1>Log in to see your profile</h1>
