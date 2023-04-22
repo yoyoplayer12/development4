@@ -26,6 +26,7 @@
                     if($user["active"] == 1){
                         //getting basic user info
                         $_SESSION['username'] = $user["username"];
+                        $_SESSION["userid"] = $user["id"];
                         $_SESSION["confirmed_email"] = $user["confirmed_email"];
                         return true;
                     } else {
