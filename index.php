@@ -3,6 +3,16 @@
     //logindetection
     $prompts = [];
     $prompts = Prompt::getVerifiedPrompts();
+
+    if(empty($_SESSION["userid"])){
+        //blur out the prompt
+
+
+
+
+        //set message
+        $notPrompt = "U need to be logged in to see the prompt";
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +28,9 @@
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1>Prompt marketplace</h1>
+    <?php if(isset($notPrompt)): ?>
+        <p><?php echo $notPrompt ?></p>
+    <?php endif; ?>
     <?php 
         if (empty($prompts)) {
             echo "<h1 class='noposts'>There are no prompts right now, try again later!</h1>";
