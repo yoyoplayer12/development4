@@ -3,16 +3,8 @@
     //logindetection
     $prompts = [];
     $prompts = Prompt::getVerifiedPrompts();
+    
 
-    if(empty($_SESSION["userid"])){
-        //blur out the prompt
-
-
-
-
-        //set message
-        $notPrompt = "U need to be logged in to see the prompt";
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +34,17 @@
                     <ul>
                         <li><p><b>Title: </b><?php echo $prompt["title"] ?></p></li>
                         <li><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><b>User: </b><?php echo $promptUser['username'] ?></a></li>
-                        <li><img src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
+
+                        <?php if(!empty($_SESSION["userid"])): ?>
+                            <p> <?php echo "user is ingelogd"?></p>    
+                            <li><img src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
+                        <?php else: ?>
+                            <p> <?php echo "user is niet ingelogd"?></p>
+                            <li><img class="blur-lg" src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
+                        <?php endif; ?>
+                     
+
+
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <!-- shouldnt be visible before buying -->
