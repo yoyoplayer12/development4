@@ -16,7 +16,7 @@
         }
         public static function getVerifiedPrompts(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 AND active = 1 AND deleted = 0");
+            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 AND active = 1 AND deleted = 0 ORDER BY postdate DESC");
             $statement->execute();
             $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $prompt;
