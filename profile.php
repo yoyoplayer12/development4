@@ -27,6 +27,7 @@
         <p class="profile-bio">Bio: <?php echo $getUser["bio"];?></p>
         <img src="<?php echo $getUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover">
         <a href="editprofile.php">Edit profile</a>
+        <a href="changePassword.php">Change password</a>
         <a href="logout.php">Log out</a>
         <a href="deleteprofile.action.php">Delete profile</a>
 
