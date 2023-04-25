@@ -14,13 +14,6 @@
             $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $prompt;
         }
-        public static function getVerifiedPrompts(){
-            $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 AND active = 1 AND deleted = 0 ORDER BY postdate DESC");
-            $statement->execute();
-            $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
-            return $prompt;
-        }
         public static function getRejectedPrompts(){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT * FROM prompts WHERE rejected = 1 AND active = 1");
@@ -92,6 +85,22 @@
                 $randomString .= $characters[rand(0, $charactersLength - 1)];
             }
             return $randomString;
+        }
+        public static function getVerifiedPrompts($limit, $offset){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 ORDER BY postdate DESC LIMIT :limit OFFSET :offset");
+            $statement->bindValue(":limit", intval($limit), PDO::PARAM_INT);
+            $statement->bindValue(":offset", intval($offset), PDO::PARAM_INT);
+            $statement->execute();
+            $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $prompt;
+        }
+        public static function countAllVerifiedPrompts(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 ORDER BY postdate DESC");
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
         }
 
     }
