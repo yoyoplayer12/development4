@@ -2,8 +2,17 @@
     include_once(__DIR__ . "/bootstrap.php");
     //logindetection
     $prompts = [];
-    $prompts = Prompt::getVerifiedPrompts();
-    
+
+    $limit = 2; // number of prompts to display per page
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // current page number
+    $offset = ($page - 1) * $limit;
+
+    $prompts = Prompt::getVerifiedPrompts($limit, $offset);
+
+    // count the total number of prompts with the selected filter
+    $totalPrompts = count(Prompt::countAllVerifiedPrompts());
+
+    $totalPages = ceil($totalPrompts / $limit);
 
 ?>
 <!DOCTYPE html>
@@ -68,5 +77,21 @@
                 </div>
                
     <?php endforeach;} ?>
+
+    <?php if ($totalPages > 1) : ?>
+            <div class="pagination text-black">
+                <?php if ($page > 1) : ?>
+                    <a href="index.php?page=<?php echo $page - 1 ?>">Previous</a>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                    <a href="index.php?page=<?php echo $i ?>" <?php if ($i === $page) echo 'class="active"'; ?>><?php echo $i ?></a>
+                <?php endfor; ?>
+
+                <?php if ($page < $totalPages) : ?>
+                    <a href="index.php?page=<?php echo $page + 1 ?>">Next</a>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
 </body>
 </html>
