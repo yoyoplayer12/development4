@@ -4,7 +4,6 @@
     include_once(__DIR__ . "/classes/User.php");
     include_once(__DIR__ . "/classes/Db.php");
 
-
    
 
     if(!empty($_POST)){
@@ -43,9 +42,9 @@
     <h2>Change password from <?php echo $_SESSION['username']?>'s account</h2> 
 
         <ul>
-            <li><input type="text" name ="currentPassword" placeholder="current password"></li>
-            <li><input type="text" name ="newPassword" placeholder="new password"></li>
-            <li><input type="text" name ="newPassword2" placeholder="confirm new password"></li>
+            <li><input name ="currentPassword" type="password" placeholder="current password"></li>
+            <li><input name ="newPassword" type="password" placeholder="new password"></li>
+            <li><input name ="newPassword2" type="password" placeholder="confirm new password"></li>
             <li><input type="submit" value="change password" name="changePassword"></li>
 
             <?php if(isset($error)): ?>
