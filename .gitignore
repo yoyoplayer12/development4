@@ -1,4 +1,5 @@
 .DS_Store
 config/
 sendgrid.env
-# /vendor/
+/vendor/
+
