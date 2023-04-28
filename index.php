@@ -45,10 +45,10 @@
                         <li><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><b>User: </b><?php echo $promptUser['username'] ?></a></li>
 
                         <?php if(!empty($_SESSION["userid"])): ?>
-                            <p> <?php echo "user is ingelogd"?></p>    
+                            <!-- <p> <?php echo "user is ingelogd"?></p>     -->
                             <li><img src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
                         <?php else: ?>
-                            <p> <?php echo "user is niet ingelogd"?></p>
+                            <!-- <p> <?php echo "user is niet ingelogd"?></p> -->
                             <li><img class="blur-lg" src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
                      
