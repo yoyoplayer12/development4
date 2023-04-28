@@ -35,6 +35,21 @@
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             return $result;
         }
+        public static function getCategories(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM categories WHERE active=1");
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public static function getPrices(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prices WHERE active=1");
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        
         public function setTitle($title){
             $this->title = $title;
             return $this;
