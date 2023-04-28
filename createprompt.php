@@ -7,6 +7,10 @@
     else {
         header("Location: login.php");
     }
+    $categories = [];
+    $prices = [];
+    $categories = Prompt::getCategories();
+    $prices = Prompt::getPrices();
     if(!empty($_POST)){
         try{
             $prompt = new Prompt();
@@ -52,25 +56,23 @@
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1>New Prompt</h1>
     <form action="" method="post" enctype="multipart/form-data">
-        <label for="title">Title</label>
-        <input type="text" name="title" required>
-        <label for="prices">Price</label>
+        <input type="text" name="title" placeholder="Title" required>
         <select name="prices" id="prices" required>
-            <option value="0">€0</option>
-            <option value="1.99">€1,99</option>
-            <option value="3.99">€3,99</option>
-            <option value="5.99">€5,99</option>
-            <option value="7.99">€7,99</option>
-            <option value="9.99">€9,99</option>
+            <option value="" disabled selected>Select a price</option>
+            <?php foreach($prices as $price):?>
+                <option value="<?php echo $price['value']; ?>"><?php echo $price['price']; ?></option>
+            <?php endforeach; ?>
         </select>
-        <label for="description" required>Description</label>
-        <input type="text" name="description">
-        <label for="photo" required>Photo</label>
-        <input type="file" name="photo">
-        <label for="prompt" required>Prompt</label>
-        <input type="text" name="prompt">
-        <label for="prompt-info" required>Prompt information</label>
-        <input type="text" name="prompt-info">
+        <input type="text" name="description" placeholder="Description" required>
+        <input type="file" name="photo" required>
+            <select name="categories" id="categories" required>
+                <option value="" disabled selected>Select a category</option>
+                <?php foreach($categories as $category): ?>
+                    <option value="<?php echo $category['value']; ?>"><?php echo $category['category']; ?></option>
+                <?php endforeach; ?>
+            </select>
+        <input type="text" name="prompt" placeholder="Prompt" required>
+        <input type="text" name="prompt-info" placeholder="Prompt info" required>
         <input type="submit" value="Create Prompt">
     </form>
 </body>
