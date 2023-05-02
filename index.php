@@ -59,15 +59,12 @@
             <?php else: ?>
                 <?php $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query); ?>
             <?php endif; ?>
-                
-
-
 
         </form> 
 
-	<?php
-	?>
-    <?php if(isset($notPrompt)): ?>
+
+        <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+        <?php if(isset($notPrompt)): ?>
         <p><?php echo $notPrompt ?></p>
     <?php endif; ?>
     <?php 
@@ -78,7 +75,7 @@
             foreach($prompts as $prompt): ?>
                 <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
                 <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
-                <div class="prompt">
+                <div class="bg-white">
                     <ul>
                         <li><p><b>Title: </b><?php echo $prompt["title"] ?></p></li>
                         <li><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><b>User: </b><?php echo $promptUser['username'] ?></a></li>
@@ -115,6 +112,8 @@
                 </div>
                
     <?php endforeach;} ?>
+        </div>
+    
 
     <?php if ($totalPages > 1) : ?>
             <div class="pagination text-black">
@@ -127,7 +126,7 @@
                 <?php endfor; ?>
 
                 <?php if ($page < $totalPages) : ?>
-                    <a href="index.php?page=<?php echo $page + 1 ?>">Next</a>
+                    <a href="index.php?page=<?php echo $page + 1 ?>" >Next</a>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
