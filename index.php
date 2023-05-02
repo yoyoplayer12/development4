@@ -21,6 +21,9 @@
 
     $totalPages = ceil($totalPrompts / $limit);
 
+    //getting categories from database
+    $allCategories = Prompt::getCategories();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,20 +44,28 @@
 		<input type="submit" name="submit" value="Search">
 	</form>
 
-	<?php
-//    if (isset($_GET['submit'])) {
-//     echo "You searched for: " . $search_query;
-//     if ($result->rowCount() > 0) {
+    <form action="" method="post" id="categoryFilter">
+            <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required>
+                <option value="" disabled selected>Choose a category</option>
+                <?php foreach($allCategories as $category): ?>
+                    <option value="<?php echo $category['id']; ?>"><?php echo $category['category']; ?></option>
+                <?php endforeach; ?>
+                
+            </select>
+                    
+            <?php if(isset($_POST['dropdown'])): ?>
+                <?php $selectedCategory = $_POST['dropdown']; ?>
+                <?php $prompts = Prompt::getPromptsByCategory($selectedCategory); ?>
+            <?php else: ?>
+                <?php $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query); ?>
+            <?php endif; ?>
+                
 
-//         while ($row = $result->fetch()) {
-//             echo "<h2>" . $row["title"] . "</h2>";
-//             echo "<p>" . $row["description"] . "</p>";
-//             //echo "<p>Tags: " . $row["tags"] . "</p>";
-//         }
-//     } else {
-//         echo "No results found.";
-//     }
-// }
+
+
+        </form> 
+
+	<?php
 	?>
     <?php if(isset($notPrompt)): ?>
         <p><?php echo $notPrompt ?></p>
@@ -66,16 +77,15 @@
         else{
             foreach($prompts as $prompt): ?>
                 <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
+                <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
                 <div class="prompt">
                     <ul>
                         <li><p><b>Title: </b><?php echo $prompt["title"] ?></p></li>
                         <li><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><b>User: </b><?php echo $promptUser['username'] ?></a></li>
 
                         <?php if(!empty($_SESSION["userid"])): ?>
-                            <p> <?php echo "user is ingelogd"?></p>    
                             <li><img src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
                         <?php else: ?>
-                            <p> <?php echo "user is niet ingelogd"?></p>
                             <li><img class="blur-lg" src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
                      
@@ -87,6 +97,7 @@
                         <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
                         <li><p><b>Prompt description: </b><?php echo $prompt["prompt-info"] ?></p></li>
                         <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
+                        <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <li><button>Buy</button></li>
                         <?php if(isset($_SESSION["admin"])):?>
                             <?php if($_SESSION["admin"] == true):?>
