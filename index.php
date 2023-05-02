@@ -41,21 +41,6 @@
 		<input type="submit" name="submit" value="Search">
 	</form>
 
-	<?php
-//    if (isset($_GET['submit'])) {
-//     echo "You searched for: " . $search_query;
-//     if ($result->rowCount() > 0) {
-
-//         while ($row = $result->fetch()) {
-//             echo "<h2>" . $row["title"] . "</h2>";
-//             echo "<p>" . $row["description"] . "</p>";
-//             //echo "<p>Tags: " . $row["tags"] . "</p>";
-//         }
-//     } else {
-//         echo "No results found.";
-//     }
-// }
-	?>
     <?php if(isset($notPrompt)): ?>
         <p><?php echo $notPrompt ?></p>
     <?php endif; ?>
