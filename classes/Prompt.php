@@ -7,6 +7,7 @@
         private $prompt;
         private $promptInfo;
         private $userId;
+        private $categoryid;
         public static function getUnverifiedPrompts(){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 0 AND active = 1 AND rejected = 0 AND deleted = 0");
@@ -35,6 +36,28 @@
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             return $result;
         }
+        public static function getPromptCat($catid){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM categories WHERE active=1 AND id = $catid");
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public static function getCategories(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM categories WHERE active=1");
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public static function getPrices(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prices WHERE active=1");
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        
         public function setTitle($title){
             $this->title = $title;
             return $this;
@@ -63,9 +86,14 @@
             $this->userId = $userId;
             return $this;
         }
+        public function setCategoryId($catid){
+            $this->categoryid = $catid;
+            return $this;
+        }
         public function save(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("INSERT INTO prompts (`title`, `price`, `description`, `photo-url`, `prompt`, `prompt-info`, `user_id`) VALUES (:title, :price, :description, :photoUrl, :prompt, :promptInfo, :userId)");
+            $statement = $conn->prepare("INSERT INTO prompts (`cat_id`, `title`, `price`, `description`, `photo-url`, `prompt`, `prompt-info`, `user_id`) VALUES (:cat, :title, :price, :description, :photoUrl, :prompt, :promptInfo, :userId)");
+            $statement->bindvalue(":cat", $this->categoryid);
             $statement->bindValue(":title", $this->title);
             $statement->bindValue(":price", $this->price);
             $statement->bindValue(":description", $this->description);
@@ -120,6 +148,14 @@
             $statement->execute();
             $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $prompt;
+        }
+
+        public static function getPromptsByCategory($selectedCategory){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 AND cat_id = $selectedCategory AND deleted = 0 AND active = 1 ORDER BY postdate DESC");
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
         }
 
     }

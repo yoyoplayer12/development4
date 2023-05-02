@@ -43,10 +43,12 @@
         else{
             foreach($unverifiedprompts as $prompt): ?>
                 <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
+                <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
                 <div class="prompt">
                     <ul>
                         <li><p><b>Title: </b><?php echo $prompt["title"] ?></p></li>
                         <li><p><b>User: </b><?php echo $promptUser['username'] ?></p></li>
+                        <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <li><img src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
@@ -66,10 +68,12 @@
         else{
             foreach($rejectedprompts as $prompt): ?>
                 <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>  
+                <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
                 <div class="prompt">
                     <ul>
                         <li><p><b>Title: </b><?php echo $prompt["title"] ?></p></li>
                         <li><p><b>User: </b><?php echo $promptUser['username'] ?></p></li>
+                        <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <li><img src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>

@@ -5,6 +5,5 @@ This is our todo file ==> schrijf gewoon wa er nog moe gebeuren
 
 
 
-- Fix nog logindetectie op elke pagina
-- Fix emailbevestiging bij account maken
-- 
+- fix price bij de prompts (word nu opgenomen door db maar niet gedisplayed bij admin/dashboard)
+- price in prompts naar price_id veranderen
