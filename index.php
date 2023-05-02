@@ -19,19 +19,7 @@
 
     //getting categories from database
     $allCategories = Prompt::getCategories();
-    var_dump($allCategories[1]['category']);
     
-    //print categories
-    
-
-    // get categorie that user selected
-    
-    
-
-
-
-
-
 
 
 
@@ -52,15 +40,25 @@
     <h1>Prompt marketplace</h1>
 
 
-        <form action="" method="POST">
-            <select name="dropdown" id="dropdown" required>
+        <form action="" method="post" id="categoryFilter">
+            <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required>
                 <option value="" disabled selected>Choose a category</option>
                 <?php foreach($allCategories as $category): ?>
-                    <option value="<?php echo $category['value']; ?>"><?php echo $category['category']; ?></option>
+                    <option value="<?php echo $category['id']; ?>"><?php echo $category['category']; ?></option>
                 <?php endforeach; ?>
                 
             </select>
-            
+                    
+            <?php if(isset($_POST['dropdown'])): ?>
+                <?php $selectedCategory = $_POST['dropdown']; ?>
+                <?php $prompts = Prompt::getPromptsByCategory($selectedCategory); ?>
+            <?php else: ?>
+                <?php $prompts = Prompt::getVerifiedPrompts($limit, $offset); ?>
+            <?php endif; ?>
+                
+
+
+
         </form> 
 
 
