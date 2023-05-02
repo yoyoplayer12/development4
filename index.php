@@ -19,19 +19,15 @@
 
     //getting categories from database
     $allCategories = Prompt::getCategories();
-    var_dump($allCategories[0]['category']);
+    var_dump($allCategories[1]['category']);
     
     //print categories
-    if(isset($_POST['dropdown'])){
-        echo "het werkt";
-    }
+    
 
     // get categorie that user selected
     
     
-    if(isset($_POST['dropdown'])){
-        echo "het werkt";
-    }
+
 
 
 
@@ -64,7 +60,7 @@
                 <?php endforeach; ?>
                 
             </select>
-            <?php var_dump($category['category']); ?>
+            
         </form> 
 
 
