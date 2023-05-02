@@ -1,16 +1,23 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
+    include_once(__DIR__ . "/classes/Db.php");
     //logindetection
     $prompts = [];
+
+    if (!empty($_GET['search_query'])) {
+        $search_query = $_GET['search_query'];
+    } else {
+        $search_query = "";
+    }
 
     $limit = 2; // number of prompts to display per page
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // current page number
     $offset = ($page - 1) * $limit;
 
-    $prompts = Prompt::getVerifiedPrompts($limit, $offset);
+    $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query);
 
     // count the total number of prompts with the selected filter
-    $totalPrompts = count(Prompt::countAllVerifiedPrompts());
+    $totalPrompts = count(Prompt::countAllVerifiedPrompts($search_query));
 
     $totalPages = ceil($totalPrompts / $limit);
 
@@ -39,6 +46,10 @@
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1>Prompt marketplace</h1>
 
+<form method="get">
+		<input type="text" name="search_query">
+		<input type="submit" name="submit" value="Search">
+	</form>
 
         <form action="" method="post" id="categoryFilter">
             <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required>
@@ -56,22 +67,7 @@
                 <?php $prompts = Prompt::getVerifiedPrompts($limit, $offset); ?>
             <?php endif; ?>
                 
-
-
-
         </form> 
-
-
-
-
-
-
-
-
-
-
-
-
 
     <?php if(isset($notPrompt)): ?>
         <p><?php echo $notPrompt ?></p>
@@ -97,9 +93,6 @@
                             <li><img class="blur-lg" src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
                         
-                     
-
-
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <!-- shouldnt be visible before buying -->
