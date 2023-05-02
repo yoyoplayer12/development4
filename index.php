@@ -1,3 +1,5 @@
+INDEX
+
 <?php
     include_once(__DIR__ . "/bootstrap.php");
     include_once(__DIR__ . "/classes/Db.php");
@@ -10,7 +12,7 @@
         $search_query = "";
     }
 
-    $limit = 2; // number of prompts to display per page
+    $limit = 4; // number of prompts to display per page
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // current page number
     $offset = ($page - 1) * $limit;
 
@@ -20,15 +22,6 @@
     $totalPrompts = count(Prompt::countAllVerifiedPrompts($search_query));
 
     $totalPages = ceil($totalPrompts / $limit);
-
-
-
-
-    //getting categories from database
-    $allCategories = Prompt::getCategories();
-    
-
-
 
 ?>
 <!DOCTYPE html>
@@ -45,30 +38,26 @@
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1>Prompt marketplace</h1>
-
-<form method="get">
+    <form method="get">
 		<input type="text" name="search_query">
 		<input type="submit" name="submit" value="Search">
 	</form>
 
-        <form action="" method="post" id="categoryFilter">
-            <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required>
-                <option value="" disabled selected>Choose a category</option>
-                <?php foreach($allCategories as $category): ?>
-                    <option value="<?php echo $category['id']; ?>"><?php echo $category['category']; ?></option>
-                <?php endforeach; ?>
-                
-            </select>
-                    
-            <?php if(isset($_POST['dropdown'])): ?>
-                <?php $selectedCategory = $_POST['dropdown']; ?>
-                <?php $prompts = Prompt::getPromptsByCategory($selectedCategory); ?>
-            <?php else: ?>
-                <?php $prompts = Prompt::getVerifiedPrompts($limit, $offset); ?>
-            <?php endif; ?>
-                
-        </form> 
+	<?php
+//    if (isset($_GET['submit'])) {
+//     echo "You searched for: " . $search_query;
+//     if ($result->rowCount() > 0) {
 
+//         while ($row = $result->fetch()) {
+//             echo "<h2>" . $row["title"] . "</h2>";
+//             echo "<p>" . $row["description"] . "</p>";
+//             //echo "<p>Tags: " . $row["tags"] . "</p>";
+//         }
+//     } else {
+//         echo "No results found.";
+//     }
+// }
+	?>
     <?php if(isset($notPrompt)): ?>
         <p><?php echo $notPrompt ?></p>
     <?php endif; ?>
@@ -79,20 +68,21 @@
         else{
             foreach($prompts as $prompt): ?>
                 <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
-                <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
                 <div class="prompt">
                     <ul>
                         <li><p><b>Title: </b><?php echo $prompt["title"] ?></p></li>
                         <li><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><b>User: </b><?php echo $promptUser['username'] ?></a></li>
-                        <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
+
                         <?php if(!empty($_SESSION["userid"])): ?>
-                            <!-- <p> <?php echo "user is ingelogd"?></p>     -->
+                            <p> <?php echo "user is ingelogd"?></p>    
                             <li><img src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
                         <?php else: ?>
-                            <!-- <p> <?php echo "user is niet ingelogd"?></p> -->
+                            <p> <?php echo "user is niet ingelogd"?></p>
                             <li><img class="blur-lg" src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
-                        
+                     
+
+
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <!-- shouldnt be visible before buying -->
