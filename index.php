@@ -14,6 +14,15 @@
 
     $totalPages = ceil($totalPrompts / $limit);
 
+
+
+
+    //getting categories from database
+    $allCategories = Prompt::getCategories();
+    
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,6 +38,41 @@
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1>Prompt marketplace</h1>
+
+
+        <form action="" method="post" id="categoryFilter">
+            <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required>
+                <option value="" disabled selected>Choose a category</option>
+                <?php foreach($allCategories as $category): ?>
+                    <option value="<?php echo $category['id']; ?>"><?php echo $category['category']; ?></option>
+                <?php endforeach; ?>
+                
+            </select>
+                    
+            <?php if(isset($_POST['dropdown'])): ?>
+                <?php $selectedCategory = $_POST['dropdown']; ?>
+                <?php $prompts = Prompt::getPromptsByCategory($selectedCategory); ?>
+            <?php else: ?>
+                <?php $prompts = Prompt::getVerifiedPrompts($limit, $offset); ?>
+            <?php endif; ?>
+                
+
+
+
+        </form> 
+
+
+
+
+
+
+
+
+
+
+
+
+
     <?php if(isset($notPrompt)): ?>
         <p><?php echo $notPrompt ?></p>
     <?php endif; ?>
