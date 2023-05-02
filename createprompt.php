@@ -26,6 +26,7 @@
 
             $prompt->setTitle($_POST['title']);
             $prompt->setPrice($_POST['prices']);
+            $prompt->setCategoryId($_POST['categories']);
             $prompt->setDescription($_POST['description']);
             $prompt->setPhotoUrl($destination);
             $prompt->setPrompt($_POST['prompt']);
@@ -68,7 +69,7 @@
             <select name="categories" id="categories" required>
                 <option value="" disabled selected>Select a category</option>
                 <?php foreach($categories as $category): ?>
-                    <option value="<?php echo $category['value']; ?>"><?php echo $category['category']; ?></option>
+                    <option value="<?php echo $category['id']; ?>"><?php echo $category['category']; ?></option>
                 <?php endforeach; ?>
             </select>
         <input type="text" name="prompt" placeholder="Prompt" required>
