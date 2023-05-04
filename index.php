@@ -63,7 +63,7 @@
         </form> 
 
 
-        <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+        <div class="mx-auto mt-5 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 sm:mt-5 sm:pt-16 lg:mx-10 lg:max-w-none lg:grid-cols-3">
         <?php if(isset($notPrompt)): ?>
         <p><?php echo $notPrompt ?></p>
     <?php endif; ?>
@@ -75,18 +75,16 @@
             foreach($prompts as $prompt): ?>
                 <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
                 <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
-                <div class="bg-white">
-                    <ul>
-                        <li><p><b>Title: </b><?php echo $prompt["title"] ?></p></li>
-                        <li><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><b>User: </b><?php echo $promptUser['username'] ?></a></li>
+                <div class="bg-white p-10 rounded-3xl">
+                    <ul class="list-none flex flex-col">
+                        <li class="text-xl flex justify-center inline-block"><p><?php echo $prompt["title"] ?></p></li>
+                        <li class="text-lg flex justify-end inline-block "><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><?php echo $promptUser['username'] ?></a></li>
 
                         <?php if(!empty($_SESSION["userid"])): ?>
-                            <li><img src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
+                            <li><img  class="rounded-3xl" src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
                         <?php else: ?>
-                            <li><img class="blur-lg" src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
+                            <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
-                     
-
 
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>

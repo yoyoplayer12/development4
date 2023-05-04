@@ -2,26 +2,3 @@ body{
     font-family: arial, verdana;
     background-color: #C8C8CC;
 }
-.navbar li{
-    padding: 15px 25px;
-}
-
-.editprofilewarning{
-    color: red;
-    font-size: 16px;
-}
-.prompt{
-    padding-top: 20px;
-    padding-bottom: 20px;
-    width: 80vw;
-    margin-left: 10vw;
-    margin-bottom: 20px;
-}
-.prompt ul{
-    margin-left: 20px;
-}
-
-ul{
-    list-style: none;
-    padding: 0;
-}
