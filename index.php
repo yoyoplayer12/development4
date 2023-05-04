@@ -105,10 +105,7 @@
                             <?php endif ?>
                         <?php endif ?>
                     </ul>
-                    
-
                 </div>
-               
     <?php endforeach;} ?>
         </div>
     
