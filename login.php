@@ -43,7 +43,7 @@
                 <ul>
                     <li ><input class="border-2 flex w-full justify-center rounded-md mb-5 py-2" type="text" name="username" placeholder="Username" required></li>
                     <li><input class="border-2 flex w-full justify-center rounded-md mb-10 py-2" type="password" name="password" placeholder="Password" required></li>
-                    <li><input type="submit" value="Log in" class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer"></li>
+                    <li><input type="submit" value="Log in" class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] hover:bg-[#0444A4] py-3 text-sm font-semibold text-white cursor-pointer"></li>
                     <li class="mb-5 text-[#0464A4]"><a href="forgotpassword.php" >Forgot password?</a></li>
                     <li>Don't have an account? <a href="register.php" class="text-[#0464A4]">Register</a></li>
                     <li class="text-[#FF0000]"><?php echo $loginwarning ?></li>
