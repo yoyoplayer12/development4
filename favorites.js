@@ -4,12 +4,25 @@ promptsID.forEach(function (btn) {
         let postid = this.dataset.postid;
         console.log(postid);
 
-        //change text of prompt that is favorited
+        //post naar database
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         if (this.innerHTML == "Add to favorites") {
-            
-            
             this.innerHTML = "Remove from favorites";
+
         }
         else {
             this.innerHTML = "Add to favorites";
