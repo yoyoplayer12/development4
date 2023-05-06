@@ -24,6 +24,9 @@
     //getting categories from database
     $allCategories = Prompt::getCategories();
 
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,6 +97,12 @@
                         <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <li><button>Buy</button></li>
+
+
+                        <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?>>Add to favorites</button></li>
+                        <!-- <?php var_dump($prompt["id"]); ?> -->
+
+
                         <?php if(isset($_SESSION["admin"])):?>
                             <?php if($_SESSION["admin"] == true):?>
                                 <li><a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a></li>
@@ -125,5 +134,6 @@
                 <?php endif; ?>
             </div>
         <?php endif; ?>
+        <script src="favorites.js"></script>
 </body>
 </html>
