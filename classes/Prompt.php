@@ -66,7 +66,7 @@
         }
         public function save(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("INSERT INTO prompts (`cat_id`, `title`, `price`, `description`, `photo-url`, `prompt`, `prompt-info`, `user_id`) VALUES (:cat, :title, :price, :description, :photoUrl, :prompt, :promptInfo, :userId)");
+            $statement = $conn->prepare("INSERT INTO prompts (`cat_id`, `title`, `price`, `description`, `photo_url`, `prompt`, `prompt-info`, `user_id`) VALUES (:cat, :title, :price, :description, :photoUrl, :prompt, :promptInfo, :userId)");
             $statement->bindValue(":title", $this->title);
             $statement->bindValue(":price", $this->price);
             $statement->bindValue(":description", $this->description);
