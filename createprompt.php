@@ -30,7 +30,7 @@
             $prompt->setDescription($_POST['description']);
             $prompt->setPhotoUrl($destination);
             $prompt->setPrompt($_POST['prompt']);
-            $prompt->setPromptInfo($_POST['prompt-info']);
+            $prompt->setPromptInfo($_POST['prompt_info']);
             $prompt->setUserId($_SESSION["userid"]);
             //final prompt setting
             $prompt->save();
@@ -73,7 +73,7 @@
                 <?php endforeach; ?>
             </select>
         <input type="text" name="prompt" placeholder="Prompt" required>
-        <input type="text" name="prompt-info" placeholder="Prompt info" required>
+        <input type="text" name="prompt_info" placeholder="Prompt info" required>
         <input type="submit" value="Create Prompt">
     </form>
 </body>

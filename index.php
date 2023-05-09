@@ -90,7 +90,7 @@
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <!-- shouldnt be visible before buying -->
                         <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
-                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt-info"] ?></p></li>
+                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                         <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <li><button>Buy</button></li>
