@@ -26,6 +26,10 @@
         <h1><?php echo $_SESSION['username']?>'s profile</h1>
         <p class="profile-bio">Bio: <?php echo $getUser["bio"];?></p>
         <img src="<?php echo $getUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover">
+
+        <p>my favorite prompts:</p>
+        
+
         <a href="editprofile.php">Edit profile</a>
         <a href="changePassword.php">Change password</a>
         <a href="logout.php">Log out</a>

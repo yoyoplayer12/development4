@@ -24,6 +24,9 @@
     //getting categories from database
     $allCategories = Prompt::getCategories();
 
+    //adding favorites to database
+    
+    // $favorites = Prompt::saveFavorite();
 
 
 
@@ -81,27 +84,26 @@
                 <div class="bg-white p-10 rounded-3xl">
                     <ul class="list-none flex flex-col">
                         <li class="text-xl flex justify-center inline-block"><p><?php echo $prompt["title"] ?></p></li>
-                        <li class="text-lg flex justify-end inline-block "><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><?php echo $promptUser['username'] ?></a></li>
+                        <li class="text-lg flex justify-end inline-block "><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"></a></li>
 
                         <?php if(!empty($_SESSION["userid"])): ?>
-                            <li><img  class="rounded-3xl" src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
+                            <li><img  class="rounded-3xl" src="<?php echo $prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <?php else: ?>
-                            <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
+                            <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
 
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <!-- shouldnt be visible before buying -->
                         <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
-                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt-info"] ?></p></li>
+                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                         <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <li><button>Buy</button></li>
 
 
-                        <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?>>Add to favorites</button></li>
-                        <!-- <?php var_dump($prompt["id"]); ?> -->
-
+                        <li><button class="btnTest" id="btnFavorites"data-userid=<?php echo $prompt["user_id"] ?> data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  >Add to favorites</button></li>
+                        
 
                         <?php if(isset($_SESSION["admin"])):?>
                             <?php if($_SESSION["admin"] == true):?>
@@ -134,6 +136,49 @@
                 <?php endif; ?>
             </div>
         <?php endif; ?>
-        <script src="favorites.js"></script>
+
+
+        <script>
+    let promptsID = document.querySelectorAll("#btnFavorites");
+    promptsID.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            let currentBtn = this;
+            let postId = this.dataset.postid;
+            let userId = this.dataset.userid;
+
+            console.log(postId);
+            console.log(userId);
+
+            //post naar database
+
+            let formData = new FormData();
+            formData.append("post_id", postId);
+            formData.append("user_id", userId);
+
+            fetch("ajax/saveFavorite.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(json){
+                console.log(json);
+                if (json.status == 'success') {
+                    currentBtn.innerHTML = "Added to favorites";
+                }
+
+            });
+
+        });
+    });
+</script>
+
+        
+        
+
+
+
+        
 </body>
 </html>

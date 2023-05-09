@@ -6,8 +6,9 @@
         private $photoUrl;
         private $prompt;
         private $promptInfo;
-        private $userId;
         private $categoryid;
+        private $postId;
+        private $userId;
         public static function getUnverifiedPrompts(){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 0 AND active = 1 AND rejected = 0 AND deleted = 0");
@@ -66,7 +67,7 @@
         }
         public function save(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("INSERT INTO prompts (`cat_id`, `title`, `price`, `description`, `photo-url`, `prompt`, `prompt-info`, `user_id`) VALUES (:cat, :title, :price, :description, :photoUrl, :prompt, :promptInfo, :userId)");
+            $statement = $conn->prepare("INSERT INTO prompts (`cat_id`, `title`, `price`, `description`, `photo_url`, `prompt`, `prompt_info`, `user_id`) VALUES (:cat, :title, :price, :description, :photoUrl, :prompt, :promptInfo, :userId)");
             $statement->bindValue(":title", $this->title);
             $statement->bindValue(":price", $this->price);
             $statement->bindValue(":description", $this->description);
@@ -156,6 +157,49 @@
             $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 AND cat_id = $selectedCategory AND deleted = 0 AND active = 1 ORDER BY postdate DESC");
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+
+        
+        /**
+         * Get the value of postId
+         */ 
+        public function getPostId()
+        {
+            return $this->postId;
+        }
+        
+        /**
+         * Set the value of postId
+         *
+         * @return  self
+         */ 
+        public function setPostId($postId)
+        {
+            $this->postId = $postId;
+            
+            return $this;
+        }
+
+
+        /**
+         * Get the value of userId
+         */ 
+        public function getUserId()
+        {
+                return $this->userId;
+        }
+
+        //save favorites to database
+
+        public function saveFavorite(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("INSERT INTO favorites (userId, postId) VALUES (:userId, :postId)");
+
+            $statement->bindValue(":userId", $this->userId);
+            $statement->bindValue(":postId", $this->postId);
+            $result = $statement->execute();
+            
             return $result;
         }
 
