@@ -3,9 +3,7 @@
 
 include_once(__DIR__ . "/bootstrap.php");
 
-$config = parse_ini_file('config/config.ini', true);
-$key = $config['keys']['SENDGRID_API_KEY'];
-apache_setenv('SENDGRID_API_KEY', $key);
+
 
 if(isset($_POST['registerBtn'])){
     if(!empty($_POST)){
