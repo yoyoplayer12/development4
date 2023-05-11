@@ -53,28 +53,46 @@
     <link rel="stylesheet" href="css/main.css">
     <title>Eve - Home</title>
 </head>
-<body>
+<body class="bg-[#f4f4fc]">
     <?php include_once(__DIR__ . "/nav.php"); ?>
-    <h1>New Prompt</h1>
-    <form action="" method="post" enctype="multipart/form-data">
-        <input type="text" name="title" placeholder="Title" required>
-        <select name="prices" id="prices" required>
-            <option value="" disabled selected>Select a price</option>
-            <?php foreach($prices as $price):?>
-                <option value="<?php echo $price['value']; ?>"><?php echo $price['price']; ?></option>
-            <?php endforeach; ?>
-        </select>
-        <input type="text" name="description" placeholder="Description" required>
-        <input type="file" name="photo" required>
-            <select name="categories" id="categories" required>
-                <option value="" disabled selected>Select a category</option>
-                <?php foreach($categories as $category): ?>
-                    <option value="<?php echo $category['id']; ?>"><?php echo $category['category']; ?></option>
-                <?php endforeach; ?>
+    <h1 class="flex justify-center items-center mb-15 text-[#0464A4] text-5xl">New Prompt</h1>
+    <div class="flex justify-center items-center">
+
+        <form action="" method="post" enctype="multipart/form-data">
+            <div>
+                <input type="text" name="title" placeholder="Title" required>
+            </div>
+            <div>
+                <select name="prices" id="prices" required>
+                    <option value="" disabled selected>Select a price</option>
+                    <?php foreach($prices as $price):?>
+                        <option value="<?php echo $price['value']; ?>"><?php echo $price['price']; ?></option>
+                    <?php endforeach; ?>
+            </div>
             </select>
         <input type="text" name="prompt" placeholder="Prompt" required>
         <input type="text" name="prompt_info" placeholder="Prompt info" required>
         <input type="submit" value="Create Prompt">
     </form>
+            <div>
+                <input type="text" name="description" placeholder="Description" required>
+            </div>
+            <div>
+
+                <input type="file" name="photo" required>
+            </div>
+            <div>
+                <select name="categories" id="categories" required>
+                    <option value="" disabled selected>Select a category</option>
+                    <?php foreach($categories as $category): ?>
+                        <option value="<?php echo $category['id']; ?>"><?php echo $category['category']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <input type="text" name="prompt" placeholder="Prompt" required>
+            <input type="text" name="prompt-info" placeholder="Prompt info" required>
+            <input type="submit" value="Create Prompt">
+        </form>
+    </div>
 </body>
 </html>
