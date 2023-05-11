@@ -1,10 +1,15 @@
 <?php 
 
+
+include_once(__DIR__ . "/bootstrap.php");
+
+
 $config = parse_ini_file('config/config.ini', true);
 $key = $config['keys']['SENDGRID_API_KEY'];
 apache_setenv('SENDGRID_API_KEY', $key);
-
+ 
 if(isset($_POST['registerBtn'])){
+    
     if(!empty($_POST)){
         try {
             $user = new User();
@@ -61,17 +66,15 @@ if(isset($_POST['registerBtn'])){
     <link href="normalize.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/main.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<?php include_once(__DIR__ . "/nav.php"); ?>
-    <div class="form flex flex-row justify-center items-center">
+<div class="form flex flex-row justify-center items-center">
 		<div class="w-1/2 h-screen flex justify-center items-center">
 			<form action="" method="post">
             <img  src="assets/logo.png" class="flex justify-center w-50 ml-10 mb-10">
 				<h1 class="text-4xl mb-20">Sign Up</h1>
 				<div class="">
-					<input type="text" name="email" placeholder="Email" class="border-2 py-2 flex w-full justify-center rounded-md mb-5" id="email" onkeyup="checkEmailAvailability()">
+					<input type="text" name="email" placeholder="Email" class="border-2 py-2 flex w-full justify-center rounded-md mb-5">
                     <?php if (isset($emailError)) : ?>
                         <p><?php echo $emailError; ?></p>
                     <?php endif; ?>
@@ -87,7 +90,6 @@ if(isset($_POST['registerBtn'])){
                     <?php if (isset($passwordError)) : ?>
                         <p><?php echo $passwordError; ?></p>
                     <?php endif; ?>
-                    <div id="feedback"></div>
 				</div>
 
 				<div class="">
@@ -102,24 +104,4 @@ if(isset($_POST['registerBtn'])){
         </div>
 	</div>
 </body>
-<script>
-    function checkEmailAvailability() {
-        var email = $('#email').val();
-        console.log(email);
-        $.ajax({
-            url: 'emailcheck.action.php',
-            type: 'POST',
-            data: { email: email },
-            dataType: 'json',
-            success: function(response) {
-                if (response.available) {
-                    $('#feedback').text('This Email is available!').css('color', 'green');
-                } else {
-                    $('#feedback').text('This account already exists').css('color', 'red');
-                }
-            }
-    });
-}
-
-</script>
 </html>
