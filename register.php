@@ -3,7 +3,6 @@
 
 include_once(__DIR__ . "/classes/User.php");
 include_once(__DIR__ . "/classes/Db.php");
-include_once(__DIR__ . "/nav.php");
 
 $config = parse_ini_file('config/config.ini', true);
 $key = $config['keys']['SENDGRID_API_KEY'];
@@ -69,7 +68,8 @@ if(isset($_POST['registerBtn'])){
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<div class="form flex flex-row justify-center items-center">
+<?php include_once(__DIR__ . "/nav.php"); ?>
+    <div class="form flex flex-row justify-center items-center">
 		<div class="w-1/2 h-screen flex justify-center items-center">
 			<form action="" method="post">
             <img  src="assets/logo.png" class="flex justify-center w-50 ml-10 mb-10">
@@ -111,7 +111,7 @@ if(isset($_POST['registerBtn'])){
         var email = $('#email').val();
         console.log(email);
         $.ajax({
-            url: 'https://www.evestore.tech/emailcheck.action.php',
+            url: 'emailcheck.action.php',
             type: 'POST',
             data: { email: email },
             dataType: 'json',
