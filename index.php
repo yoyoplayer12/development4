@@ -83,14 +83,14 @@
                         <?php if(!empty($_SESSION["userid"])): ?>
                             <li><img  class="rounded-3xl" src="<?php echo $prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <?php else: ?>
-                            <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $prompt["photo_xurl"]?>" alt="Prompt photo"></li>
+                            <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
 
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <!-- shouldnt be visible before buying -->
                         <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
-                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt-info"] ?></p></li>
+                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                         <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <li><button>Buy</button></li>

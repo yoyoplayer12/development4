@@ -53,7 +53,7 @@
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
-                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt-info"] ?></p></li>
+                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                         <!-- Hier komt de verify button ==> if verify = 0 ==> andere backgroundcolor en text -->
                         <a href="verify.action.php?id=<?php echo $prompt["id"] ?>">Approve</a>
                         <a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a>
@@ -78,7 +78,7 @@
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
-                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt-info"] ?></p></li>
+                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                     </ul>
                 </div>
     <?php endforeach;} ?>
