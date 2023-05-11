@@ -111,7 +111,7 @@ if(isset($_POST['registerBtn'])){
         var email = $('#email').val();
         console.log(email);
         $.ajax({
-            url: 'emailcheck.action.php',
+            url: 'https://www.evestore.tech/emailcheck.action.php',
             type: 'POST',
             data: { email: email },
             dataType: 'json',
