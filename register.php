@@ -1,9 +1,5 @@
 <?php 
 
-
-include_once(__DIR__ . "/classes/User.php");
-include_once(__DIR__ . "/classes/Db.php");
-
 $config = parse_ini_file('config/config.ini', true);
 $key = $config['keys']['SENDGRID_API_KEY'];
 apache_setenv('SENDGRID_API_KEY', $key);
