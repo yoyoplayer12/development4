@@ -5,15 +5,24 @@
     if(!empty($_POST)){
         $f = new Prompt();
         $f->setPostId($_POST['post_id']);
-        $f->setUserId($_POST['user_id']);
+        $f->setUserId($_SESSION['id']);
+
+        if(count(Prompt::checkFavorite($_POST['post_id'])) >=1 ){
+            $f->deleteFavorite($_POST['post_id']);
+            $message = "add to favorites";
+            
+        } else {
+            $f->saveFavorite();
+            $message = "remove from favorites";
+            
+        }
 
 
-        $f->saveFavorite();
 
         //succes teruggeven
         $response = [
             'status' => 'success',
-            'message' => 'Favorite saved'
+            'message' => $message
         ];
 
         echo json_encode($response); //status teruggeven
