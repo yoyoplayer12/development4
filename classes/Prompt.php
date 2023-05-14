@@ -255,7 +255,7 @@
             $statement->bindValue(":userId", $_SESSION['id']);
             $statement->bindValue(":postId", $promptId);
             $result = $statement->execute();
-            var_dump($result);
+            
             return $result;
         }
     }
