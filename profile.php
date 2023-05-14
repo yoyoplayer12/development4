@@ -91,7 +91,7 @@
                           <!-- <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $printFavorite["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(Prompt::deleteFavorite($printFavorite['id'])){ echo "remove from favorites";} ?></button></li> -->
                           <form method="POST" action="profile.php">
                             <li>
-                                <input type="submit" value="Remove from favorites" name="removeFav"> <?php echo $printFavorite['postId'] ?></input>
+                                <input type="submit" value="Remove from favorites" name="removeFav"> </input>
                             </li>
                           </form>
 
