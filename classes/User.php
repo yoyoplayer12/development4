@@ -341,4 +341,15 @@
         
 
     }
+
+
+    public function getId($username)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT id FROM users WHERE username = :username");
+        $statement->bindValue(":username", $username);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        return $result["id"];
+    }
 }
