@@ -24,9 +24,11 @@
     //getting categories from database
     $allCategories = Prompt::getCategories();
 
-    //adding favorites to database
+
+
+
     
-    // $favorites = Prompt::saveFavorite();
+
 
 
 
@@ -101,8 +103,8 @@
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <li><button>Buy</button></li>
 
-
-                        <li><button class="btnTest" id="btnFavorites"data-userid=<?php echo $prompt["user_id"] ?> data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  >Add to favorites</button></li>
+                        <!-- if username is logged in show this button  -->
+                        <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "remove from favorites";} else { echo "add to favorites";} ?></button></li>
                         
 
                         <?php if(isset($_SESSION["admin"])):?>
@@ -146,8 +148,8 @@
             let postId = this.dataset.postid;
             let userId = this.dataset.userid;
 
-            console.log(postId);
-            console.log(userId);
+            console.log("postid", postId);
+            console.log("userid", userId);
 
             //post naar database
 
@@ -165,7 +167,10 @@
             .then(function(json){
                 console.log(json);
                 if (json.status == 'success') {
-                    currentBtn.innerHTML = "Added to favorites";
+                    currentBtn.innerHTML = json.message;
+                    
+
+                    
                 }
 
             });
