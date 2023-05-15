@@ -24,14 +24,9 @@
     //getting categories from database
     $allCategories = Prompt::getCategories();
 
-
-
-
-    
-
-
-
-
+    //setting up image getting
+    $image = new Image();
+    $url = $image->getUrl()
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +49,8 @@
 
     <form action="" method="post" id="categoryFilter">
             <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required>
-                <option value="" disabled selected>Choose a category</option>
+                <option value="" disabled selected>Select a category</option>
+                <option value="*">All categories</option>
                 <?php foreach($allCategories as $category): ?>
                     <option value="<?php echo $category['id']; ?>"><?php echo $category['category']; ?></option>
                 <?php endforeach; ?>
@@ -62,10 +58,12 @@
             </select>
                     
             <?php if(isset($_POST['dropdown'])): ?>
-                <?php $selectedCategory = $_POST['dropdown']; ?>
-                <?php $prompts = Prompt::getPromptsByCategory($selectedCategory); ?>
-            <?php else: ?>
-                <?php $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query); ?>
+                <?php if($_POST['dropdown'] == '*'): ?>
+                    <?php $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query); ?>
+                <?php else: ?>
+                    <?php $selectedCategory = $_POST['dropdown']; ?>
+                    <?php $prompts = Prompt::getPromptsByCategory($selectedCategory); ?>
+                <?php endif; ?>
             <?php endif; ?>
 
         </form> 
@@ -83,13 +81,14 @@
             foreach($prompts as $prompt): ?>
                 <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
                 <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
+                <?php $promptprice = Prompt::getPromptprice($prompt['price_id']); ?>
                 <div class="bg-white p-10 rounded-3xl">
                     <ul class="list-none flex flex-col">
                         <li class="text-xl flex justify-center inline-block"><p><?php echo $prompt["title"] ?></p></li>
                         <li class="text-lg flex justify-end inline-block "><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"></a></li>
 
                         <?php if(!empty($_SESSION["userid"])): ?>
-                            <li><img  class="rounded-3xl" src="<?php echo $prompt["photo_url"]?>" alt="Prompt photo"></li>
+                            <li><img  class="rounded-3xl" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <?php else: ?>
                             <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
@@ -101,6 +100,7 @@
                         <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                         <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
+                        <li><p><b>Price: </b><?php echo $promptprice["price"] ?></p></li>
                         <li><button>Buy</button></li>
 
                         <!-- if username is logged in show this button  -->
@@ -119,7 +119,7 @@
                         <?php endif ?>
                     </ul>
                 </div>
-    <?php endforeach;} ?>
+    <?php endforeach;?>
         </div>
     
 
@@ -137,9 +137,7 @@
                     <a href="index.php?page=<?php echo $page + 1 ?>" >Next</a>
                 <?php endif; ?>
             </div>
-        <?php endif; ?>
-
-
+        <?php endif;} ?>
         <script>
     let promptsID = document.querySelectorAll("#btnFavorites");
     promptsID.forEach(function (btn) {
@@ -178,12 +176,5 @@
         });
     });
 </script>
-
-        
-        
-
-
-
-        
 </body>
 </html>

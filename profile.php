@@ -12,7 +12,10 @@
             header("Location: login.php");
         }
 
-        
+        //setting up image getting
+        $image = new Image();
+        $url = $image->getUrl();
+
         $printFavorites = Prompt::getFavorites();
         // var_dump($printFavorites[0]['postId']);
         
@@ -28,14 +31,6 @@
             
             header("Location: profile.php");
         }
-        
-
-
-
-        
-        
-        
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,11 +49,8 @@
     <?php if(isset($_SESSION['loggedin'])):?>
         <h1><?php echo $_SESSION['username']?>'s profile</h1>
         <p class="profile-bio">Bio: <?php echo $getUser["bio"];?></p>
-        <img src="<?php echo $getUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover">
-
+        <img src="<?php echo $url.$getUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover">
         <p>my favorite prompts:</p>
-
-
         <?php foreach($printFavorites as $printFavorite): ?>
         <div class="bg-white p-10 rounded-3xl">
                     <ul class="list-none flex flex-col">
@@ -71,9 +63,9 @@
 
 
                         <?php if(!empty($_SESSION["userid"])): ?>
-                            <li><img  class="rounded-3xl" src="<?php echo $printFavorite["photo_url"]?>" alt="Prompt photo"></li>
+                            <li><img  class="rounded-3xl" src="<?php echo $url.$printFavorite["photo_url"]?>" alt="Prompt photo"></li>
                         <?php else: ?>
-                            <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $printFavorite["photo_url"]?>" alt="Prompt photo"></li>
+                            <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url.$printFavorite["photo_url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
 
                         <li><p><b>Description: </b><?php echo $printFavorite["description"] ?></p></li>
@@ -94,18 +86,10 @@
                                 <input type="submit" value="Remove from favorites" name="removeFav"> </input>
                             </li>
                           </form>
-
-                        
-                           
-                        
-                       
-
                         
                     </ul>
                 </div>
             <?php endforeach; ?>
-        
-
         <a href="editprofile.php">Edit profile</a>
         <a href="changePassword.php">Change password</a>
         <a href="logout.php">Log out</a>

@@ -1,11 +1,10 @@
 <?php 
-
-
 include_once(__DIR__ . "/bootstrap.php");
+require_once(__DIR__ . '/vendor/autoload.php');
 
-// $config = parse_ini_file('config/config.ini', true);
-// $key = $config['keys']['SENDGRID_API_KEY'];
-// apache_setenv('SENDGRID_API_KEY', $key);
+$config = parse_ini_file('config/config.ini', true);
+$key = $config['keys']['SENDGRID_API_KEY'];
+apache_setenv('SENDGRID_API_KEY', $key);
 
 if(isset($_POST['registerBtn'])){
     if(!empty($_POST)){
