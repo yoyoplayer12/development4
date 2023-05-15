@@ -84,7 +84,7 @@
                 </select>
             </div>
             <input type="text" name="prompt" placeholder="Prompt" required>
-            <input type="text" name="prompt-info" placeholder="Prompt info" required>
+            <input type="text" name="prompt_info" placeholder="Prompt info" required>
             <input type="submit" value="Create Prompt">
         </form>
     </div>

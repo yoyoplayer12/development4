@@ -50,7 +50,8 @@
 
     <form action="" method="post" id="categoryFilter">
             <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required>
-                <option value="" disabled selected>Choose a category</option>
+                <option value="" disabled selected>Select a category</option>
+                <option value="*">All categories</option>
                 <?php foreach($allCategories as $category): ?>
                     <option value="<?php echo $category['id']; ?>"><?php echo $category['category']; ?></option>
                 <?php endforeach; ?>
@@ -58,10 +59,12 @@
             </select>
                     
             <?php if(isset($_POST['dropdown'])): ?>
-                <?php $selectedCategory = $_POST['dropdown']; ?>
-                <?php $prompts = Prompt::getPromptsByCategory($selectedCategory); ?>
-            <?php else: ?>
-                <?php $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query); ?>
+                <?php if($_POST['dropdown'] == '*'): ?>
+                    <?php $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query); ?>
+                <?php else: ?>
+                    <?php $selectedCategory = $_POST['dropdown']; ?>
+                    <?php $prompts = Prompt::getPromptsByCategory($selectedCategory); ?>
+                <?php endif; ?>
             <?php endif; ?>
 
         </form> 
@@ -112,7 +115,7 @@
                         <?php endif ?>
                     </ul>
                 </div>
-    <?php endforeach;} ?>
+    <?php endforeach;?>
         </div>
     
 
@@ -130,6 +133,6 @@
                     <a href="index.php?page=<?php echo $page + 1 ?>" >Next</a>
                 <?php endif; ?>
             </div>
-        <?php endif; ?>
+        <?php endif;} ?>
 </body>
 </html>
