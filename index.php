@@ -26,7 +26,7 @@
 
     //setting up image getting
     $image = new Image();
-    $url = $image->getUrl()
+    $url = $image->getUrl();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -90,7 +90,7 @@
                         <?php if(!empty($_SESSION["userid"])): ?>
                             <li><img  class="rounded-3xl" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <?php else: ?>
-                            <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $prompt["photo_url"]?>" alt="Prompt photo"></li>
+                            <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
 
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
@@ -104,8 +104,9 @@
                         <li><button>Buy</button></li>
 
                         <!-- if username is logged in show this button  -->
-                        <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "remove from favorites";} else { echo "add to favorites";} ?></button></li>
-                        
+                        <?php if(isset($_SESSION['username'])):?>
+                            <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "remove from favorites";} else { echo "add to favorites";} ?></button></li>
+                        <?php endif; ?>
 
                         <?php if(isset($_SESSION["admin"])):?>
                             <?php if($_SESSION["admin"] == true):?>
