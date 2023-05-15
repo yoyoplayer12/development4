@@ -10,13 +10,13 @@ Conventional commits:
 
 (tested with php 8.2):
 
-Installing composer/sendgrid:
+<!-- Installing composer/sendgrid:
 
 1. *4 composer lines*
 2. php composer.phar --version
 3. php composer.phar init
 4. php composer.phar dump-autoload
-5. php composer.phar require sendgrid/sendgrid
+5. php composer.phar require sendgrid/sendgrid -->
 
 Installing composer/coundinary:
 1. connect git 
