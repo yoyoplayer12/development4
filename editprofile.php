@@ -18,13 +18,13 @@
                     $bio = $_POST['bio'];
                     $user = new User();
                     $user->resetBio($bio);
-                    //fixing image upload
-                    $username = $_SESSION['username'];
-                    $orig_file = $_FILES["avatar_url"]["tmp_name"];
-                    $ext = pathinfo($_FILES["avatar_url"]["name"], PATHINFO_EXTENSION);
-                    $target_dir = "uploads/users/";
-                    $destination = "$target_dir$username.$ext";
-                    move_uploaded_file($orig_file, $destination);
+                    //set image
+                    $upload = new Image();
+                    $upload->setup();
+                    $upload->upload("public", "users", "avatar_url");
+                    $randomstring = $upload->getString();
+                    $ext = pathinfo($_FILES['avatar_url']['name'], PATHINFO_EXTENSION);
+                    $destination = "evestore/public/users/".$randomstring.".".$ext;
                     $user->resetAvatar($destination);
                     //saving to database
                     $user->updateUser();
