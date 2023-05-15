@@ -1,5 +1,6 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
+    require_once(__DIR__ . '/vendor/autoload.php');
     //logindetection
     if(isset($_SESSION["loggedin"])) {
 
@@ -17,13 +18,14 @@
             //fixing image
             $randomstring = $prompt->getRandomStringRamdomInt();
             $userId = $_SESSION['userid'];
-            //fixing image
-            $orig_file = $_FILES["photo"]["tmp_name"];
-            $ext = pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION);
-            $target_dir = "uploads/posts/";
-            $destination = "$target_dir$randomstring$userId.$ext";
-            move_uploaded_file($orig_file, $destination);
-
+            //set image
+            $upload = new Image();
+            $upload->setup();
+            $upload->upload("public", "prompts", "photo");
+            $randomstring = $upload->getString();
+            $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+            $destination = "evestore/public/prompts/".$randomstring.".".$ext;
+            //setting everything
             $prompt->setTitle($_POST['title']);
             $prompt->setPrice($_POST['prices']);
             $prompt->setCategoryId($_POST['categories']);
@@ -79,7 +81,7 @@
             </div>
             <div>
 
-                <input type="file" name="photo" required>
+                <input type="file" name="photo" id="photo" required>
             </div>
             <div>
                 <select name="categories" id="categories" required>

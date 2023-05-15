@@ -8,7 +8,7 @@ Conventional commits:
 4. types other than fix: and feat: are allowed, for example @commitlint/config-conventional (based on the Angular convention) recommends build:, chore:, ci:, docs:, style:, refactor:, perf:, test:, and others.
 5. footers other than BREAKING CHANGE: <description> may be provided and follow a convention similar to git trailer format.
 
-
+(tested with php 8.2):
 
 Installing composer/sendgrid:
 
@@ -17,3 +17,9 @@ Installing composer/sendgrid:
 3. php composer.phar init
 4. php composer.phar dump-autoload
 5. php composer.phar require sendgrid/sendgrid
+
+Installing composer/coundinary:
+1. connect git 
+2. composer require cloudinary/cloudinary_php
+3. add config/config.ini
+4. add keys in config

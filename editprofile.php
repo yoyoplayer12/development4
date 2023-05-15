@@ -1,5 +1,6 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
+    require_once(__DIR__ . '/vendor/autoload.php');
     //logindetection
     if(isset($_SESSION["loggedin"])) {
         $warning = " ";
@@ -47,15 +48,17 @@
             }
             elseif(empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
                 $user = new User();
-                //fixing image upload
-                $username = $_SESSION['username'];
-                $orig_file = $_FILES["avatar_url"]["tmp_name"];
-                $ext = pathinfo($_FILES["avatar_url"]["name"], PATHINFO_EXTENSION);
-                $target_dir = "uploads/users/";
-                $destination = "$target_dir$username.$ext";
-                move_uploaded_file($orig_file, $destination);
+
+                //set image
+                $upload = new Image();
+                $upload->setup();
+                $upload->upload("public", "users", "avatar_url");
+                $randomstring = $upload->getString();
+                $ext = pathinfo($_FILES['avatar_url']['name'], PATHINFO_EXTENSION);
+                $destination = "evestore/public/users/".$randomstring.".".$ext;
                 $user->resetAvatar($destination);
                 //saving to database
+
                 $user->updateAvatar();
                 header("Location: profile.php");
             }
@@ -67,6 +70,10 @@
     else {
         header("Location: login.php");
     }
+
+    //setting up image getting
+    $image = new Image();
+    $url = $image->getUrl()
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,7 +99,7 @@
             <div class="">
                 <label for="avatar_url">Avatar</label>
                 <input type="file" id="user-reset-avatar" name="avatar_url" accept="image/*">
-                <img src="<?php echo $getUser["avatar_url"] ?>" alt="Avatar">
+                <img src="<?php echo $url.$getUser["avatar_url"] ?>" alt="Avatar">
             </div>
             <p class="editprofilewarning"><?php echo $warning ?></p>
             <input type="submit" value="Save">
