@@ -3,3 +3,4 @@ config/
 sendgrid.env
 /vendor/
 
+sendgrid.env

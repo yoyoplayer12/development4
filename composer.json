@@ -1,5 +1,19 @@
 {
+    "name": "yorickdv/dev4",
+    "autoload": {
+        "psr-4": {
+            "Yorickdv\\Dev4\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Yorick",
+            "email": "yorick.devleeschouwer@gmail.com"
+        }
+    ],
     "require": {
-        "cloudinary/cloudinary_php": "^2.10"
+        "sendgrid/sendgrid": "^8.0",
+        "cloudinary/cloudinary_php": "^2.10",
+        "composer/ca-bundle": "^1.3"
     }
 }

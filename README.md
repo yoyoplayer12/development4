@@ -8,18 +8,28 @@ Conventional commits:
 4. types other than fix: and feat: are allowed, for example @commitlint/config-conventional (based on the Angular convention) recommends build:, chore:, ci:, docs:, style:, refactor:, perf:, test:, and others.
 5. footers other than BREAKING CHANGE: <description> may be provided and follow a convention similar to git trailer format.
 
+
+
 (tested with php 8.2):
 
-<!-- Installing composer/sendgrid:
-
-1. *4 composer lines*
-2. php composer.phar --version
-3. php composer.phar init
-4. php composer.phar dump-autoload
-5. php composer.phar require sendgrid/sendgrid -->
-
-Installing composer/coundinary:
+Setup coding environment:
 1. connect git 
-2. composer require cloudinary/cloudinary_php
-3. add config/config.ini
-4. add keys in config
+2. add config/config.ini
+3. add keys in config
+<!-- composer -->
+4. php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+5. php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+6. php composer-setup.php
+7. php -r "unlink('composer-setup.php');"
+8. php composer.phar --version
+9. php composer.phar init
+10. php composer.phar dump-autoload
+<!-- sendgrid and cloudinary -->
+11. composer require sendgrid/sendgrid
+12. composer require cloudinary/cloudinary_php
+13. composer require composer/ca-bundle
+14. add the following to your require{}:  
+"sendgrid/sendgrid": "~7",
+"cloudinary/cloudinary_php": "^2.10"
+
+
