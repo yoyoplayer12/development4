@@ -14,7 +14,7 @@ Conventional commits:
 
 Setup coding environment:
 1. connect git 
-2. add config/config.ini
+2. add classes/config/config.ini
 3. add keys in config
 <!-- composer -->
 4. php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
