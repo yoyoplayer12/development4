@@ -1,7 +1,7 @@
 <?php
     class Prompt{
         private $title;
-        private $price;
+        private $priceid;
         private $description;
         private $photoUrl;
         private $prompt;
@@ -40,9 +40,9 @@
             $this->title = $title;
             return $this;
         }
-        public function setPrice($price){
-            $this->price = $price;
-            return $this->price;
+        public function setPriceId($priceid){
+            $this->priceid = $priceid;
+            return $this->priceid;
         }
         public function setDescription($description){
             $this->description = $description;
@@ -66,9 +66,9 @@
         }
         public function save(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("INSERT INTO prompts (`cat_id`, `title`, `price`, `description`, `photo_url`, `prompt`, `prompt_info`, `user_id`) VALUES (:cat, :title, :price, :description, :photoUrl, :prompt, :promptInfo, :userId)");
+            $statement = $conn->prepare("INSERT INTO prompts (`cat_id`, `title`, `price_id`, `description`, `photo_url`, `prompt`, `prompt_info`, `user_id`) VALUES (:cat, :title, :priceid, :description, :photoUrl, :prompt, :promptInfo, :userId)");
             $statement->bindValue(":title", $this->title);
-            $statement->bindValue(":price", $this->price);
+            $statement->bindValue(":priceid", $this->priceid);
             $statement->bindValue(":description", $this->description);
             $statement->bindValue(":photoUrl", $this->photoUrl);
             $statement->bindValue(":prompt", $this->prompt);
@@ -127,6 +127,13 @@
         public static function getPromptCat($catid){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT * FROM categories WHERE active=1 AND id = $catid");
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public static function getPromptprice($priceid){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prices WHERE active=1 AND id = $priceid");
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             return $result;

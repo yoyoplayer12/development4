@@ -15,9 +15,6 @@
     if(!empty($_POST)){
         try{
             $prompt = new Prompt();
-            //fixing image
-            $randomstring = $prompt->getRandomStringRamdomInt();
-            $userId = $_SESSION['userid'];
             //set image
             $upload = new Image();
             $upload->setup();
@@ -27,7 +24,7 @@
             $destination = "evestore/public/prompts/".$randomstring.".".$ext;
             //setting everything
             $prompt->setTitle($_POST['title']);
-            $prompt->setPrice($_POST['prices']);
+            $prompt->setPriceId($_POST['prices']);
             $prompt->setCategoryId($_POST['categories']);
             $prompt->setDescription($_POST['description']);
             $prompt->setPhotoUrl($destination);
@@ -68,7 +65,7 @@
                 <select name="prices" id="prices" required>
                     <option value="" disabled selected>Select a price</option>
                     <?php foreach($prices as $price):?>
-                        <option value="<?php echo $price['value']; ?>"><?php echo $price['price']; ?></option>
+                        <option value="<?php echo $price['id']; ?>"><?php echo $price['price']; ?></option>
                     <?php endforeach; ?>
             </div>
             </select>

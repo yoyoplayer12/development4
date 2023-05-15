@@ -79,6 +79,7 @@
             foreach($prompts as $prompt): ?>
                 <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
                 <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
+                <?php $promptprice = Prompt::getPromptprice($prompt['price_id']); ?>
                 <div class="bg-white p-10 rounded-3xl">
                     <ul class="list-none flex flex-col">
                         <li class="text-xl flex justify-center inline-block"><p><?php echo $prompt["title"] ?></p></li>
@@ -97,6 +98,7 @@
                         <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                         <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
+                        <li><p><b>Price: </b><?php echo $promptprice["price"] ?></p></li>
                         <li><button>Buy</button></li>
                         <?php if(isset($_SESSION["admin"])):?>
                             <?php if($_SESSION["admin"] == true):?>
