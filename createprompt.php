@@ -67,17 +67,12 @@
                     <?php foreach($prices as $price):?>
                         <option value="<?php echo $price['id']; ?>"><?php echo $price['price']; ?></option>
                     <?php endforeach; ?>
+                </select>
             </div>
-            </select>
-        <input type="text" name="prompt" placeholder="Prompt" required>
-        <input type="text" name="prompt_info" placeholder="Prompt info" required>
-        <input type="submit" value="Create Prompt">
-    </form>
             <div>
                 <input type="text" name="description" placeholder="Description" required>
             </div>
             <div>
-
                 <input type="file" name="photo" id="photo" required>
             </div>
             <div>
