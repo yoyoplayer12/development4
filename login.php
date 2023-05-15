@@ -21,6 +21,9 @@
             $loginwarning = "Username or password is incorrect, or email is not verified";
         }
     }
+    //setting up image getting
+    $image = new Image();
+    $url = $image->getUrl();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +42,7 @@
     <div class="form flex flex-row">
         <div class = "w-1/2 h-100 flex justify-center items-center">
             <form action="" method="post">
-            <img  src="assets/logo.png" class="flex justify-center w-50 ml-10 mb-10">
+            <img  src="<?php echo $url."evestore/assets/brand/od3krbvhegihsaahirrz.png"?>" class="flex justify-center w-50 ml-10 mb-10">
                 <h1 class="mb-15 text-[#0464A4] text-5xl mb-10">Log in</h1>
                 <ul>
                     <li ><input class="border-2 flex w-full justify-center rounded-md mb-5 py-2" type="text" name="username" placeholder="Username" required></li>
@@ -53,7 +56,7 @@
             </form>
         </div>
         <div class="w-1/2">
-            <img  src="images/background.jpg" class="w-full h-screen">
+            <img  src="<?php echo $url."evestore/assets/images/nz01zmtboksuyko7cmam.jpg"?>" class="w-full h-screen">
         </div>
     </div>
 
