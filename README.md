@@ -23,13 +23,12 @@ Setup coding environment:
 7. php -r "unlink('composer-setup.php');"
 8. php composer.phar --version
 9. php composer.phar init
-10. php composer.phar dump-autoload
+10. enter untill no more questions
+11. php composer.phar dump-autoload
+
 <!-- sendgrid and cloudinary -->
-11. composer require sendgrid/sendgrid
-12. composer require cloudinary/cloudinary_php
-13. composer require composer/ca-bundle
-14. add the following to your require{}:  
-"sendgrid/sendgrid": "~7",
-"cloudinary/cloudinary_php": "^2.10"
+12. composer require sendgrid/sendgrid
+13. composer require cloudinary/cloudinary_php
+14. composer require composer/ca-bundle
 
 
