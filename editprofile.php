@@ -61,6 +61,7 @@
 
                 $user->updateAvatar();
                 header("Location: profile.php");
+                
             }
             else{
                 echo "nothing to save";

@@ -7,6 +7,7 @@
         $user = new User();
         if($user->canLogin($username, $password)){
             $_SESSION['loggedin'] = true;
+            $_SESSION['id'] = $user->getId($username);
             if($user->canLoginAdmin($username, $password)){
                 $_SESSION['admin'] = true;
                 header("Location: index.php");

@@ -27,7 +27,6 @@
     //setting up image getting
     $image = new Image();
     $url = $image->getUrl()
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,7 +85,7 @@
                 <div class="bg-white p-10 rounded-3xl">
                     <ul class="list-none flex flex-col">
                         <li class="text-xl flex justify-center inline-block"><p><?php echo $prompt["title"] ?></p></li>
-                        <li class="text-lg flex justify-end inline-block "><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><?php echo $promptUser['username'] ?></a></li>
+                        <li class="text-lg flex justify-end inline-block "><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"></a></li>
 
                         <?php if(!empty($_SESSION["userid"])): ?>
                             <li><img  class="rounded-3xl" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
@@ -103,6 +102,11 @@
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <li><p><b>Price: </b><?php echo $promptprice["price"] ?></p></li>
                         <li><button>Buy</button></li>
+
+                        <!-- if username is logged in show this button  -->
+                        <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "remove from favorites";} else { echo "add to favorites";} ?></button></li>
+                        
+
                         <?php if(isset($_SESSION["admin"])):?>
                             <?php if($_SESSION["admin"] == true):?>
                                 <li><a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a></li>
@@ -134,5 +138,43 @@
                 <?php endif; ?>
             </div>
         <?php endif;} ?>
+        <script>
+    let promptsID = document.querySelectorAll("#btnFavorites");
+    promptsID.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            let currentBtn = this;
+            let postId = this.dataset.postid;
+            let userId = this.dataset.userid;
+
+            console.log("postid", postId);
+            console.log("userid", userId);
+
+            //post naar database
+
+            let formData = new FormData();
+            formData.append("post_id", postId);
+            formData.append("user_id", userId);
+
+            fetch("ajax/saveFavorite.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(json){
+                console.log(json);
+                if (json.status == 'success') {
+                    currentBtn.innerHTML = json.message;
+                    
+
+                    
+                }
+
+            });
+
+        });
+    });
+</script>
 </body>
 </html>
