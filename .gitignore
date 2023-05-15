@@ -1,6 +1,8 @@
 .DS_Store
 config/
-sendgrid.env
 /vendor/
 
 sendgrid.env
+composer.json
+composer.lock
+composer.phar
