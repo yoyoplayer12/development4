@@ -125,20 +125,20 @@
     
 
         <?php if ($totalPages > 1) : ?>
-  <div class="flex items-center justify-center my-8 ">
-    <?php if ($page > 1) : ?>
-      <a href="index.php?page=<?php echo $page - 1 ?>" class="px-3 py-2 bg-[#0464A4] hover:bg-[#0242A2] text-white rounded-l-md">Previous</a>
-    <?php endif; ?>
+            <div class="flex items-center justify-center my-8 ">
+                <?php if ($page > 1) : ?>
+                <a href="index.php?page=<?php echo $page - 1 ?>" class="px-3 py-2 bg-[#0464A4] hover:bg-[#0242A2] text-white rounded-l-md">Previous</a>
+                <?php endif; ?>
 
-    <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-      <a href="index.php?page=<?php echo $i ?>" class="px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 <?php if ($i === $page) echo 'text-black font-bold'; ?>"><?php echo $i ?></a>
-    <?php endfor; ?>
+                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                <a href="index.php?page=<?php echo $i ?>" class="px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 <?php if ($i === $page) echo 'text-black font-bold'; ?>"><?php echo $i ?></a>
+                <?php endfor; ?>
 
-    <?php if ($page < $totalPages) : ?>
-      <a href="index.php?page=<?php echo $page + 1 ?>" class="px-3 py-2 bg-[#0464A4] hover:bg-[#0242A2] text-white rounded-r-md">Next</a>
-    <?php endif; ?>
-  </div>
-<?php endif;} ?>
+                <?php if ($page < $totalPages) : ?>
+                <a href="index.php?page=<?php echo $page + 1 ?>" class="px-3 py-2 bg-[#0464A4] hover:bg-[#0242A2] text-white rounded-r-md">Next</a>
+                <?php endif; ?>
+            </div>
+        <?php endif;} ?>
         <script>
     let promptsID = document.querySelectorAll("#btnFavorites");
     promptsID.forEach(function (btn) {
