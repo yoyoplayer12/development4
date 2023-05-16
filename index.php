@@ -85,7 +85,9 @@
                 <div class="bg-white p-10 rounded-3xl">
                     <ul class="list-none flex flex-col">
                         <li class="text-xl flex justify-center inline-block"><p><?php echo $prompt["title"] ?></p></li>
-                        <li class="text-lg flex justify-end inline-block "><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"></a></li>
+                        <li class="text-lg flex justify-end inline-block"><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>">
+                            <?php echo $promptUser["username"] ?>
+                    </a></li>
 
                         <?php if(!empty($_SESSION["userid"])): ?>
                             <li><img  class="rounded-3xl" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
