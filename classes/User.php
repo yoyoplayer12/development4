@@ -337,12 +337,7 @@
         } else {
             return false;
         }
-
-        
-
     }
-
-
     public function getId($username)
     {
         $conn = Db::getInstance();
@@ -351,5 +346,13 @@
         $statement->execute();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         return $result["id"];
+    }
+    public static function getBalance(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT credits FROM users WHERE id = :id");
+        $statement->bindValue(":id", $_SESSION['userid']);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        return $result["credits"];
     }
 }
