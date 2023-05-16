@@ -10,6 +10,10 @@
         $User = User::getUser($_GET['user']);
         $prompts = [];
         $prompts = Prompt::getPromptsByUser($User["id"]);
+
+        //setting up image getting
+        $image = new Image();
+        $url = $image->getUrl();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +32,7 @@
     <?php if(isset($_SESSION['loggedin'])):?>
         <h1><?php echo $User["username"]?>'s profile</h1>
         <p class="profile-bio">Bio: <?php echo $User["bio"];?></p>
-        <img src="<?php echo $User["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover">
+        <img src="<?php echo $url.$User["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover">
         <h2>Prompts:</h2>
 
         <?php foreach($prompts as $prompt): ?>
