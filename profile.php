@@ -115,6 +115,11 @@
         <a href="changePassword.php">Change password</a>
         <a href="logout.php">Log out</a>
         <a href="deleteprofile.action.php">Delete profile</a>
+
+        <?php else: ?>
+            <h1>Log in to see your profile</h1>
+            <a href="logout.php">Log in</a>
+        <?php endif; ?>
 </body>
 
 

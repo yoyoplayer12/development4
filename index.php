@@ -137,12 +137,7 @@
       <a href="index.php?page=<?php echo $page + 1 ?>" class="px-3 py-2 bg-[#0464A4] hover:bg-[#0242A2] text-white rounded-r-md">Next</a>
     <?php endif; ?>
   </div>
-<?php endif; ?>
-                <?php if ($page < $totalPages) : ?>
-                    <a href="index.php?page=<?php echo $page + 1 ?>" >Next</a>
-                <?php endif; ?>
-            </div>
-        <?php endif;} ?>
+<?php endif;} ?>
         <script>
     let promptsID = document.querySelectorAll("#btnFavorites");
     promptsID.forEach(function (btn) {
