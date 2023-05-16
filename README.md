@@ -10,10 +10,25 @@ Conventional commits:
 
 
 
-Installing composer/sendgrid:
+(tested with php 8.2):
 
-1. *4 composer lines*
-2. php composer.phar --version
-3. php composer.phar init
-4. php composer.phar dump-autoload
-5. php composer.phar require sendgrid/sendgrid
+Setup coding environment:
+1. connect git 
+2. add classes/config/config.ini
+3. add keys in config
+<!-- composer -->
+4. php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+5. php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+6. php composer-setup.php
+7. php -r "unlink('composer-setup.php');"
+8. php composer.phar --version
+9. php composer.phar init
+10. enter untill no more questions
+11. php composer.phar dump-autoload
+
+<!-- sendgrid and cloudinary -->
+12. composer require sendgrid/sendgrid
+13. composer require cloudinary/cloudinary_php
+14. composer require composer/ca-bundle
+
+

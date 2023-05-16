@@ -1,16 +1,12 @@
 <?php 
+include_once(__DIR__ . "/bootstrap.php");
+require_once(__DIR__ . '/vendor/autoload.php');
 
-
-include_once(__DIR__ . "/classes/User.php");
-include_once(__DIR__ . "/classes/Db.php");
-include_once(__DIR__ . "/nav.php");
-
-$config = parse_ini_file('config/config.ini', true);
-$key = $config['keys']['SENDGRID_API_KEY'];
+$config = parse_ini_file(__DIR__ . "/classes/config/config.ini");
+$key = $config['SENDGRID_API_KEY'];
 apache_setenv('SENDGRID_API_KEY', $key);
- 
+
 if(isset($_POST['registerBtn'])){
-    
     if(!empty($_POST)){
         try {
             $user = new User();
@@ -51,10 +47,9 @@ if(isset($_POST['registerBtn'])){
     }
 
 }
-
-
-
-
+    //setting up image getting
+    $image = new Image();
+    $url = $image->getUrl();
 
 ?>
 <!DOCTYPE html>
@@ -67,15 +62,17 @@ if(isset($_POST['registerBtn'])){
     <link href="normalize.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/main.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<div class="form flex flex-row justify-center items-center">
+<?php include_once(__DIR__ . "/nav.php"); ?>
+    <div class="form flex flex-row justify-center items-center">
 		<div class="w-1/2 h-screen flex justify-center items-center">
 			<form action="" method="post">
-            <img  src="assets/logo.png" class="flex justify-center w-50 ml-10 mb-10">
+            <img  src="<?php echo $url."evestore/assets/brand/od3krbvhegihsaahirrz.png"?>" class="flex justify-center w-50 ml-10 mb-10">
 				<h1 class="text-[#0464A4] text-5xl mb-20">Sign Up</h1>
 				<div class="">
-					<input type="text" name="email" placeholder="Email" class="border-2 py-2 flex w-full justify-center rounded-md mb-5">
+					<input type="text" name="email" placeholder="Email" class="border-2 py-2 flex w-full justify-center rounded-md mb-5" id="email" onkeyup="checkEmailAvailability()">
                     <?php if (isset($emailError)) : ?>
                         <p><?php echo $emailError; ?></p>
                     <?php endif; ?>
@@ -91,6 +88,7 @@ if(isset($_POST['registerBtn'])){
                     <?php if (isset($passwordError)) : ?>
                         <p><?php echo $passwordError; ?></p>
                     <?php endif; ?>
+                    <div id="feedback"></div>
 				</div>
 
 				<div class="">
@@ -101,8 +99,27 @@ if(isset($_POST['registerBtn'])){
            
 		</div>
         <div class="w-1/2">
-        <img  src="images/background.jpg" class="w-full h-screen">
+        <img  src="<?php echo $url."evestore/assets/images/nz01zmtboksuyko7cmam.jpg"?>" class="w-full h-screen">
         </div>
 	</div>
 </body>
+<script>
+    function checkEmailAvailability() {
+        var email = $('#email').val();
+        $.ajax({
+            url: 'emailcheck.action.php',
+            type: 'POST',
+            data: { email: email },
+            dataType: 'json',
+            success: function(response) {
+                if (response.available) {
+                    $('#feedback').text('This Email is available!').css('color', 'green');
+                } else {
+                    $('#feedback').text('This account already exists').css('color', 'red');
+                }
+            }
+    });
+}
+
+</script>
 </html>

@@ -20,6 +20,10 @@
     $rejectedprompts = Prompt::getRejectedPrompts();
     $rejectedpromptscount = count($rejectedprompts);
     $unverifiedpromptscount = count($unverifiedprompts);
+    
+    //setting up image getting
+    $image = new Image();
+    $url = $image->getUrl()
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,16 +48,18 @@
             foreach($unverifiedprompts as $prompt): ?>
                 <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
                 <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
+                <?php $promptprice = Prompt::getPromptprice($prompt['price_id']); ?>
                 <div class="prompt">
                     <ul>
                         <li><p><b>Title: </b><?php echo $prompt["title"] ?></p></li>
                         <li><p><b>User: </b><?php echo $promptUser['username'] ?></p></li>
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
-                        <li><img src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
+                        <li><p><b>Price: </b><?php echo $promptprice["price"] ?></p></li>
+                        <li><img src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
-                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt-info"] ?></p></li>
+                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                         <!-- Hier komt de verify button ==> if verify = 0 ==> andere backgroundcolor en text -->
                         <a href="verify.action.php?id=<?php echo $prompt["id"] ?>">Approve</a>
                         <a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a>
@@ -74,11 +80,11 @@
                         <li><p><b>Title: </b><?php echo $prompt["title"] ?></p></li>
                         <li><p><b>User: </b><?php echo $promptUser['username'] ?></p></li>
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
-                        <li><img src="<?php echo $prompt["photo-url"]?>" alt="Prompt photo"></li>
+                        <li><img src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
-                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt-info"] ?></p></li>
+                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                     </ul>
                 </div>
     <?php endforeach;} ?>
