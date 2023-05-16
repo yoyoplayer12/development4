@@ -101,14 +101,14 @@
                         <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <li><p><b>Price: </b><?php echo $promptprice["price"] ?></p></li>
-                        <li><button>Buy</button></li>
+                        <li><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center">Buy</button></li>
 
                         <!-- if username is logged in show this button  -->
                         <?php if(isset($_SESSION["admin"])):?>
                             <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "Remove from favorites";} else { echo "Add to favorites";} ?></button></li>
                             <?php if($_SESSION["admin"] == true):?>
                                 <p style="margin-top: 30px;"><b>Moderation:</b></p>
-                                <li class="bg-[#C8C8CC] hover:bg-[#A0A0A3] text-black font-bold py-3 px-4 rounded-lg cursor-pointer my-4 flex justify-center"><a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a></li>
+                                <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a></li>
                             <?php endif ?>
                         <?php elseif(isset($_SESSION["username"])):?>
                             <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "remove from favorites";} else { echo "add to favorites";} ?></button></li>
