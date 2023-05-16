@@ -7,18 +7,15 @@
         $f->setPostId($_POST['post_id']);
         $f->setUserId($_SESSION['id']);
 
-        if(count(Prompt::checkFavorite($_POST['post_id'])) >=1 ){
-            $f->deleteFavorite($_POST['post_id']);
-            $message = "Add to favorites";
+        if(count(Prompt::checkReport($_POST['post_id'])) >=1 ){
+            $f->deleteReport($_POST['post_id']);
+            $message = "Report";
             
         } else {
-            $f->saveFavorite();
-            $message = "Remove from favorites";
+            $f->report();
+            $message = "Reported";
             
         }
-
-
-
         //succes teruggeven
         $response = [
             'status' => 'success',

@@ -104,20 +104,22 @@
                         <li><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center">Buy</button></li>
 
                         <!-- if username is logged in show this button  -->
-                        <?php if(isset($_SESSION["admin"])):?>
-                            <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "Remove from favorites";} else { echo "Add to favorites";} ?></button></li>
-                            <?php if($_SESSION["admin"] == true):?>
-                                <p style="margin-top: 30px;"><b>Moderation:</b></p>
-                                <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a></li>
-                            <?php endif ?>
-                        <?php elseif(isset($_SESSION["username"])):?>
-                            <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "remove from favorites";} else { echo "add to favorites";} ?></button></li>
+                        <?php if(isset($_SESSION["username"])):?>
+                            <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?>><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "Remove from favorites";} else { echo "Add to favorites";} ?></button></li>
                             <?php if($prompt["user_id"] == $_SESSION["userid"]):?>
                                 <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="deletepost.action.php?pid=<?php echo $prompt["id"] ?>&uid=<?php echo $prompt["user_id"] ?>">Delete</a></li>
                             <?php else: ?>
-                                <li><a href="*report*">Report</a></li>
+                                <li><button class="reportbtn" id="reportbtnid" data-postid="<?php echo $prompt["id"]?>"><?php if(count(Prompt::checkReport($prompt['id'])) >=1 ){ echo "Reported";} else { echo "Report";} ?></button></li>
                             <?php endif; ?>
-                        <?php endif ?>
+                        <?php elseif(isset($_SESSION["admin"])):?>
+                            <?php if($_SESSION['admin'] == true): ?>
+                                <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?>><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "Remove from favorites";} else { echo "Add to favorites";} ?></button></li>
+                                <?php if($_SESSION["admin"] == true):?>
+                                    <p style="margin-top: 30px;"><b>Moderation:</b></p>
+                                    <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a></li>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </ul>
                 </div>
     <?php endforeach;?>
@@ -145,16 +147,10 @@
         btn.addEventListener("click", function () {
             let currentBtn = this;
             let postId = this.dataset.postid;
-            let userId = this.dataset.userid;
-
-            console.log("postid", postId);
-            console.log("userid", userId);
-
             //post naar database
 
             let formData = new FormData();
             formData.append("post_id", postId);
-            formData.append("user_id", userId);
 
             fetch("ajax/saveFavorite.php", {
                 method: "POST",
@@ -164,11 +160,36 @@
                 return response.json();
             })
             .then(function(json){
-                console.log(json);
                 if (json.status == 'success') {
                     currentBtn.innerHTML = json.message;
                    
                     
+                }
+
+            });
+
+        });
+    });
+
+    let reportid = document.querySelectorAll("#reportbtnid");
+    reportid.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            let currentBtn = this;
+            let postId = this.dataset.postid;
+            //post naar database
+            let formData = new FormData();
+            formData.append("post_id", postId);
+
+            fetch("ajax/report.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(json){
+                if (json.status == 'success') {
+                    currentBtn.innerHTML = json.message;
                 }
 
             });

@@ -251,7 +251,6 @@
 
             return $result;
         }
-
         public static function deleteFavorite($promptId)
         {
             $conn = Db::getInstance();
@@ -260,6 +259,31 @@
             $statement->bindValue(":postId", $promptId);
             $result = $statement->execute();
             
+            return $result;
+        }
+        public static function checkReport($promptId){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM `reported-prompts` WHERE user_id = :userId AND prompt_id = :postId");
+            $statement->bindValue(":userId", $_SESSION['id']);
+            $statement->bindValue(":postId", $promptId);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public static function deleteReport($promptId){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("DELETE FROM `reported-prompts` WHERE user_id = :userId AND prompt_id = :postId");
+            $statement->bindValue(":userId", $_SESSION['userid']);
+            $statement->bindValue(":postId", $promptId);
+            $result = $statement->execute();
+            return $result;
+        }
+        public function report(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("INSERT INTO `reported-prompts` (user_id, prompt_id) VALUES (:userId, :postId)");
+            $statement->bindValue(":userId", $this->userId);
+            $statement->bindValue(":postId", $this->postId);
+            $result = $statement->execute();
             return $result;
         }
     }
