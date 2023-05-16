@@ -13,6 +13,7 @@
         <?php if(isset($_SESSION["loggedin"])): ?>
             <li><a href="createprompt.php"><h2 class="text-2xl mr-4 hover:text-[#0464A4]">New prompt</h2></a></li>
             <li><a href="profile.php" ><h2 class="text-2xl mr-4 hover:text-[#0464A4]"><?php echo $_SESSION['username']; ?></h2></a></li>
+            <li><p><?php $balance = User::getBalance(); echo $balance; ?> Credits</p></li>
         <?php else:?>
             <li><a href="login.php"><h2 class="text-2xl mr-4 hover:text-[#0464A4]">Log In</h2></a></li>
             <li><a href="register.php"><h2 class="text-2xl mr-4 hover:text-[#0464A4]">Register</h2></a></li>
