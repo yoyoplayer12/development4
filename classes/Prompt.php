@@ -159,4 +159,30 @@
             return $result;
         }
 
+        public function likePrompt($user_id, $prompt_id){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("INSERT INTO prompt_likes (user_id, prompt_id) VALUES (:user_id, :prompt_id)");
+            $statement->bindValue(":user_id", $user_id);
+            $statement->bindValue(":prompt_id", $prompt_id);
+            $statement->execute();
+        }
+        
+        public function unlikePrompt($user_id, $prompt_id){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("DELETE FROM prompt_likes WHERE user_id = :user_id AND prompt_id = :prompt_id");
+            $statement->bindValue(":user_id", $user_id);
+            $statement->bindValue(":prompt_id", $prompt_id);
+            $statement->execute();
+        }
+        
+        public function isLikedByUser($user_id, $prompt_id){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prompt_likes WHERE user_id = :user_id AND prompt_id = :prompt_id");
+            $statement->bindValue(":user_id", $user_id);
+            $statement->bindValue(":prompt_id", $prompt_id);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return !empty($result);
+        }
+
     }
