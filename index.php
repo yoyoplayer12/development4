@@ -101,19 +101,19 @@
                         <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <li><p><b>Price: </b><?php echo $promptprice["price"] ?></p></li>
-                        <li><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center">Buy</button></li>
+                        <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button>Buy</button></li>
 
                         <!-- if username is logged in show this button  -->
                         <?php if(isset($_SESSION["username"])):?>
-                            <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?>><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "Remove from favorites";} else { echo "Add to favorites";} ?></button></li>
+                            <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" style="margin-top: 10px;margin-bottom:10px;"><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?>><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "Remove from favorites";} else { echo "Add to favorites";} ?></button></li>
                             <?php if($prompt["user_id"] == $_SESSION["userid"]):?>
                                 <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="deletepost.action.php?pid=<?php echo $prompt["id"] ?>&uid=<?php echo $prompt["user_id"] ?>">Delete</a></li>
                             <?php else: ?>
                                 <li><button class="reportbtn" id="reportbtnid" data-postid="<?php echo $prompt["id"]?>"><?php if(count(Prompt::checkReport($prompt['id'])) >=1 ){ echo "Reported";} else { echo "Report";} ?></button></li>
                             <?php endif; ?>
-                        <?php elseif(isset($_SESSION["admin"])):?>
+                        <?php endif; ?>
+                        <?php if(isset($_SESSION["admin"])):?>
                             <?php if($_SESSION['admin'] == true): ?>
-                                <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?>><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "Remove from favorites";} else { echo "Add to favorites";} ?></button></li>
                                 <?php if($_SESSION["admin"] == true):?>
                                     <p style="margin-top: 30px;"><b>Moderation:</b></p>
                                     <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a></li>
