@@ -10,7 +10,7 @@
         $search_query = "";
     }
 
-    $limit = 4; // number of prompts to display per page
+    $limit = 6; // number of prompts to display per page
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // current page number
     $offset = ($page - 1) * $limit;
 
@@ -41,12 +41,12 @@
 </head>
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
-    <h1>Prompt marketplace</h1>
-    <form method="get">
-		<input type="text" name="search_query">
-		<input type="submit" name="submit" value="Search">
-	</form>
-
+    <h1 class=" text-[#0464A4] text-5xl my-10 flex justify-center">Prompt marketplace</h1>
+    <div class="flex justify-center items-center">
+    <form method="get" class="mr-2">
+        <input type="text" name="search_query" class="p-3 border-2 rounded-lg border-[#0464A4] w-96" placeholder="Search">
+        <button type="submit" name="submit" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-3 px-8 rounded-lg mx-4 cursor-pointer">Search</button>
+    </form>
     <form action="" method="post" id="categoryFilter">
             <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required>
                 <option value="" disabled selected>Select a category</option>
@@ -67,7 +67,7 @@
             <?php endif; ?>
 
         </form> 
-
+</div>
 
         <div class="mx-auto mt-5 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 sm:mt-5 sm:pt-16 lg:mx-10 lg:max-w-none lg:grid-cols-3">
         <?php if(isset($notPrompt)): ?>
@@ -108,12 +108,12 @@
                             <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "Remove from favorites";} else { echo "Add to favorites";} ?></button></li>
                             <?php if($_SESSION["admin"] == true):?>
                                 <p style="margin-top: 30px;"><b>Moderation:</b></p>
-                                <li><a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a></li>
+                                <li class="bg-[#C8C8CC] hover:bg-[#A0A0A3] text-black font-bold py-3 px-4 rounded-lg cursor-pointer my-4 flex justify-center"><a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a></li>
                             <?php endif ?>
                         <?php elseif(isset($_SESSION["username"])):?>
                             <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1 ){ echo "remove from favorites";} else { echo "add to favorites";} ?></button></li>
                             <?php if($prompt["user_id"] == $_SESSION["userid"]):?>
-                                <li><a href="deletepost.action.php?pid=<?php echo $prompt["id"] ?>&uid=<?php echo $prompt["user_id"] ?>">Delete</a></li>
+                                <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="deletepost.action.php?pid=<?php echo $prompt["id"] ?>&uid=<?php echo $prompt["user_id"] ?>">Delete</a></li>
                             <?php else: ?>
                                 <li><a href="*report*">Report</a></li>
                             <?php endif; ?>
@@ -124,21 +124,21 @@
         </div>
     
 
-    <?php if ($totalPages > 1) : ?>
-            <div class="pagination text-black">
-                <?php if ($page > 1) : ?>
-                    <a href="index.php?page=<?php echo $page - 1 ?>">Previous</a>
-                <?php endif; ?>
+        <?php if ($totalPages > 1) : ?>
+  <div class="flex items-center justify-center my-8 ">
+    <?php if ($page > 1) : ?>
+      <a href="index.php?page=<?php echo $page - 1 ?>" class="px-3 py-2 bg-[#0464A4] hover:bg-[#0242A2] text-white rounded-l-md">Previous</a>
+    <?php endif; ?>
 
-                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                    <a href="index.php?page=<?php echo $i ?>" <?php if ($i === $page) echo 'class="active"'; ?>><?php echo $i ?></a>
-                <?php endfor; ?>
+    <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+      <a href="index.php?page=<?php echo $i ?>" class="px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 <?php if ($i === $page) echo 'text-black font-bold'; ?>"><?php echo $i ?></a>
+    <?php endfor; ?>
 
-                <?php if ($page < $totalPages) : ?>
-                    <a href="index.php?page=<?php echo $page + 1 ?>" >Next</a>
-                <?php endif; ?>
-            </div>
-        <?php endif;} ?>
+    <?php if ($page < $totalPages) : ?>
+      <a href="index.php?page=<?php echo $page + 1 ?>" class="px-3 py-2 bg-[#0464A4] hover:bg-[#0242A2] text-white rounded-r-md">Next</a>
+    <?php endif; ?>
+  </div>
+<?php endif;} ?>
         <script>
     let promptsID = document.querySelectorAll("#btnFavorites");
     promptsID.forEach(function (btn) {
@@ -167,8 +167,7 @@
                 console.log(json);
                 if (json.status == 'success') {
                     currentBtn.innerHTML = json.message;
-                    
-
+                   
                     
                 }
 

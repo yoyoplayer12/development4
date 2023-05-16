@@ -70,7 +70,7 @@ if(isset($_POST['registerBtn'])){
 		<div class="w-1/2 h-screen flex justify-center items-center">
 			<form action="" method="post">
             <img  src="<?php echo $url."evestore/assets/brand/od3krbvhegihsaahirrz.png"?>" class="flex justify-center w-50 ml-10 mb-10">
-				<h1 class="text-4xl mb-20">Sign Up</h1>
+				<h1 class="text-[#0464A4] text-5xl mb-20">Sign Up</h1>
 				<div class="">
 					<input type="text" name="email" placeholder="Email" class="border-2 py-2 flex w-full justify-center rounded-md mb-5" id="email" onkeyup="checkEmailAvailability()">
                     <?php if (isset($emailError)) : ?>
@@ -92,7 +92,7 @@ if(isset($_POST['registerBtn'])){
 				</div>
 
 				<div class="">
-					<input type="submit" value="Sign up" name="registerBtn" class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer">
+					<input type="submit" value="Sign up" name="registerBtn" class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] hover:bg-[#0444A4] py-3 text-sm font-semibold text-white cursor-pointer">
 				</div>
                 <p>already have an account? <a href="login.php" class="text-[#0464A4]">Log in</a></p> 
 			</form>
