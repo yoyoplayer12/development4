@@ -68,8 +68,8 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
                     <?php foreach ($matchingUsernames as $username) : ?>
                         <form method="POST">
                             <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
-                                <?php echo $username; ?>
-                                <input type="hidden" name="selectedUsername" value="<?php echo $username; ?>">
+                                <?php echo htmlspecialchars($username) ; ?>
+                                <input type="hidden" name="selectedUsername" value="<?php echo htmlspecialchars($username); ?>">
                                 <button type="submit" name="addMod" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer">Add as Moderator</button>
                             </li>
                         </form>
@@ -87,9 +87,9 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
             <ul>
                 <?php foreach ($moderators as $moderator) : ?>
                     <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
-    <?php echo $moderator["username"]; ?>
+    <?php echo htmlspecialchars($moderator["username"]); ?>
     <form method="POST">
-        <input type="hidden" name="selectedUsername" value="<?php echo $moderator["username"]; ?>">
+        <input type="hidden" name="selectedUsername" value="<?php echo htmlspecialchars($moderator["username"]); ?>">
         <button type="submit" name="deleteMod" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer ">Remove Moderator</button>
     </form>
 </li>

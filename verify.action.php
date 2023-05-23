@@ -1,6 +1,7 @@
 <?php
+
     include_once(__DIR__ . "/bootstrap.php");
-    //logindetection
+    //logindetectione
     if($_SESSION["admin"] == true) {
         $id = $_GET['id'];
         $conn = Db::getInstance();
@@ -31,5 +32,7 @@
     else {
         header("Location: login.php");
     }
+    $verify = new Action();
+    $verify->verify();
 
     
