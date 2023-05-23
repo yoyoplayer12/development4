@@ -33,6 +33,21 @@ class Like
         $statement->bindValue(":prompt_id", $id);
         $statement->bindValue(":user_id", $_SESSION['id']);
         $statement->execute();
+
+
+        $statement = $conn->prepare("SELECT credits FROM users WHERE username = :username");
+        $statement->bindValue(":username", $_SESSION['username']);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        $credits = $result['credits'];
+        $credits = $credits + 1;
+
+        $statement = $conn->prepare("UPDATE users SET credits = :credits WHERE username = :username");
+        $statement->bindValue(":credits", $credits);
+        $statement->bindValue(":username", $_SESSION['username']);
+        $result = $statement->execute();
+
+
     }
 
     public function deleteLike($id)
@@ -43,5 +58,19 @@ class Like
         $statement->bindValue(":prompt_id", $id);
         $statement->bindValue(":user_id", $_SESSION['id']);
         $statement->execute();
+
+
+        $statement = $conn->prepare("SELECT credits FROM users WHERE username = :username");
+        $statement->bindValue(":username", $_SESSION['username']);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        $credits = $result['credits'];
+        $credits = $credits - 1;
+
+        $statement = $conn->prepare("UPDATE users SET credits = :credits WHERE username = :username");
+        $statement->bindValue(":credits", $credits);
+        $statement->bindValue(":username", $_SESSION['username']);
+        $result = $statement->execute();
+
     }
 }
