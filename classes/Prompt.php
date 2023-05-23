@@ -14,7 +14,7 @@
         public static function getUnverifiedPrompts()
         {
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 0 AND active = 1 AND rejected = 0 AND deleted = 0");
+            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 0 AND active = 1 AND rejected = 0 AND deleted = 0 and reported = 0");
             $statement->execute();
             $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $prompt;
@@ -27,10 +27,17 @@
             $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $prompt;
         }
+        public static function getReportedPrompts(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT prompt_id, COUNT(*) AS count FROM `reported-prompts` GROUP BY prompt_id ORDER BY prompt_id");
+            $statement->execute();
+            $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $prompt;
+        }
         public static function getPromptsByUser($id)
         {
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT * FROM prompts WHERE user_id = $id AND active = 1 AND deleted = 0 AND rejected = 0 AND verified = 1");
+            $statement = $conn->prepare("SELECT * FROM prompts WHERE user_id = $id AND active = 1 AND deleted = 0 AND rejected = 0 AND verified = 1 and reported = 0 ORDER BY postdate DESC");
             $statement->execute();
             $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $prompt;
@@ -38,7 +45,8 @@
         public static function getPromptUser($id)
         {
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT id, username, avatar_url FROM users WHERE active=1 AND id = $id AND banned = 0");
+            $statement = $conn->prepare("SELECT id, username, avatar_url FROM users WHERE active=1 AND banned = 0 AND id = :id");
+            $statement->bindValue(":id", $id);
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             return $result;
@@ -106,7 +114,7 @@
         public static function getVerifiedPrompts($limit, $offset, $search_query)
         {
             $conn = Db::getInstance();
-            $sql = "SELECT * FROM prompts WHERE verified = 1 AND active = 1 AND deleted = 0 AND rejected = 0";
+            $sql = "SELECT * FROM prompts WHERE verified = 1 AND active = 1 AND deleted = 0 AND rejected = 0 and reported = 0";
             if ($search_query != '') {
                 $sql .= " AND title LIKE :search_query";
             }
@@ -126,7 +134,7 @@
         public static function countAllVerifiedPrompts($search_query)
         {
             $conn = Db::getInstance();
-            $sql = "SELECT * FROM prompts WHERE verified = 1 AND active = 1 AND deleted = 0 AND rejected = 0";
+            $sql = "SELECT * FROM prompts WHERE verified = 1 AND active = 1 AND deleted = 0 AND rejected = 0 and reported = 0";
             if ($search_query != '') {
                 $sql .= " AND title LIKE :search_query";
             }
@@ -181,7 +189,7 @@
         public static function getPromptsByCategory($selectedCategory)
         {
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 AND cat_id = $selectedCategory AND deleted = 0 AND active = 1 ORDER BY postdate DESC");
+            $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 AND cat_id = $selectedCategory AND deleted = 0 AND active = 1 AND reported = 0 ORDER BY postdate DESC");
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
@@ -284,6 +292,14 @@
             $statement->bindValue(":userId", $this->userId);
             $statement->bindValue(":postId", $this->postId);
             $result = $statement->execute();
+            return $result;
+        }
+        public static function getPromptById($promptId){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prompts WHERE id = :postId and verified = 1 and active = 1 and deleted = 0 and reported = 0");
+            $statement->bindValue(":postId", $promptId);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
             return $result;
         }
     }
