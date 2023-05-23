@@ -15,6 +15,8 @@
     $offset = ($page - 1) * $limit;
 
     $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query);
+    
+
 
     // count the total number of prompts with the selected filter
     $totalPrompts = count(Prompt::countAllVerifiedPrompts($search_query));
