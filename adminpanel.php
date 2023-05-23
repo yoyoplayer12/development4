@@ -65,7 +65,7 @@
                         <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
                         <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                         <!-- Hier komt de verify button ==> if verify = 0 ==> andere backgroundcolor en text -->
-                        <a href="verify.action.php?id=<?php echo $prompt["id"] ?>">Approve</a>
+                        <a href="verify.action.php?id=<?php echo $prompt['id'] ?>&username=<?php echo $promptUser['username']?>">Approve</a>
                         <a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a>
                     </ul>
                 </div>
