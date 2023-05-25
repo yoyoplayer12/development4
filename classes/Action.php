@@ -26,7 +26,7 @@
         
         
         
-                header("Location: adminpanel.php");
+                header("Location: moderator.php");
             }
             else {
                 header("Location: login.php");
@@ -39,7 +39,7 @@
                 $statement = $conn->prepare("UPDATE prompts SET rejected = 1, verified = 0 WHERE id = :id AND active = 1");
                 $statement->bindValue(":id", $id);
                 $statement->execute();
-                header("Location: adminpanel.php");
+                header("Location: moderator.php");
             }
             else {
                 header("Location: login.php");
