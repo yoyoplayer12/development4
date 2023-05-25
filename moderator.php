@@ -36,7 +36,7 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
             $selectedUserId = $_POST["selectedUserId"];
             Moderator::unban($selectedUserId);
         }
-        if (isset($_POST["unban"]) && isset($_POST["selectedUserId"])){
+        if (isset($_POST["unban"]) && isset($_POST["selectedUserId"])) {
             $selectedUserId = $_POST["selectedUserId"];
             Moderator::unban($selectedUserId);
         }
@@ -90,44 +90,56 @@ $url = $image->getUrl()
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1 class="text-[#0464A4] text-5xl my-10 flex justify-center">Moderator Panel</h1>
     <div class="flex justify-center flex-row items-center">
+        <a href="#users" class="px-5 py-2 text-[#0464A4] underline bg-white rounded mr-5">Users</a>
         <a href="#moderators" class="px-5 py-2 text-[#0464A4] underline bg-white rounded mr-5">Moderators</a>
         <a href="#prompts" class="px-5 py-2 text-[#0464A4] underline bg-white rounded mr-5">Prompts</a>
-        <a href="#users" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Banned users</a>
+        <a href="#bannedusers" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Banned users</a>
     </div>
     <div class="flex justify-center flex-col items-center">
         <div>
-            <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Users</h2>
-            <form method="POST" class="mr-2">
-                <input type="text" name="username" class="p-3 border-2 rounded-lg border-[#0464A4] w-96" placeholder="Search">
-                <button type="submit" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-3 px-8 rounded-lg mx-4 cursor-pointer">Search</button>
-            </form>
+            <div id="users">
+                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Users</h2>
+                <form method="POST" class="mr-2">
+                    <input type="text" name="username" class="p-3 border-2 rounded-lg border-[#0464A4] w-96" placeholder="Search">
+                    <button type="submit" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-3 px-8 rounded-lg mx-4 cursor-pointer">Search</button>
+                </form>
 
-            <!-- Display the list of matching usernames -->
-            <?php if (!empty($matchingUserIds)) : ?>
-                <div class="mt-2">
-                    <h2 class="text-[#0464A4] text-xl my-5 flex justify-center">Users:</h2>
-                    <ul>
-                        <?php foreach ($matchingUserIds as $userid) : ?>
-                            <?php $user = Moderator::getUserById($userid); ?>
+                <!-- Display the list of matching usernames -->
+                <?php if (!empty($matchingUserIds)) : ?>
+                    <div class="mt-2">
+                        <h2 class="text-[#0464A4] text-xl my-5 flex justify-center">Users:</h2>
+                        <ul>
+                            <?php foreach ($matchingUserIds as $userid) : ?>
+                                <?php $user = Moderator::getUserById($userid); ?>
                                 <form method="POST">
                                     <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
                                         <?php echo htmlspecialchars($user['username']); ?>
                                         <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
                                         <button type="submit" name="addMod" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer">Add as Moderator</button>
-                                        <button type="submit" name="<?php if($user['banned'] == 0){echo "banuser";}else{echo "unbanuser";} ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if($user['banned'] == 0){echo "Ban";}else{echo "Unban";} ?></button>
+                                        <button type="submit" name="<?php if ($user['banned'] == 0) {
+                                                                        echo "banuser";
+                                                                    } else {
+                                                                        echo "unbanuser";
+                                                                    } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
+                                                                                                                                                                                echo "Ban";
+                                                                                                                                                                            } else {
+                                                                                                                                                                                echo "Unban";
+                                                                                                                                                                            } ?></button>
                                     </li>
                                 </form>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php else : ?>
-                <div class="mt-5">
-                    <h2>No users were found.</h2>
-                </div>
-            <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php else : ?>
+                    <div class="mt-5">
+                        <h2>No users were found.</h2>
+                    </div>
+                <?php endif; ?>
 
+
+            </div>
             <div>
-            <h2 class="text-[#0464A4] text-2xl my-10 flex justify-center" id="moderators">Moderators</h2>
+                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center" id="moderators">Moderators</h2>
                 <ul>
                     <?php foreach ($moderators as $moderator) : ?>
                         <li class="mb-5 mt-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
@@ -143,141 +155,150 @@ $url = $image->getUrl()
                     <?php endforeach; ?>
                 </ul>
             </div>
+            <div>
+                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center" id="prompts">Prompts</h2>
+                <h1><?php echo $unverifiedpromptscount ?> To verify</h1>
+                <?php
+                if (empty($unverifiedprompts)) {
+                    echo "<h1 class='noposts'>Congrats, you verified them all!</h1>";
+                } else {
+                    foreach ($unverifiedprompts as $prompt) : ?>
+                        <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
+                        <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
+                        <?php $promptprice = Prompt::getPromptprice($prompt['price_id']); ?>
+                        <div class="prompt">
+                            <ul>
+                                <li>
+                                    <p><b>Title: </b><?php echo $prompt["title"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>User: </b><?php echo $promptUser['username'] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Price: </b><?php echo $promptprice["price"] ?></p>
+                                </li>
+                                <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
+                                <li>
+                                    <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
+                                </li>
+                                <!-- Hier komt de verify button ==> if verify = 0 ==> andere backgroundcolor en text -->
+                                <a href="verify.action.php?id=<?php echo $prompt['id'] ?>&username=<?php echo $promptUser['username'] ?>">Approve</a>
+                                <a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a>
+                            </ul>
+                        </div>
+                <?php endforeach;
+                } ?>
+                <h1><?php echo $rejectedpromptscount ?> Rejected</h1>
+                <?php
+                if (empty($rejectedprompts)) {
+                    echo "<h1 class='noposts'>No rejected posts yet...</h1>";
+                } else {
+                    foreach ($rejectedprompts as $prompt) : ?>
+                        <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
+                        <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
+                        <div class="prompt">
+                            <ul>
+                                <li>
+                                    <p><b>Title: </b><?php echo $prompt["title"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>User: </b><?php echo $promptUser['username'] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
+                                </li>
+                                <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
+                                <li>
+                                    <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
+                                </li>
+                            </ul>
+                        </div>
+                <?php endforeach;
+                } ?>
+                <h1><?php echo $reportedpromptscount ?> Reported</h1>
+                <?php
+                if (empty($reportedprompts)) {
+                    echo "<h1 class='noposts'>No reported posts yet...</h1>";
+                } else {
+                    foreach ($reportedprompts as $reportedprompt) : ?>
+                        <?php $prompt = Prompt::getPromptById($reportedprompt['prompt_id']) ?>
+                        <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
+                        <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
+                        <div class="prompt">
+                            <ul>
+                                <li>
+                                    <p><b>Title: </b><?php echo $prompt["title"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Report count: </b><?php echo $reportedprompt["count"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>User: </b><?php echo $promptUser['username'] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
+                                </li>
+                                <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
+                                <li>
+                                    <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
+                                </li>
+                            </ul>
+                        </div>
+                <?php endforeach;
+                } ?>
+            </div>
+            <div class="mb-10">
+                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center" id="bannedusers">Banned users</h2>
+                <ul>
+                    <?php foreach ($bannedusers as $user) : ?>
+
+                        <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
+                            <?php echo htmlspecialchars($user['username']); ?>
+                            <form method="POST">
+                                <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
+                                <button type="submit" name="unban" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
+                                                                                                                                                                            echo "Ban";
+                                                                                                                                                                        } else {
+                                                                                                                                                                            echo "Unban";
+                                                                                                                                                                        } ?></button>
+                            </form>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
-        <div id="prompts">
-            <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Prompts</h2>
-            <h1><?php echo $unverifiedpromptscount ?> To verify</h1>
-            <?php
-            if (empty($unverifiedprompts)) {
-                echo "<h1 class='noposts'>Congrats, you verified them all!</h1>";
-            } else {
-                foreach ($unverifiedprompts as $prompt) : ?>
-                    <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
-                    <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
-                    <?php $promptprice = Prompt::getPromptprice($prompt['price_id']); ?>
-                    <div class="prompt">
-                        <ul>
-                            <li>
-                                <p><b>Title: </b><?php echo $prompt["title"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>User: </b><?php echo $promptUser['username'] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Price: </b><?php echo $promptprice["price"] ?></p>
-                            </li>
-                            <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
-                            <li>
-                                <p><b>Description: </b><?php echo $prompt["description"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
-                            </li>
-                            <!-- Hier komt de verify button ==> if verify = 0 ==> andere backgroundcolor en text -->
-                            <a href="verify.action.php?id=<?php echo $prompt['id'] ?>&username=<?php echo $promptUser['username'] ?>">Approve</a>
-                            <a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a>
-                        </ul>
-                    </div>
-            <?php endforeach;
-            } ?>
-            <h1><?php echo $rejectedpromptscount ?> Rejected</h1>
-            <?php
-            if (empty($rejectedprompts)) {
-                echo "<h1 class='noposts'>No rejected posts yet...</h1>";
-            } else {
-                foreach ($rejectedprompts as $prompt) : ?>
-                    <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
-                    <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
-                    <div class="prompt">
-                        <ul>
-                            <li>
-                                <p><b>Title: </b><?php echo $prompt["title"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>User: </b><?php echo $promptUser['username'] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
-                            </li>
-                            <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
-                            <li>
-                                <p><b>Description: </b><?php echo $prompt["description"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
-                            </li>
-                        </ul>
-                    </div>
-            <?php endforeach;
-            } ?>
-            <h1><?php echo $reportedpromptscount ?> Reported</h1>
-            <?php
-            if (empty($reportedprompts)) {
-                echo "<h1 class='noposts'>No reported posts yet...</h1>";
-            } else {
-                foreach ($reportedprompts as $reportedprompt) : ?>
-                    <?php $prompt = Prompt::getPromptById($reportedprompt['prompt_id']) ?>
-                    <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
-                    <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
-                    <div class="prompt">
-                        <ul>
-                            <li>
-                                <p><b>Title: </b><?php echo $prompt["title"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Report count: </b><?php echo $reportedprompt["count"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>User: </b><?php echo $promptUser['username'] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
-                            </li>
-                            <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
-                            <li>
-                                <p><b>Description: </b><?php echo $prompt["description"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
-                            </li>
-                            <li>
-                                <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
-                            </li>
-                        </ul>
-                    </div>
-            <?php endforeach;
-            } ?>
-        </div>
-        <div id="users" class="mb-10">
-            <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Banned users</h2>
-            <?php foreach($bannedusers as $user): ?>
-                <form method="POST">
-                    <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
-                        <?php echo htmlspecialchars($user['username']); ?>
-                        <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
-                        <button type="submit" name="unban" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if($user['banned'] == 0){echo "Ban";}else{echo "Unban";} ?></button>
-                    </li>
-                </form>
-            <?php endforeach; ?>
-        </div>
+
     </div>
 </body>
+
 </html>
