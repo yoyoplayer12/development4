@@ -24,8 +24,20 @@
                 $statement->bindValue(":username", $_GET['username']);
                 $result = $statement->execute();
                 // var_dump($result);
+
+                //check if user has 3 or more approved prompts
+                $statement = $conn->prepare("SELECT COUNT(*) FROM prompts WHERE user_id = :user_id AND verified = 1");
+                $statement->bindValue(":user_id", $_GET['user_id']);
+                $statement->execute();
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+                $count = $result['COUNT(*)'];
         
-        
+                //if the user has 3 or more approved prompts, set verified to 1
+                if($count >= 3){
+                    $statement = $conn->prepare("UPDATE users SET verified = 1 WHERE username = :username");
+                    $statement->bindValue(":username", $_GET['username']);
+                    $result = $statement->execute();
+                }
         
                 header("Location: moderator.php");
             }

@@ -12,6 +12,8 @@
         private $postId;
         private $userId;
         private $credits;
+        private $verified;
+
         public static function getUnverifiedPrompts()
         {
             $conn = Db::getInstance();
@@ -94,7 +96,7 @@
         public function save()
         {
             $conn = Db::getInstance();
-            $statement = $conn->prepare("INSERT INTO prompts (`cat_id`, `title`, `price_id`, `description`, `photo_url`, `prompt`, `prompt_info`, `user_id`) VALUES (:cat, :title, :priceid, :description, :photoUrl, :prompt, :promptInfo, :userId)");
+            $statement = $conn->prepare("INSERT INTO prompts (`cat_id`, `title`, `price_id`, `description`, `photo_url`, `prompt`, `prompt_info`, `user_id`, `verified`) VALUES (:cat, :title, :priceid, :description, :photoUrl, :prompt, :promptInfo, :userId, :verified)");
             $statement->bindValue(":title", $this->title);
             $statement->bindValue(":priceid", $this->priceid);
             $statement->bindValue(":description", $this->description);
@@ -103,6 +105,7 @@
             $statement->bindValue(":promptInfo", $this->promptInfo);
             $statement->bindValue(":userId", $this->userId);
             $statement->bindvalue(":cat", $this->categoryid);
+            $statement->bindValue(":verified", $this->verified);
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
@@ -365,5 +368,25 @@
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
+        }
+
+        /**
+         * Get the value of verified
+         */ 
+        public function getVerified()
+        {
+            return $this->verified;
+        }
+
+        /**
+         * Set the value of verified
+         *
+         * @return  self
+         */ 
+        public function setVerified($verified)
+        {
+            $this->verified = $verified;
+
+            return $this;
         }
     }
