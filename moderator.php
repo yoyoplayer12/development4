@@ -54,18 +54,18 @@ $unverifiedprompts = [];
 $rejectedprompts = [];
 $reportedprompts = [];
 $bannedusers = [];
+$reporteduserids = [];
 $rejectedpromptscount = 0;
 $unverifiedpromptscount = 0;
 $reportedpromptscount = 0;
-$banneduserscount = 0;
 $unverifiedprompts = Prompt::getUnverifiedPrompts();
 $rejectedprompts = Prompt::getRejectedPrompts();
 $reportedprompts = Prompt::getReportedPrompts();
 $bannedusers = Moderator::getBannedUsers();
+$reporteduserids = Moderator::getReportedUserIds();
 $rejectedpromptscount = count($rejectedprompts);
 $unverifiedpromptscount = count($unverifiedprompts);
 $reportedpromptscount = count($reportedprompts);
-$banneduserscount = count($bannedusers);
 
 //setting up image getting
 $image = new Image();
@@ -92,7 +92,8 @@ $url = $image->getUrl()
     <div class="flex justify-center flex-row items-center">
         <a href="#moderators" class="px-5 py-2 text-[#0464A4] underline bg-white rounded mr-5">Moderators</a>
         <a href="#prompts" class="px-5 py-2 text-[#0464A4] underline bg-white rounded mr-5">Prompts</a>
-        <a href="#users" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Banned users</a>
+        <a href="#bannedusers" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Banned users</a>
+        <a href="#reportedusers" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Reported users</a>
     </div>
     <div class="flex justify-center flex-col items-center">
         <div>
@@ -266,7 +267,7 @@ $url = $image->getUrl()
             <?php endforeach;
             } ?>
         </div>
-        <div id="users" class="mb-10">
+        <div id="bannedusers" class="mb-10">
             <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Banned users</h2>
             <?php foreach($bannedusers as $user): ?>
                 <form method="POST">
@@ -274,6 +275,23 @@ $url = $image->getUrl()
                         <?php echo htmlspecialchars($user['username']); ?>
                         <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
                         <button type="submit" name="unban" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if($user['banned'] == 0){echo "Ban";}else{echo "Unban";} ?></button>
+                    </li>
+                </form>
+            <?php endforeach; ?>
+        </div>
+        
+        <div id="reportedusers" class="mb-10">
+            <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Reported users</h2>
+            <?php foreach($reporteduserids as $id): ?>
+                <?php $user = Moderator::getUserById($id['reported_id']); ?>
+                <?php $userbans = Moderator::getUserBanCount($id['reported_id']); ?>
+                <form method="POST">
+                    <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
+                        <?php echo htmlspecialchars($user['username']); ?>
+                        <br>
+                        <?php echo 'Reports: '.$userbans; ?>
+                        <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
+                        <button type="submit" name="<?php if($user['banned'] == 0){echo "banuser";}else{echo "unbanuser";} ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if($user['banned'] == 0){echo "Ban";}else{echo "Unban";} ?></button>
                     </li>
                 </form>
             <?php endforeach; ?>

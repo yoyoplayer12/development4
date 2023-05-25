@@ -69,6 +69,20 @@ class Moderator {
         $users = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $users;
     }
+    public static function getReportedUserIds(){
+        $conn = Db::getInstance();
+        $statement = $conn->query("SELECT DISTINCT reported_id FROM `reported-users` ORDER BY reportdate ASC");
+        $ids = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $ids;
+    }
+    public static function getUserBanCount($userid){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT COUNT(*) FROM `reported-users` WHERE reported_id = :userid");
+        $statement->bindValue(":userid", $userid);
+        $statement->execute();
+        $count = $statement->fetch(PDO::FETCH_ASSOC);
+        return $count['COUNT(*)'];
+    }
 }
 
 ?>
