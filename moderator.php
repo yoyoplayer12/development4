@@ -54,18 +54,18 @@ $unverifiedprompts = [];
 $rejectedprompts = [];
 $reportedprompts = [];
 $bannedusers = [];
+$reporteduserids = [];
 $rejectedpromptscount = 0;
 $unverifiedpromptscount = 0;
 $reportedpromptscount = 0;
-$banneduserscount = 0;
 $unverifiedprompts = Prompt::getUnverifiedPrompts();
 $rejectedprompts = Prompt::getRejectedPrompts();
 $reportedprompts = Prompt::getReportedPrompts();
 $bannedusers = Moderator::getBannedUsers();
+$reporteduserids = Moderator::getReportedUserIds();
 $rejectedpromptscount = count($rejectedprompts);
 $unverifiedpromptscount = count($unverifiedprompts);
 $reportedpromptscount = count($reportedprompts);
-$banneduserscount = count($bannedusers);
 
 //setting up image getting
 $image = new Image();
@@ -89,11 +89,12 @@ $url = $image->getUrl()
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1 class="text-[#0464A4] text-5xl my-10 flex justify-center">Moderator Panel</h1>
-    <div class="flex justify-center flex-row items-center">
-        <a href="#users" class="px-5 py-2 text-[#0464A4] underline bg-white rounded mr-5">Users</a>
-        <a href="#moderators" class="px-5 py-2 text-[#0464A4] underline bg-white rounded mr-5">Moderators</a>
-        <a href="#prompts" class="px-5 py-2 text-[#0464A4] underline bg-white rounded mr-5">Prompts</a>
+    <div class="flex justify-center flex-row items-center gap-5">
+        <a href="#users" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Users</a>
+        <a href="#moderators" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Moderators</a>
+        <a href="#prompts" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Prompts</a>
         <a href="#bannedusers" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Banned users</a>
+        <a href="#reportedusers" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Reported users</a>
     </div>
     <div class="flex justify-center flex-col items-center">
         <div>
@@ -121,10 +122,10 @@ $url = $image->getUrl()
                                                                     } else {
                                                                         echo "unbanuser";
                                                                     } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
-                                                                                                                                                                                echo "Ban";
-                                                                                                                                                                            } else {
-                                                                                                                                                                                echo "Unban";
-                                                                                                                                                                            } ?></button>
+                                                                                                                                                                                    echo "Ban";
+                                                                                                                                                                                } else {
+                                                                                                                                                                                    echo "Unban";
+                                                                                                                                                                                } ?></button>
                                     </li>
                                 </form>
                             <?php endforeach; ?>
@@ -155,8 +156,8 @@ $url = $image->getUrl()
                     <?php endforeach; ?>
                 </ul>
             </div>
-            <div>
-                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center" id="prompts">Prompts</h2>
+            <div id="prompts">
+                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Prompts</h2>
                 <h1><?php echo $unverifiedpromptscount ?> To verify</h1>
                 <?php
                 if (empty($unverifiedprompts)) {
@@ -277,27 +278,23 @@ $url = $image->getUrl()
                 <?php endforeach;
                 } ?>
             </div>
-            <div class="mb-10">
-                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center" id="bannedusers">Banned users</h2>
-                <ul>
-                    <?php foreach ($bannedusers as $user) : ?>
-
+            <div id="users" class="mb-10">
+                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Banned users</h2>
+                <?php foreach ($bannedusers as $user) : ?>
+                    <form method="POST">
                         <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
                             <?php echo htmlspecialchars($user['username']); ?>
-                            <form method="POST">
-                                <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
-                                <button type="submit" name="unban" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
-                                                                                                                                                                            echo "Ban";
-                                                                                                                                                                        } else {
-                                                                                                                                                                            echo "Unban";
-                                                                                                                                                                        } ?></button>
-                            </form>
+                            <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
+                            <button type="submit" name="unban" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
+                                                                                                                                                                        echo "Ban";
+                                                                                                                                                                    } else {
+                                                                                                                                                                        echo "Unban";
+                                                                                                                                                                    } ?></button>
                         </li>
-                    <?php endforeach; ?>
-                </ul>
+                    </form>
+                <?php endforeach; ?>
             </div>
         </div>
-
     </div>
 </body>
 
