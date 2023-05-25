@@ -253,5 +253,4 @@ $url = $image->getUrl()
         </div>
     </div>
 </body>
-
 </html>

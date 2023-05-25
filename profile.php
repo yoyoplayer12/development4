@@ -18,6 +18,8 @@
 
         $printFavorites = Prompt::getFavorites();
         // var_dump($printFavorites[0]['postId']);
+        $boughtpromptids = Prompt::getBoughtPromptIds();
+        $boughtprompts = Prompt::getBoughtPrompts($boughtpromptids['prompt_id']);
         
         
     
@@ -66,7 +68,7 @@
         <div>
     </div>
     <div>
-        <p>my favorite prompts:</p>
+        <p>Favorite prompts:</p>
         <?php foreach($printFavorites as $printFavorite): ?>
             <div class="bg-white p-10 rounded-3xl">
                 <ul class="list-none flex flex-col">
@@ -75,12 +77,7 @@
                     <?php $promptUser = Prompt::getPromptUser($printFavorite['user_id']); ?>
                     <?php $promptCat = Prompt::getPromptCat($printFavorite['cat_id']); ?>
                     <?php $promptNumber = Prompt::deleteFavorite($printFavorite['id']);?>
-                    <?php var_dump($promptNumber) ?>
-                    <?php if(!empty($_SESSION["userid"])): ?>
-                        <li><img  class="rounded-3xl" src="<?php echo $url.$printFavorite["photo_url"]?>" alt="Prompt photo"></li>
-                    <?php else: ?>
-                        <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url.$printFavorite["photo_url"]?>" alt="Prompt photo"></li>
-                    <?php endif; ?>
+                    <li><img  class="rounded-3xl" src="<?php echo $url.$printFavorite["photo_url"]?>" alt="Prompt photo"></li>
                     <li><p><b>Description: </b><?php echo $printFavorite["description"] ?></p></li>
                     <li><p><b>Postdate: </b><?php echo $printFavorite["postdate"] ?></p></li>
                     <!-- shouldnt be visible before buying -->
@@ -91,6 +88,35 @@
                     <li><button>Buy</button></li>        
                     <!-- make button that removes the prompt from favorites with the Prompt class -->
                     <!-- <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $printFavorite["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(Prompt::deleteFavorite($printFavorite['id'])){ echo "remove from favorites";} ?></button></li> -->
+                    <form method="POST" action="profile.php">
+                        <li>
+                            <input type="submit" value="Remove from favorites" name="removeFav"> </input>
+                        </li>
+                    </form>
+                </ul>
+            </div>
+        <?php endforeach; ?>
+        <p>Bought prompts:</p>
+        <?php foreach($boughtprompts as $prompt): ?>
+            <div class="bg-white p-10 rounded-3xl">
+                <ul class="list-none flex flex-col">
+                    <li class="text-xl flex justify-center inline-block"><p><?php echo $prompt["title"] ?></p></li>
+                    <li class="text-lg flex justify-end inline-block "><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"></a></li>
+                    <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
+                    <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
+                    <?php $promptNumber = Prompt::deleteFavorite($prompt['id']);?>
+                    <li><p><b>By: </b><?php echo $promptUser['username'];?></p></li>
+                    <li><img  class="rounded-3xl" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
+                    <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
+                    <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
+                    <!-- shouldnt be visible before buying -->
+                    <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
+                    <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
+                    <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
+                    <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
+                    <li><button>Buy</button></li>        
+                    <!-- make button that removes the prompt from favorites with the Prompt class -->
+                    <!-- <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"];?>  ><?php if(Prompt::deleteFavorite($prompt['id'])){ echo "remove from favorites";} ?></button></li> -->
                     <form method="POST" action="profile.php">
                         <li>
                             <input type="submit" value="Remove from favorites" name="removeFav"> </input>

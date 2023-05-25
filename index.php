@@ -99,19 +99,21 @@
                         <?php else: ?>
                             <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
-
                         <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
-                        <!-- shouldnt be visible before buying -->
-                        <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
-                        <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
-                        <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
-                        <li><p><b>Price: </b><?php echo $promptprice["price"] ?> Credits</p></li>
+                        <!-- shouldnt be visible before buying -->
+                        <?php if(count(Prompt::checkBought($prompt['id'])) >=1 ):?>
+                            <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
+                            <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
+                        <?php else: ?>
+                            <li><p><b>Price: </b><?php echo $promptprice["price"] ?> Credits</p></li>
+                        <?php endif; ?>
+                        <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <?php if(isset($_SESSION["userid"])): ?>
                             <?php if($_SESSION['userid'] == $prompt['user_id']): ?>
                             <?php else: ?>
-                                <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button>Buy</button></li>
+                                <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" id="buybtnid" data-postid="<?php echo $prompt["id"]?>"><button><?php if(count(Prompt::checkBought($prompt['id'])) >=1 ){ echo "Bought";} else { echo "Buy";} ?></button></li>
                             <?php endif; ?>
                         <?php endif ?>
                         <!-- if username is logged in show this button  -->
@@ -224,6 +226,31 @@
             formData.append("post_id", postId);
 
             fetch("ajax/report.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(json){
+                if (json.status == 'success') {
+                    currentBtn.innerHTML = json.message;
+                }
+
+            });
+
+        });
+    });
+
+    let buyid = document.querySelectorAll("#buybtnid");
+    buyid.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            let currentBtn = this;
+            let postId = this.dataset.postid;
+            //post naar database
+            let formData = new FormData();
+            formData.append("post_id", postId);
+            fetch("ajax/buypost.php", {
                 method: "POST",
                 body: formData
             })

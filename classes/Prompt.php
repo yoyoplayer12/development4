@@ -11,6 +11,7 @@
         private $categoryid;
         private $postId;
         private $userId;
+        private $credits;
         public static function getUnverifiedPrompts()
         {
             $conn = Db::getInstance();
@@ -83,6 +84,11 @@
         public function setUserId($userId)
         {
             $this->userId = $userId;
+            return $this;
+        }
+        public function setCredits($credits)
+        {
+            $this->credits = $credits;
             return $this;
         }
         public function save()
@@ -294,12 +300,69 @@
             $result = $statement->execute();
             return $result;
         }
+        public function buy(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("INSERT INTO `bought-prompts` (user_id, prompt_id) VALUES (:userId, :postId)");
+            $statement->bindValue(":userId", $this->userId);
+            $statement->bindValue(":postId", $this->postId);
+            $result = $statement->execute();
+            return $result;
+        }
         public static function getPromptById($promptId){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT * FROM prompts WHERE id = :postId and verified = 1 and active = 1 and deleted = 0 and reported = 0");
             $statement->bindValue(":postId", $promptId);
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public static function checkBought($promptid){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM `bought-prompts` WHERE user_id = :userId AND prompt_id = :postId");
+            $statement->bindValue(":userId", $_SESSION['userid']);
+            $statement->bindValue(":postId", $promptid);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public static function priceCheckSelector($postId){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prompts WHERE id = :postid");
+            $statement->bindValue(":postid", $postId);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public static function priceById($priceid){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prices WHERE id = :priceid AND active = 1");
+            $statement->bindValue(":priceid", $priceid);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public function updateCredits($credits){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("UPDATE users SET credits = :credits WHERE id = :userid");
+            $statement->bindValue(":credits", $credits);
+            $statement->bindValue(":userid", $_SESSION['userid']);
+            $result = $statement->execute();
+            return $result;
+        }
+        public static function getBoughtPromptIds(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM `bought-prompts` WHERE user_id = :userId");
+            $statement->bindValue(":userId", $_SESSION['userid']);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public static function getBoughtPrompts($promptid){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prompts WHERE id = :postid");
+            $statement->bindValue(":postid", $promptid);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
     }

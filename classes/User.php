@@ -29,6 +29,7 @@
                         $_SESSION["userid"] = $user["id"];
                         $_SESSION["confirmed_email"] = $user["confirmed_email"];
                         $_SESSION["email"] = $user["email"];
+                        $_SESSION["credits"] = $user["credits"];
                         return true;
                     } else {
                         return false;
