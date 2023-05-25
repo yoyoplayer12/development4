@@ -103,11 +103,13 @@
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <!-- shouldnt be visible before buying -->
+                        <?php if(isset($_SESSION["loggedin"])): ?>
                         <?php if(count(Prompt::checkBought($prompt['id'])) >=1 ):?>
                             <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
                             <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                         <?php else: ?>
                             <li><p><b>Price: </b><?php echo $promptprice["price"] ?> Credits</p></li>
+                        <?php endif; ?>
                         <?php endif; ?>
                         <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <?php if(isset($_SESSION["userid"])): ?>
