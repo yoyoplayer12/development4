@@ -66,6 +66,7 @@ class Like
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         $credits = $result['credits'];
         $credits = $credits - 1;
+        $_SESSION["credits"] = $credits;
 
         $statement = $conn->prepare("UPDATE users SET credits = :credits WHERE username = :username");
         $statement->bindValue(":credits", $credits);

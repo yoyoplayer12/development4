@@ -15,6 +15,7 @@
                 $result = $statement->fetch(PDO::FETCH_ASSOC);
                 $credits = $result['credits'];
                 $credits = $credits + 1;
+                $_SESSION["credits"] = $credits;
                 // var_dump($credits);
         
         
