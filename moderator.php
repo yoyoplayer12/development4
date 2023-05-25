@@ -1,6 +1,5 @@
 <?php
 include_once("./bootstrap.php");
-include_once("./classes/Db.php");
 
 if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {

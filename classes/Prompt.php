@@ -346,6 +346,7 @@
             $statement = $conn->prepare("UPDATE users SET credits = :credits WHERE id = :userid");
             $statement->bindValue(":credits", $credits);
             $statement->bindValue(":userid", $_SESSION['userid']);
+            $_SESSION['credits'] = $credits;
             $result = $statement->execute();
             return $result;
         }
