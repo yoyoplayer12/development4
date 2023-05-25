@@ -77,8 +77,8 @@ $url = $image->getUrl()
         <a href="#users" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Blocked users</a>
     </div>
     <div class="flex justify-center flex-col items-center">
-        <div id="moderators">
-            <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Moderators</h2>
+        <div>
+            <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Users</h2>
             <form method="POST" class="mr-2">
                 <input type="text" name="username" class="p-3 border-2 rounded-lg border-[#0464A4] w-96" placeholder="Search">
                 <button type="submit" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-3 px-8 rounded-lg mx-4 cursor-pointer">Search</button>
@@ -87,7 +87,7 @@ $url = $image->getUrl()
             <!-- Display the list of matching usernames -->
             <?php if (!empty($matchingUsernames)) : ?>
                 <div class="mt-2">
-                    <h2 class="text-[#0464A4] text-xl my-5 flex justify-center">Possible usernames:</h2>
+                    <h2 class="text-[#0464A4] text-xl my-5 flex justify-center">Users:</h2>
                     <ul>
                         <?php foreach ($matchingUsernames as $username) : ?>
                             <form method="POST">
@@ -102,12 +102,12 @@ $url = $image->getUrl()
                 </div>
             <?php else : ?>
                 <div class="mt-5">
-                    <h2>No usernames found. You need to search for a username to add a moderator.</h2>
+                    <h2>No users were found.</h2>
                 </div>
             <?php endif; ?>
 
             <div>
-            <h2 class="text-[#0464A4] text-2xl my-10 flex justify-center">Chosen moderators</h2>
+            <h2 class="text-[#0464A4] text-2xl my-10 flex justify-center" id="moderators">Moderators</h2>
                 <ul>
                     <?php foreach ($moderators as $moderator) : ?>
                         <li class="mb-5 mt-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
@@ -124,6 +124,23 @@ $url = $image->getUrl()
                 </ul>
             </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div id="prompts">
             <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Prompts</h2>
             <h1><?php echo $unverifiedpromptscount ?> To verify</h1>
@@ -248,6 +265,9 @@ $url = $image->getUrl()
         </div>
         <div id="users" class="mb-10">
             <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Blocked users</h2>
+        
+
+            <!-- blocked users -->
         </div>
     </div>
 </body>

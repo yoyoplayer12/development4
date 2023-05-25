@@ -13,7 +13,7 @@ class Moderator {
     public static function addModerator($username)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("UPDATE users SET is_moderator = 1 WHERE username = :username");
+        $statement = $conn->prepare("UPDATE users SET admin = 1 WHERE username = :username");
         $statement->bindValue(":username", $username);
         $statement->execute();
     }
@@ -21,7 +21,7 @@ class Moderator {
     public static function deleteModerator($username)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("UPDATE users SET is_moderator = 0 WHERE username = :username");
+        $statement = $conn->prepare("UPDATE users SET admin = 0 WHERE username = :username");
         $statement->bindValue(":username", $username);
         $statement->execute();
     }
@@ -29,7 +29,7 @@ class Moderator {
 
     public static function getModerators() {
         $conn = Db::getInstance();
-        $statement = $conn->query("SELECT username FROM users WHERE is_moderator = 1");
+        $statement = $conn->query("SELECT username FROM users WHERE admin = 1");
         $moderators = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $moderators;
     }
