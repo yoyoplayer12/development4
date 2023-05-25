@@ -356,4 +356,18 @@
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         return $result["credits"];
     }
+    public function ban($id){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("UPDATE users SET banned = 1 WHERE id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+    }
+    public function bancheck($id){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT banned FROM users WHERE id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        return $result["banned"];
+    }
 }
