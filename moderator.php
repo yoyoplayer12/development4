@@ -7,24 +7,38 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
 
         // Get all usernames from the database
         $usernames = Moderator::getUsernames($searchedUsername);
-
+        $users = Moderator::getUsers($searchedUsername);
         // Filter the usernames based on the search value
-        foreach ($usernames as $user) {
+        foreach ($users as $user) {
             if (stripos($user["username"], $searchedUsername) !== false) {
-                $matchingUsernames[] = $user["username"];
+                $matchingUserIds[] = $user["id"];
             }
         }
 
         // Check if the "addMod" button is clicked
-        if (isset($_POST["addMod"]) && isset($_POST["selectedUsername"])) {
-            $selectedUsername = $_POST["selectedUsername"];
-            Moderator::addModerator($selectedUsername);
+        if (isset($_POST["addMod"]) && isset($_POST["selectedUserId"])) {
+            $selectedUserId = $_POST["selectedUserId"];
+            Moderator::addModerator($selectedUserId);
         }
 
         // Check if the "deleteMod" button is clicked
-        if (isset($_POST["deleteMod"]) && isset($_POST["selectedUsername"])) {
-            $selectedUsername = $_POST["selectedUsername"];
-            Moderator::deleteModerator($selectedUsername);
+        if (isset($_POST["deleteMod"]) && isset($_POST["selectedUserId"])) {
+            $selectedUserId = $_POST["selectedUserId"];
+            Moderator::deleteModerator($selectedUserId);
+        }
+        //ban user
+        if (isset($_POST["banuser"]) && isset($_POST["selectedUserId"])) {
+            $selectedUserId = $_POST["selectedUserId"];
+            Moderator::ban($selectedUserId);
+        }
+        //unban user
+        if (isset($_POST["unbanuser"]) && isset($_POST["selectedUserId"])) {
+            $selectedUserId = $_POST["selectedUserId"];
+            Moderator::unban($selectedUserId);
+        }
+        if (isset($_POST["unban"]) && isset($_POST["selectedUserId"])){
+            $selectedUserId = $_POST["selectedUserId"];
+            Moderator::unban($selectedUserId);
         }
     }
 
@@ -39,15 +53,19 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
 $unverifiedprompts = [];
 $rejectedprompts = [];
 $reportedprompts = [];
+$bannedusers = [];
 $rejectedpromptscount = 0;
 $unverifiedpromptscount = 0;
 $reportedpromptscount = 0;
+$banneduserscount = 0;
 $unverifiedprompts = Prompt::getUnverifiedPrompts();
 $rejectedprompts = Prompt::getRejectedPrompts();
 $reportedprompts = Prompt::getReportedPrompts();
+$bannedusers = Moderator::getBannedUsers();
 $rejectedpromptscount = count($rejectedprompts);
 $unverifiedpromptscount = count($unverifiedprompts);
 $reportedpromptscount = count($reportedprompts);
+$banneduserscount = count($bannedusers);
 
 //setting up image getting
 $image = new Image();
@@ -74,7 +92,7 @@ $url = $image->getUrl()
     <div class="flex justify-center flex-row items-center">
         <a href="#moderators" class="px-5 py-2 text-[#0464A4] underline bg-white rounded mr-5">Moderators</a>
         <a href="#prompts" class="px-5 py-2 text-[#0464A4] underline bg-white rounded mr-5">Prompts</a>
-        <a href="#users" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Blocked users</a>
+        <a href="#users" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Banned users</a>
     </div>
     <div class="flex justify-center flex-col items-center">
         <div>
@@ -85,18 +103,20 @@ $url = $image->getUrl()
             </form>
 
             <!-- Display the list of matching usernames -->
-            <?php if (!empty($matchingUsernames)) : ?>
+            <?php if (!empty($matchingUserIds)) : ?>
                 <div class="mt-2">
                     <h2 class="text-[#0464A4] text-xl my-5 flex justify-center">Users:</h2>
                     <ul>
-                        <?php foreach ($matchingUsernames as $username) : ?>
-                            <form method="POST">
-                                <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
-                                    <?php echo htmlspecialchars($username); ?>
-                                    <input type="hidden" name="selectedUsername" value="<?php echo htmlspecialchars($username); ?>">
-                                    <button type="submit" name="addMod" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer">Add as Moderator</button>
-                                </li>
-                            </form>
+                        <?php foreach ($matchingUserIds as $userid) : ?>
+                            <?php $user = Moderator::getUserById($userid); ?>
+                                <form method="POST">
+                                    <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
+                                        <?php echo htmlspecialchars($user['username']); ?>
+                                        <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
+                                        <button type="submit" name="addMod" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer">Add as Moderator</button>
+                                        <button type="submit" name="<?php if($user['banned'] == 0){echo "banuser";}else{echo "unbanuser";} ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if($user['banned'] == 0){echo "Ban";}else{echo "Unban";} ?></button>
+                                    </li>
+                                </form>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -113,7 +133,7 @@ $url = $image->getUrl()
                         <li class="mb-5 mt-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
                             <?php echo htmlspecialchars($moderator["username"]); ?>
                             <form method="POST">
-                                <input type="hidden" name="selectedUsername" value="<?php echo htmlspecialchars($moderator["username"]); ?>">
+                                <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($moderator["id"]); ?>">
                                 <button type="submit" name="deleteMod" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer ">Remove Moderator</button>
                             </form>
                         </li>
@@ -124,23 +144,6 @@ $url = $image->getUrl()
                 </ul>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div id="prompts">
             <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Prompts</h2>
             <h1><?php echo $unverifiedpromptscount ?> To verify</h1>
@@ -264,10 +267,16 @@ $url = $image->getUrl()
             } ?>
         </div>
         <div id="users" class="mb-10">
-            <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Blocked users</h2>
-        
-
-            <!-- blocked users -->
+            <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Banned users</h2>
+            <?php foreach($bannedusers as $user): ?>
+                <form method="POST">
+                    <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
+                        <?php echo htmlspecialchars($user['username']); ?>
+                        <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
+                        <button type="submit" name="unban" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if($user['banned'] == 0){echo "Ban";}else{echo "Unban";} ?></button>
+                    </li>
+                </form>
+            <?php endforeach; ?>
         </div>
     </div>
 </body>
