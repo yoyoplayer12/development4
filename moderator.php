@@ -200,7 +200,7 @@ $url = $image->getUrl()
                                     </li>
                                 </ul>
                                 <ul>
-                                    <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo" class="w-80 mb-5"></li>
+                                    <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo" class="w-80 mb-5 rounded rounded-xl"></li>
                                     <li>
                                         <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
 
@@ -245,7 +245,7 @@ $url = $image->getUrl()
                                     </li>
                                 </ul>
                                 <ul>
-                                    <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo" class="w-80 mb-5"></li>
+                                    <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo" class="w-80 mb-5 rounded-xl"></li>
                                     <li>
                                         <p><b>Description: </b><?php echo $prompt["description"] ?></p>
                                     </li>
@@ -288,7 +288,7 @@ $url = $image->getUrl()
                                     </li>
                                 </ul>
                                 <ul>
-                                    <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo" class="w-80 mb-5"></li>
+                                    <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo" class="w-80 mb-5 rounded-xl"></li>
                                     <li>
                                         <p><b>Description: </b><?php echo $prompt["description"] ?></p>
                                     </li>
