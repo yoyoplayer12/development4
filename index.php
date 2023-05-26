@@ -113,7 +113,7 @@
                         <?php if(isset($_SESSION["userid"])): ?>
                             <?php if($_SESSION['userid'] == $prompt['user_id']): ?>
                             <?php else: ?>
-                                <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" id="buybtnid" data-postid="<?php echo $prompt["id"]?>"><button><?php if(count(Prompt::checkBought($prompt['id'])) >=1 ){ echo "Bought";} else { echo "Buy";} ?></button></li>
+                                <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" id="buybtnid" data-postid="<?php echo $prompt["id"]?>" data-postuserid="<?php echo $prompt["user_id"]?>"><button><?php if(count(Prompt::checkBought($prompt['id'])) >=1 ){ echo "Bought";} else { echo "Buy";} ?></button></li>
                             <?php endif; ?>
                         <?php endif ?>
                         <!-- if username is logged in show this button  -->
@@ -247,9 +247,11 @@
         btn.addEventListener("click", function () {
             let currentBtn = this;
             let postId = this.dataset.postid;
+            let payoutId = this.dataset.postuserid;
             //post naar database
             let formData = new FormData();
             formData.append("post_id", postId);
+            formData.append("post_payout_id", payoutId);
             fetch("ajax/buypost.php", {
                 method: "POST",
                 body: formData
