@@ -61,7 +61,7 @@
     <link rel="stylesheet" href="css/main.css">
     <title>Eve - Home</title>
 </head>
-<body class="bg-[#f4f4fc]">
+<body class="bg-[#C8C8CC]">
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1 class="text-[#0464A4] text-5xl my-10 flex justify-center">New Prompt</h1>
     <div class="flex justify-center">
