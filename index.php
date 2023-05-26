@@ -50,7 +50,7 @@
         <button type="submit" name="submit" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-3 px-8 rounded-lg mx-4 cursor-pointer">Search</button>
     </form>
     <form action="" method="post" id="categoryFilter">
-            <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required>
+            <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required class="bg-[#0464A4] px-5 py-3 rounded-lg text-white cursor-pointer">
                 <option value="" disabled selected>Select a category</option>
                 <option value="*">All categories</option>
                 <?php foreach($allCategories as $category): ?>
