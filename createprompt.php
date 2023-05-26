@@ -8,10 +8,13 @@
     else {
         header("Location: login.php");
     }
+    $user = new User();
     $categories = [];
     $prices = [];
     $categories = Prompt::getCategories();
     $prices = Prompt::getPrices();
+    $userDetails = $user->getUser($_SESSION["userid"]);
+
     if(!empty($_POST)){
         try{
             $prompt = new Prompt();
@@ -27,12 +30,18 @@
             $prompt->setPriceId($_POST['prices']);
             $prompt->setCategoryId($_POST['categories']);
             $prompt->setDescription($_POST['description']);
-            $prompt->setPhotoUrl($destination);
+            $prompt->setPhotoUrl("$destination");
             $prompt->setPrompt($_POST['prompt']);
             $prompt->setPromptInfo($_POST['prompt_info']);
             $prompt->setUserId($_SESSION["userid"]);
             //final prompt setting
-            $prompt->save();
+            if ($userDetails["verified"] == 0) {
+                $prompt->setVerified(0);
+            }
+            else {
+                $prompt->setVerified(1);
+            }
+            $prompt->save($userDetails["verified"]);
             header("Location: index.php");
             //message meegeven nog doen
           }

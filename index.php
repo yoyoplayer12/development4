@@ -50,7 +50,7 @@
         <button type="submit" name="submit" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-3 px-8 rounded-lg mx-4 cursor-pointer">Search</button>
     </form>
     <form action="" method="post" id="categoryFilter">
-            <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required>
+            <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required class="bg-[#0464A4] px-5 py-3 rounded-lg text-white cursor-pointer">
                 <option value="" disabled selected>Select a category</option>
                 <option value="*">All categories</option>
                 <?php foreach($allCategories as $category): ?>
@@ -87,7 +87,7 @@
                 <div class="bg-white p-10 rounded-3xl">
                     <ul class="list-none flex flex-col">
                         <div class="flex flex-row justify-between mb-5">
-                        <li class="text-lg flex"><a id="likebtn" data-postid="<?php echo $prompt["id"]; ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#F5F5F5" width="24" height="24">
+                        <li class="text-lg flex"><a id="likebtn" data-postid="<?php echo $prompt["id"]; ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#C8C8CC" width="24" height="24">
                         <path d="M12 20.934l-1.414-1.414C5.045 14.319 2 11.238 2 7.5 2 4.364 4.364 2 7.5 2c1.899 0 3.728.929 4.854 2.475C13.772 2.929 15.601 2 17.5 2 20.636 2 23 4.364 23 7.5c0 3.738-3.045 6.819-8.586 12.02L12 20.934z"/>
                         </svg>
                         </a><p><?php echo Like::getLikes($prompt["id"])?></p></li>
@@ -99,15 +99,17 @@
                         <?php else: ?>
                             <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
-                        <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
+                        <li class="mt-5"><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <!-- shouldnt be visible before buying -->
+                        <?php if(isset($_SESSION["loggedin"])): ?>
                         <?php if(count(Prompt::checkBought($prompt['id'])) >=1 ):?>
                             <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
-                            <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
+                            <li class="mb-5"><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                         <?php else: ?>
                             <li><p><b>Price: </b><?php echo $promptprice["price"] ?> Credits</p></li>
+                        <?php endif; ?>
                         <?php endif; ?>
                         <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                         <?php if(isset($_SESSION["userid"])): ?>
@@ -122,7 +124,7 @@
                             <?php if($prompt["user_id"] == $_SESSION["userid"]):?>
                                 <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="deletepost.action.php?pid=<?php echo $prompt["id"] ?>&uid=<?php echo $prompt["user_id"] ?>">Delete</a></li>
                             <?php else: ?>
-                                <li><button class="reportbtn" id="reportbtnid" data-postid="<?php echo $prompt["id"]?>"><?php if(count(Prompt::checkReport($prompt['id'])) >=1 ){ echo "Reported";} else { echo "Report";} ?></button></li>
+                                <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button class="reportbtn" id="reportbtnid" data-postid="<?php echo $prompt["id"]?>"><?php if(count(Prompt::checkReport($prompt['id'])) >=1 ){ echo "Reported";} else { echo "Report";} ?></button></li>
                             <?php endif; ?>
                         <?php endif; ?>
                         <?php if(isset($_SESSION["admin"])):?>
@@ -176,10 +178,10 @@
                     .then(function(json){
                         siblingP.innerHTML = json.likes;
                         if (json.status == 'Unlike') {
-                            heartIcon.setAttribute('fill', '#00FF00');
+                            heartIcon.setAttribute('fill', '#0464A4');
                         }
                         else {
-                            heartIcon.setAttribute('fill', '#F5F5F5');
+                            heartIcon.setAttribute('fill', '#C8C8CC');
                         }
                     });
 
