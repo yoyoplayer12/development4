@@ -9,12 +9,60 @@
     } else {
         $search_query = "";
     }
-
     $limit = 6; // number of prompts to display per page
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // current page number
     $offset = ($page - 1) * $limit;
+    $prompts = [];
+    //filter
+    $minprice = Prompt::getMinPrice();
+    $maxprice = Prompt::getMaxPrice();
+    $minpriceid = Prompt::getPriceIdByPrice($minprice["MIN(price)"]);
+    $maxpriceid = Prompt::getPriceIdByPrice($maxprice["MAX(price)"]);
+    $promptids = Prompt::searchByPriceRange($minpriceid['id'], $maxpriceid['id']);
+    $minpricefilter = [];
+    $maxpricefilter = [];
+    $filterlabels = [];
+    if(isset($_POST['filter'])){
+        $limit = $_POST['limit'];
+        $pagefilterlabel = $_POST['limit']." posts per page";
+        array_push($filterlabels, $pagefilterlabel);
+        if($_POST['minprice'] != null && $_POST['maxprice'] != null){
+            if($_POST['minprice'] <= $_POST['maxprice']){
+                $minpricefilter = Prompt::getPriceIdByPrice($_POST['minprice']);
+                $maxpricefilter = Prompt::getPriceIdByPrice($_POST['maxprice']);
+                if($minpricefilter != false && $maxpricefilter != false){
+                    $promptids = Prompt::searchByPriceRange($minpricefilter['id'], $maxpricefilter['id']);
+                    $pricefilterlabel = "Price: " . $_POST['minprice'] . " to " . $_POST['maxprice'] . " Credits";
+                    array_push($filterlabels, $pricefilterlabel);
+                }
+            }
+        }
+    }
+    if(isset($_POST['reset'])){
+        $promptids = Prompt::searchByPriceRange($minpriceid['id'], $maxpriceid['id']);
+        $filterlabels = [];
+    }
+    //filter
 
-    $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query);
+
+
+
+    if(isset($_POST['filter'])){
+        $verfiedprompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query);
+        foreach($promptids as $promptid){
+            foreach($verfiedprompts as $verfiedprompt){
+                if($promptid['id'] == $verfiedprompt['id']){
+                    array_push($prompts, $verfiedprompt);
+                }
+            }
+        }
+
+    } 
+    else {
+        $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query);
+
+    }
+
     
 
 
@@ -29,6 +77,7 @@
     //setting up image getting
     $image = new Image();
     $url = $image->getUrl();
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,6 +92,57 @@
 </head>
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
+    <!-- filters -->
+
+    <div>
+        <h3>Filters</h3>
+        <form action="" method="post" id="filter">
+            <div class="flex flex-col gap-5">
+                <div class="flex flex-row gap-5">
+                    <div>
+                        <label for="price"><b>Price: (<?php echo $minprice["MIN(price)"] ?> to <?php echo $maxprice['MAX(price)'] ?> Credits)</b></label>
+                        <input type="number" placeholder="Minumum price" name="minprice" value="<?php if(isset($_POST['minprice'])){echo $_POST['minprice'];} ?>">
+                        <input type="number" placeholder="Maximum price" name="maxprice" value="<?php if(isset($_POST['maxprice'])){echo $_POST['maxprice'];} ?>">
+                    </div>
+                </div>
+                <div class="flex flex-row gap-5">
+                    <div class="flex flex-col gap-5">
+                        <label for="limit"><b>Posts per page</b></label>
+                        <select name="limit" id="limit">
+                            <?php if(isset($_POST['limit'])): ?>
+                                <?php if($_POST['limit'] == 6): ?>
+                                    <option value="6" selected="selected">6</option>
+                                <?php elseif($_POST['limit'] == 12): ?>
+                                    <option value="12" selected="selected">12</option>
+                                <?php elseif($_POST['limit'] == 18): ?>
+                                    <option value="18" selected="selected">18</option>
+                                <?php elseif($_POST['limit'] == 24): ?>
+                                    <option value="24" selected="selected">24</option>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <option value="6" selected="selected">6</option>
+                                <option value="12">12</option>
+                                <option value="18">18</option>
+                                <option value="24">24</option>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-row gap-5">
+                <button type="submit" name="filter" class="btn btn-primary">Filter</button>
+                <button type="submit" name="reset" class="btn btn-primary">Reset</button>
+            </div>
+        </form>
+        <?php foreach($filterlabels as $label): ?>
+            <div>
+                <p><?php echo $label ?></p>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+
+    <!-- filters -->
     <h1 class=" text-[#0464A4] text-5xl my-10 flex justify-center">Prompt marketplace</h1>
     <div class="flex justify-center items-center">
     <form method="get" class="mr-2">
