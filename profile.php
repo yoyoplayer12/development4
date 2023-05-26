@@ -73,15 +73,14 @@ if (isset($_POST['removeFav'])) {
                 <div>
                     <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Favorite prompts</h2>
                     <?php foreach ($printFavorites as $printFavorite) : ?>
+                        <?php $promptUser = Prompt::getPromptUser($printFavorite['user_id']); ?>
+                        <?php $promptCat = Prompt::getPromptCat($printFavorite['cat_id']); ?>
                         <div class="bg-white px-10 rounded-3xl flex justify-center items-center flex-col py-5 mb-10">
                             <p class="text-[#0464A4] text-xl"><?php echo $printFavorite["title"] ?></p>
                             <ul class="flex flex-row gap-10 mb-5 pt-5">
                                 <li>
                                     <p><?php echo $promptUser['username']; ?></p>
                                 </li>
-                                <?php $promptUser = Prompt::getPromptUser($printFavorite['user_id']); ?>
-                                <?php $promptCat = Prompt::getPromptCat($printFavorite['cat_id']); ?>
-                                <?php $promptNumber = Prompt::deleteFavorite($printFavorite['id']); ?>
                                 <li>
                                     <p class="text-[#0464A4]"><?php echo $promptCat["category"] ?></p>
                                 </li>
@@ -108,9 +107,6 @@ if (isset($_POST['removeFav'])) {
                                 <div class="mt-5 flex flex-col gap-5 pb-5">
                                     <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button>Buy</button></li>
                                     <!-- make button that removes the prompt from favorites with the Prompt class -->
-                                    <!-- <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $printFavorite["id"] ?> data-usernameid=<?php echo $_SESSION["username"]; ?>  ><?php if (Prompt::deleteFavorite($printFavorite['id'])) {
-                                                                                                                                                                                                    echo "remove from favorites";
-                                                                                                                                                                                                } ?></button></li> -->
                                     <form method="POST" action="profile.php">
                                         <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center">
                                             <input type="submit" value="Remove from favorites" name="removeFav"> </input>
@@ -128,7 +124,6 @@ if (isset($_POST['removeFav'])) {
                             <ul class="flex flex-row gap-10 mb-5 pt-5">
                                 <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
                                 <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
-                                <?php $promptNumber = Prompt::deleteFavorite($prompt['id']); ?>
                                 <li>
                                     <p class="text-[#0464A4]"><?php echo $promptUser['username'] ?></p>
                                 </li>
@@ -167,9 +162,6 @@ if (isset($_POST['removeFav'])) {
                                 <div class="mt-5 flex flex-col gap-5 pb-5">
                                     <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button>Buy</button></li>
                                     <!-- make button that removes the prompt from favorites with the Prompt class -->
-                                    <!-- <li><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?> data-usernameid=<?php echo $_SESSION["username"]; ?>  ><?php if (Prompt::deleteFavorite($prompt['id'])) {
-                                                                                                                                                                                            echo "remove from favorites";
-                                                                                                                                                                                        } ?></button></li> -->
                                     <form method="POST" action="profile.php">
                                         <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center">
                                             <input type="submit" value="Remove from favorites" name="removeFav"> </input>
