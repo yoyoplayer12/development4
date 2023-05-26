@@ -18,7 +18,11 @@ $url = $image->getUrl();
 $printFavorites = Prompt::getFavorites();
 // var_dump($printFavorites[0]['postId']);
 $boughtpromptids = Prompt::getBoughtPromptIds();
-$boughtprompts = Prompt::getBoughtPrompts($boughtpromptids['prompt_id']);
+if ($boughtpromptids != false) {
+    $boughtprompts = Prompt::getBoughtPrompts($boughtpromptids['prompt_id']);
+} else {
+    $boughtprompts = [];
+}
 
 
 
