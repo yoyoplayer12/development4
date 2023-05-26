@@ -226,7 +226,7 @@
             //post naar database
             let formData = new FormData();
             formData.append("post_id", postId);
-
+            
             fetch("ajax/report.php", {
                 method: "POST",
                 body: formData
