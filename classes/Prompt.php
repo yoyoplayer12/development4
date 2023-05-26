@@ -13,7 +13,6 @@
         private $userId;
         private $price;
         private $payoutid;
-        private $credits;
         private $verified;
       
         public static function getUnverifiedPrompts()
