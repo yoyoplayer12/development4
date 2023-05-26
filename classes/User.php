@@ -370,4 +370,11 @@
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         return $result["banned"];
     }
+    public static function getPrices(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prices");
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    }
 }

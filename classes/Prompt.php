@@ -146,6 +146,26 @@
             $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $prompt;
         }
+        public static function getVerifiedPromptsById($id, $limit, $offset, $search_query)
+        {
+            $conn = Db::getInstance();
+            $sql = "SELECT * FROM prompts WHERE verified = 1 AND active = 1 AND deleted = 0 AND rejected = 0 and reported = 0 AND id = $id";
+            if ($search_query != '') {
+                $sql .= " AND title LIKE :search_query";
+            }
+            //add limit & offset
+            $sql .= " ORDER BY postdate DESC LIMIT :limit OFFSET :offset";
+
+            $statement = $conn->prepare($sql);
+            if ($search_query != '') {
+                $statement->bindValue(":search_query", "%".$search_query."%");
+            }
+            $statement->bindValue(":limit", intval($limit), PDO::PARAM_INT);
+            $statement->bindValue(":offset", intval($offset), PDO::PARAM_INT);
+            $statement->execute();
+            $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $prompt;
+        }
         public static function countAllVerifiedPrompts($search_query)
         {
             $conn = Db::getInstance();
@@ -406,5 +426,36 @@
             $this->verified = $verified;
 
             return $this;
+        }
+        public static function getMinPrice(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT MIN(price) FROM prices WHERE active=1;");
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public static function getMaxPrice(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT MAX(price) FROM prices WHERE active=1;");
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public static function searchByPriceRange($minPrice, $maxPrice){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT id FROM prompts WHERE price_id >= :minPrice AND price_id <= :maxPrice AND verified = 1 AND active = 1 AND deleted = 0 AND rejected = 0 AND reported = 0");
+            $statement->bindValue(":minPrice", $minPrice);
+            $statement->bindValue(":maxPrice", $maxPrice);
+            $statement->execute();
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $results;
+        }
+        public static function getPriceIdByPrice($price){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT id FROM prices WHERE price = :price");
+            $statement->bindValue(":price", $price);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return $result;
         }
     }
