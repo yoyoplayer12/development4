@@ -52,7 +52,7 @@
 <div class="flex justify-center items-center mt-20">
     <div>
         <?php if (isset($_SESSION['loggedin'])) : ?>
-        <div class=" w-90 rounded-lg bg-white px-10 py-10 ">
+        <div class=" w-90 rounded-3xl bg-white px-10 py-10 ">
         <h1 class="text-2xl font-bold text-center"><?php echo $_SESSION['username'] ?>'s profile</h1>
         <div class="flex flex-col items-center my-4">
             <img src="<?php echo $url.$getUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover m-10">
@@ -106,7 +106,7 @@
                     <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
                     <?php $promptNumber = Prompt::deleteFavorite($prompt['id']);?>
                     <li><p><b>By: </b><?php echo $promptUser['username'];?></p></li>
-                    <li><img  class="rounded-3xl" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
+                    <li><img  class="rounded-3xl w-80" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
                     <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                     <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                     <!-- shouldnt be visible before buying -->
