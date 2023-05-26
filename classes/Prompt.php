@@ -11,9 +11,11 @@
         private $categoryid;
         private $postId;
         private $userId;
+        private $price;
+        private $payoutid;
         private $credits;
         private $verified;
-
+      
         public static function getUnverifiedPrompts()
         {
             $conn = Db::getInstance();
@@ -88,9 +90,14 @@
             $this->userId = $userId;
             return $this;
         }
-        public function setCredits($credits)
+        public function setPrice($price)
         {
-            $this->credits = $credits;
+            $this->price = $price;
+            return $this;
+        }
+        public function setpayoutId($payoutid)
+        {
+            $this->payoutid = $payoutid;
             return $this;
         }
         public function save()
@@ -310,6 +317,18 @@
             $statement->bindValue(":postId", $this->postId);
             $result = $statement->execute();
             return $result;
+        }
+        public function payout(){
+            $conn = Db::getInstance();
+            $statement1 = $conn->prepare("UPDATE `bought-prompts` SET paidout = 1 WHERE user_id = :userId AND prompt_id = :postId");
+            $statement2 = $conn->prepare("UPDATE `users` SET credits = credits + :price WHERE id = :payoutid");
+            $statement2->bindValue(":price", $this->price);
+            $statement2->bindValue(":payoutid", $this->payoutid);
+            $statement1->bindValue(":userId", $this->userId);
+            $statement1->bindValue(":postId", $this->postId);
+            $result1 = $statement1->execute();
+            $result2 = $statement2->execute();
+            return $result1 && $result2;
         }
         public static function getPromptById($promptId){
             $conn = Db::getInstance();
