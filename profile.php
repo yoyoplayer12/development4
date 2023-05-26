@@ -22,7 +22,6 @@
         $boughtprompts = Prompt::getBoughtPrompts($boughtpromptids['prompt_id']);
         
         
-    
         //remove favorites after click on button
         if(isset($_POST['removeFav'])){
             var_dump($printFavorites[0]['postId']);
