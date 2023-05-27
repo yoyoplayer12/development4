@@ -28,7 +28,10 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
         }
         //ban user
         if (isset($_POST["banuser"]) && isset($_POST["selectedUserId"])) {
+            
             $selectedUserId = $_POST["selectedUserId"];
+            var_dump($selectedUserId);
+            var_dump($_POST['banuser']);
             Moderator::ban($selectedUserId);
         }
         //unban user
@@ -39,7 +42,8 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
         if (isset($_POST["unban"]) && isset($_POST["selectedUserId"])) {
             $selectedUserId = $_POST["selectedUserId"];
             Moderator::unban($selectedUserId);
-        }
+        } 
+
     }
 
     // Fetch and display the list of moderators
@@ -66,6 +70,18 @@ $reporteduserids = Moderator::getReportedUserIds();
 $rejectedpromptscount = count($rejectedprompts);
 $unverifiedpromptscount = count($unverifiedprompts);
 $reportedpromptscount = count($reportedprompts);
+
+$printReportedUsers = User::getReportedUsers();
+// var_dump($printReportedUsers);
+
+
+
+
+
+
+
+
+
 
 //setting up image getting
 $image = new Image();
@@ -118,14 +134,14 @@ $url = $image->getUrl()
                                         <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
                                         <button type="submit" name="addMod" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer">Add as Moderator</button>
                                         <button type="submit" name="<?php if ($user['banned'] == 0) {
-                                                                        echo "banuser";
-                                                                    } else {
-                                                                        echo "unbanuser";
-                                                                    } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
-                                                                                                                                                                                    echo "Ban";
-                                                                                                                                                                                } else {
-                                                                                                                                                                                    echo "Unban";
-                                                                                                                                                                                } ?></button>
+                                            echo "banuser";
+                                        } else {
+                                            echo "unbanuser";
+                                        } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
+                                            echo "Ban";
+                                        } else {
+                                            echo "Unban";
+                                        } ?></button>
                                     </li>
                                 </form>
                             <?php endforeach; ?>
@@ -164,14 +180,49 @@ $url = $image->getUrl()
                             <?php echo htmlspecialchars($user['username']); ?>
                             <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
                             <button type="submit" name="unban" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
-                                                                                                                                                                        echo "Ban";
-                                                                                                                                                                    } else {
-                                                                                                                                                                        echo "Unban";
-                                                                                                                                                                    } ?></button>
+                                echo "Ban";
+                            } else {
+                                echo "Unban";
+                            } ?></button>
                         </li>
                     </form>
                 <?php endforeach; ?>
             </div>
+                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Reported users</h2>
+                <?php if(empty($printReportedUsers)): ?>
+                    <?php echo "<h1 class='noposts'>No reported users yet...</h1>";?>
+                <?php else: ?>
+                <?php foreach ($printReportedUsers as $reportedUser): ?>
+                <form action="" method="post">
+                    <div class="flex justify-center items-center mt-20">
+                        <div>
+                            <div class=" w-90 rounded-lg bg-white px-10 py-10 ">
+                                <h1 class="text-2xl font-bold text-center"><?php echo $reportedUser['username'] ?></h1>
+                                <div class="flex flex-col items-center my-4">
+                                    <img src="<?php echo $url.$reportedUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover m-10">
+                                </div>
+                                <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($reportedUser['reported_id']); ?>">
+                                <button type="submit" name="<?php if ($reportedUser['banned'] == 0) {
+                                    echo "banuser";
+                                } else {
+                                    echo "unbanuser";
+                                } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($reportedUser['banned'] == 0) {
+                                    echo "Ban";
+                                } else {
+                                    echo "Unban";
+                                } ?></button>
+
+                            </div>
+                        <div>
+                </form>
+                        
+                </div>
+                <?php endforeach; ?>
+                <?php endif; ?>
+                
+            <div>
+                
+
         </div>
         <div class="mb-10">    
             <div id="prompts">

@@ -16,7 +16,6 @@ $image = new Image();
 $url = $image->getUrl();
 
 $printFavorites = Prompt::getFavorites();
-// var_dump($printFavorites[0]['postId']);
 $boughtpromptids = Prompt::getBoughtPromptIds();
 if ($boughtpromptids != false) {
     $boughtprompts = Prompt::getBoughtPrompts($boughtpromptids['prompt_id']);
@@ -28,14 +27,13 @@ if ($boughtpromptids != false) {
 
 //remove favorites after click on button
 if (isset($_POST['removeFav'])) {
-    var_dump($printFavorites[0]['postId']);
 
     $promptId = $printFavorites[0]['postId'];
-    //var_dump($promptId);
     $test = Prompt::deleteFavorite($promptId);
 
     header("Location: profile.php");
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

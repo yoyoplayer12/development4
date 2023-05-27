@@ -1,13 +1,52 @@
 <?php
-include_once(__DIR__ . "/bootstrap.php");
-require_once(__DIR__ . '/vendor/autoload.php');
-//logindetection
-if (isset($_SESSION["loggedin"])) {
-    $warning = " ";
-    $getUser = User::getSessionUser();
-    if (!empty($_POST)) {
-        if (!empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])) {
-
+    include_once(__DIR__ . "/bootstrap.php");
+    //logindetection
+    if(isset($_SESSION["loggedin"])) {
+        $warning = "";
+        $getUser = User::getSessionUser();
+        if(!empty($_POST)){
+            if(!empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
+    
+                if (strlen($_POST['bio']) <= 19){
+                    $warning = "Bio is too short, has to have at least 20 characters.";
+                }
+                elseif (strlen($_POST['bio']) >= 501){
+                    $warning = "Bio is too long, can have a maximum of 500 characters.";
+                }
+                else{
+                    $bio = $_POST['bio'];
+                    $user = new User();
+                    $user->resetBio($bio);
+                    //set image
+                    $upload = new Image();
+                    $upload->setup();
+                    $upload->upload("public", "users", "avatar_url");
+                    $randomstring = $upload->getString();
+                    $ext = pathinfo($_FILES['avatar_url']['name'], PATHINFO_EXTENSION);
+                    $destination = "evestore/public/users/".$randomstring.".".$ext;
+                    $user->resetAvatar($destination);
+                    //saving to database
+                    $user->updateUser();
+                    header("Location: profile.php");
+                }
+            }
+            elseif(!empty($_POST['bio']) && empty($_FILES['avatar_url']["name"])){
+                if (strlen($_POST['bio']) <= 19){
+                    $warning = "Bio is too short, has to have at least 20 characters";
+                }
+                elseif (strlen($_POST['bio']) >= 501){
+                    $warning = "Bio is too long, can have a maximum of 500 characters";
+                }
+                else{
+                    $bio = $_POST['bio'];
+                    $user = new User();
+                    $user->resetBio($bio);
+                    $user->updateBio();
+                    header("Location: profile.php");
+                }
+            }
+            elseif(empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
+                $user = new User();
             if (strlen($_POST['bio']) <= 19) {
                 $warning = "Bio is too short, has to have at least 20 characters";
             } elseif (strlen($_POST['bio']) >= 501) {
