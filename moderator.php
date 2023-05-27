@@ -114,17 +114,17 @@ $url = $image->getUrl()
                                                                     } else {
                                                                         echo "unbanuser";
                                                                     } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
-                                                                                                                                                        echo "Ban";
-                                                                                                                                                    } else {
-                                                                                                                                                        echo "Unban";
-                                                                                                                                                    } ?></button>
+                                                                                                                                                                                    echo "Ban";
+                                                                                                                                                                                } else {
+                                                                                                                                                                                    echo "Unban";
+                                                                                                                                                                                } ?></button>
                                     </li>
                                 </form>
                             <?php endforeach; ?>
                         </ul>
                     </div>
                 <?php else : ?>
-                    <div class="mt-5">
+                    <div class="mt-5 flex justify-center">
                         <h2>No users were found.</h2>
                     </div>
                 <?php endif; ?>
@@ -161,14 +161,14 @@ $url = $image->getUrl()
             </div>
             <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Reported users</h2>
             <?php if (empty($printReportedUsers)) : ?>
-                <?php echo "<h1 class='noposts'>No reported users yet...</h1>"; ?>
+                <?php echo "<h1 class='noposts flex justify-center'>No reported users yet...</h1>"; ?>
             <?php else : ?>
                 <?php foreach ($printReportedUsers as $reportedUser) : ?>
                     <form action="" method="post">
                         <div class="flex justify-center items-center mt-20">
                             <div>
                                 <div class=" w-90 rounded-lg bg-white px-10 py-10 ">
-                                    <h1 class="text-2xl font-bold text-center"><?php echo $reportedUser['username'] ?></h1>
+                                    <h1 class="text-2xl font-bold text-center"><?php echo htmlspecialchars($reportedUser['username']) ?></h1>
                                     <div class="flex flex-col items-center my-4">
                                         <img src="<?php echo $url . $reportedUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover m-10">
                                     </div>
@@ -178,10 +178,10 @@ $url = $image->getUrl()
                                                                 } else {
                                                                     echo "unbanuser";
                                                                 } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($reportedUser['banned'] == 0) {
-                                                                                                                                                    echo "Ban";
-                                                                                                                                                } else {
-                                                                                                                                                    echo "Unban";
-                                                                                                                                                } ?></button>
+                                                                                                                                                                                echo "Ban";
+                                                                                                                                                                            } else {
+                                                                                                                                                                                echo "Unban";
+                                                                                                                                                                            } ?></button>
                                 </div>
                             </div>
                         </div>
@@ -204,16 +204,16 @@ $url = $image->getUrl()
                         <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
                         <?php $promptprice = Prompt::getPromptprice($prompt['price_id']); ?>
                         <div class="prompt bg-white px-10 py-4 rounded-3xl flex justify-center items-center flex-col mt-5">
-                            <p class="text-[#0464A4] text-xl"><?php echo $prompt["title"] ?></p>
+                            <p class="text-[#0464A4] text-xl"><?php echo htmlspecialchars($prompt["title"]) ?></p>
                             <ul class="flex flex-row gap-10 mb-5 pt-5">
                                 <li>
-                                    <p class="text-[#0464A4]"><?php echo $promptUser['username'] ?></p>
+                                    <p class="text-[#0464A4]"><?php echo htmlspecialchars($promptUser['username']) ?></p>
                                 </li>
                                 <li>
-                                    <p class="text-[#0464A4]"><?php echo $promptCat["category"] ?></p>
+                                    <p class="text-[#0464A4]"><?php echo htmlspecialchars($promptCat["category"]) ?></p>
                                 </li>
                                 <li>
-                                    <p class="text-[#0464A4]"><?php echo $promptprice["price"] ?> credits</p>
+                                    <p class="text-[#0464A4]"><?php echo htmlspecialchars($promptprice["price"]) ?> credits</p>
                                 </li>
                             </ul>
                             <ul>
@@ -223,18 +223,18 @@ $url = $image->getUrl()
 
                                 </li>
                                 <li>
-                                    <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                                    <p><b>Description: </b><?php echo htmlspecialchars($prompt["description"]) ?></p>
                                 </li>
                                 <li>
-                                    <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
+                                    <p><b>Prompt: </b><?php echo htmlspecialchars($prompt["prompt"]) ?></p>
                                 </li>
                                 <li>
-                                    <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
+                                    <p><b>Prompt description: </b><?php echo htmlspecialchars($prompt["prompt_info"]) ?></p>
                                 </li>
                             </ul>
                             <!-- Hier komt de verify button ==> if verify = 0 ==> andere backgroundcolor en text -->
                             <div class="my-5 flex gap-5">
-                                <a href="verify.action.php?id=<?php echo $prompt['id'] ?>&username=<?php echo $promptUser['username'] ?>&user_id=<?php echo $promptUser['id'] ?>" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-2 px-4 rounded-lg cursor-pointer">Approve</a>
+                                <a href="verify.action.php?id=<?php echo $prompt['id'] ?>&username=<?php echo htmlspecialchars($promptUser['username']) ?>&user_id=<?php echo $promptUser['id'] ?>" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-2 px-4 rounded-lg cursor-pointer">Approve</a>
                                 <a href="reject.action.php?id=<?php echo $prompt["id"] ?>" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg cursor-pointer">Reject</a>
                             </div>
                         </div>
@@ -251,10 +251,10 @@ $url = $image->getUrl()
                         <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
                         <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
                         <div class="prompt bg-white px-10 rounded-3xl flex justify-center items-center flex-col py-5">
-                            <p class="text-[#0464A4] text-xl"><?php echo $prompt["title"] ?></p>
+                            <p class="text-[#0464A4] text-xl"><?php echo htmlspecialchars($prompt["title"]) ?></p>
                             <ul class="flex flex-row gap-10 mb-5 pt-5">
                                 <li>
-                                    <p class="text-[#0464A4]"><?php echo $promptUser['username'] ?></p>
+                                    <p class="text-[#0464A4]"><?php echo htmlspecialchars($promptUser['username']) ?></p>
                                 </li>
                                 <li>
                                     <p class="text-[#0464A4]"><?php echo $promptCat["category"] ?></p>
@@ -263,16 +263,16 @@ $url = $image->getUrl()
                             <ul>
                                 <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo" class="w-80 mb-5 rounded-xl"></li>
                                 <li>
-                                    <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                                    <p><b>Description: </b><?php echo htmlspecialchars($prompt["description"]) ?></p>
                                 </li>
                                 <li>
                                     <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
                                 </li>
                                 <li>
-                                    <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
+                                    <p><b>Prompt: </b><?php echo htmlspecialchars($prompt["prompt"]) ?></p>
                                 </li>
                                 <li>
-                                    <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
+                                    <p><b>Prompt description: </b><?php echo htmlspecialchars($prompt["prompt_info"]) ?></p>
                                 </li>
                             </ul>
                         </div>
@@ -290,13 +290,13 @@ $url = $image->getUrl()
                         <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
                         <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
                         <div class="prompt bg-white px-10 py-4 rounded-3xl flex justify-center items-center flex-col">
-                            <p class="text-[#0464A4] text-xl"><?php echo $prompt["title"] ?></p>
+                            <p class="text-[#0464A4] text-xl"><?php echo htmlspecialchars($prompt["title"]) ?></p>
                             <ul class="flex flex-row gap-10 mb-5 pt-5">
                                 <li>
                                     <p class="text-[#0464A4]"><b>Report count: </b><?php echo $reportedprompt["count"] ?></p>
                                 </li>
                                 <li>
-                                    <p class="text-[#0464A4]"><?php echo $promptUser['username'] ?></p>
+                                    <p class="text-[#0464A4]"><?php echo htmlspecialchars($promptUser['username']) ?></p>
                                 </li>
                                 <li>
                                     <p class="text-[#0464A4]"><?php echo $promptCat["category"] ?></p>
@@ -305,16 +305,16 @@ $url = $image->getUrl()
                             <ul>
                                 <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo" class="w-80 mb-5 rounded-xl"></li>
                                 <li>
-                                    <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                                    <p><b>Description: </b><?php echo htmlspecialchars($prompt["description"]) ?></p>
                                 </li>
                                 <li>
                                     <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
                                 </li>
                                 <li>
-                                    <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
+                                    <p><b>Prompt: </b><?php echo htmlspecialchars($prompt["prompt"]) ?></p>
                                 </li>
                                 <li>
-                                    <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
+                                    <p><b>Prompt description: </b><?php echo htmlspecialchars($prompt["prompt_info"]) ?></p>
                                 </li>
                             </ul>
                         </div>

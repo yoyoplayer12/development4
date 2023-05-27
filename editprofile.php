@@ -102,8 +102,7 @@ $url = $image->getUrl()
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="icon" type="image/png" href="<?php echo $url . "evestore/assets/brand/zfgfkok4d1wqydimxrj7.png" ?>">
-    <title>Eve - <?php echo $_SESSION['username'] ?>'s profile</title>
-    <title>Eve - <?php echo $_SESSION['username'] ?>'s profile</title>
+    <title>Eve - <?php echo htmlspecialchars($_SESSION['username']) ?>'s profile</title>
 </head>
 
 <body class="bg-blue-200">
@@ -112,7 +111,7 @@ $url = $image->getUrl()
         <div>
             <?php if (isset($_SESSION['loggedin'])) : ?>
                 <div class=" w-90 rounded-3xl bg-white px-10 py-10 ">
-                    <h1 class="text-2xl font-bold text-center"><?php echo $_SESSION['username'] ?>'s profile</h1>
+                    <h1 class="text-2xl font-bold text-center"><?php echo htmlspecialchars($_SESSION['username']) ?>'s profile</h1>
                     <form action="" method="post" enctype="multipart/form-data" class="flex justify-center flex-col">
                         <div class="flex justify-center flex-col items-center mb-5">
                             <label for="avatar_url" class="text-xl font-bold text-center">Avatar</label>
@@ -122,7 +121,7 @@ $url = $image->getUrl()
                         <div class="flex justify-center flex-col items-center gap-2 mb-5">
                             <label for="bio">Bio</label>
                             <input type="text" name="bio" class="bg-blue-500 px-4 py-2 rounded-xl text-white" placeholder="typ your bio here">
-                            <p class="profile-bio">Preview bio: <?php echo $getUser["bio"]; ?></p>
+                            <p class="profile-bio">Preview bio: <?php echo htmlspecialchars($getUser["bio"]); ?></p>
                         </div>
                         <p class="editprofilewarning"><?php echo $warning ?></p>
                         <input type="submit" value="Save" class="mx-2 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white cursor-pointer">

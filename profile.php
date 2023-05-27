@@ -46,10 +46,10 @@ $followedUsers = User::getFollowedCategories();
         <div>
             <?php if (isset($_SESSION['loggedin'])) : ?>
                 <div class=" w-90 rounded-3xl bg-white px-10 py-10 ">
-                    <h1 class="text-2xl font-bold text-center"><?php echo $_SESSION['username'] ?>'s profile</h1>
+                    <h1 class="text-2xl font-bold text-center"><?php echo htmlspecialchars($_SESSION['username']) ?>'s profile</h1>
                     <div class="flex flex-col items-center my-4">
                         <img src="<?php echo $url . $getUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover m-10">
-                        <p class="text-gray-700"><?php echo $getUser["bio"]; ?></p>
+                        <p class="text-gray-700"><?php echo htmlspecialchars($getUser["bio"]); ?></p>
                     </div>
                     <div class="flex justify-center">
                         <a href="editprofile.php" class="mx-2 px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Edit profile</a>
@@ -66,10 +66,10 @@ $followedUsers = User::getFollowedCategories();
                         <?php $promptUser = Prompt::getPromptUser($printFavorite['user_id']); ?>
                         <?php $promptCat = Prompt::getPromptCat($printFavorite['cat_id']); ?>
                         <div class="bg-white px-10 rounded-3xl flex justify-center items-center flex-col py-5 mb-10">
-                            <p class="text-[#0464A4] text-xl"><?php echo $printFavorite["title"] ?></p>
+                            <p class="text-[#0464A4] text-xl"><?php echo htmlspecialchars($printFavorite["title"]); ?></p>
                             <ul class="flex flex-row gap-10 mb-5 pt-5">
                                 <li>
-                                    <p><?php echo $promptUser['username']; ?></p>
+                                    <p><?php echo htmlspecialchars($promptUser['username']); ?></p>
                                 </li>
                                 <li>
                                     <p class="text-[#0464A4]"><?php echo $promptCat["category"] ?></p>
@@ -78,17 +78,17 @@ $followedUsers = User::getFollowedCategories();
                             <ul>
                                 <li><img class="rounded-3xl w-80 mb-5" src="<?php echo $url . $printFavorite["photo_url"] ?>" alt="Prompt photo"></li>
                                 <li>
-                                    <p><b>Description: </b><?php echo $printFavorite["description"] ?></p>
+                                    <p><b>Description: </b><?php echo htmlspecialchars($printFavorite["description"]); ?></p>
                                 </li>
                                 <li>
                                     <p><b>Postdate: </b><?php echo $printFavorite["postdate"] ?></p>
                                 </li>
                                 <!-- shouldnt be visible before buying -->
                                 <li>
-                                    <p><b>Prompt: </b><?php echo $printFavorite["prompt"] ?></p>
+                                    <p><b>Prompt: </b><?php echo htmlspecialchars($printFavorite["prompt"]); ?></p>
                                 </li>
                                 <li>
-                                    <p><b>Prompt description: </b><?php echo $printFavorite["prompt_info"] ?></p>
+                                    <p><b>Prompt description: </b><?php echo htmlspecialchars($printFavorite["prompt_info"]); ?></p>
                                 </li>
                                 <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                                 <li>
@@ -109,12 +109,12 @@ $followedUsers = User::getFollowedCategories();
                     <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Bought prompts</h2>
                     <?php foreach ($boughtprompts as $prompt) : ?>
                         <div class="bg-white px-10 rounded-3xl flex justify-center items-center flex-col py-5 mb-10">
-                            <p class="text-[#0464A4] text-xl"><?php echo $prompt["title"] ?></p>
+                            <p class="text-[#0464A4] text-xl"><?php echo htmlspecialchars($prompt["title"]) ?></p>
                             <ul class="flex flex-row gap-10 mb-5 pt-5">
                                 <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
                                 <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
                                 <li>
-                                    <p class="text-[#0464A4]"><?php echo $promptUser['username'] ?></p>
+                                    <p class="text-[#0464A4]"><?php echo htmlspecialchars($promptUser['username']) ?></p>
                                 </li>
                                 <li>
                                     <p class="text-[#0464A4]"><?php echo $promptCat["category"] ?></p>
@@ -125,23 +125,23 @@ $followedUsers = User::getFollowedCategories();
                                 <li class="text-lg flex justify-end inline-block "><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"></a></li>
 
                                 <li>
-                                    <p><?php echo $promptUser['username']; ?></p>
+                                    <p><?php echo htmlspecialchars($promptUser['username']); ?></p>
                                 </li>
                             </ul>
                             <ul>
                                 <li><img class="rounded-3xl w-80 mb-5" src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
                                 <li>
-                                    <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                                    <p><b>Description: </b><?php echo htmlspecialchars($prompt["description"]); ?></p>
                                 </li>
                                 <li>
                                     <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
                                 </li>
                                 <!-- shouldnt be visible before buying -->
                                 <li>
-                                    <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
+                                    <p><b>Prompt: </b><?php echo htmlspecialchars($prompt["prompt"]); ?></p>
                                 </li>
                                 <li>
-                                    <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
+                                    <p><b>Prompt description: </b><?php echo htmlspecialchars($prompt["prompt_info"]); ?></p>
                                 </li>
                                 <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                                 <li>
@@ -170,10 +170,10 @@ $followedUsers = User::getFollowedCategories();
                         <?php foreach ($followedUsers as $followedUser) : ?>
 
                             <div class="bg-white px-10 rounded-3xl flex justify-center items-center flex-col py-5 mb-10">
-                                <p class="text-[#0464A4] text-xl"><?php echo $followedUser["title"] ?></p>
+                                <p class="text-[#0464A4] text-xl"><?php echo htmlspecialchars($followedUser["title"]) ?></p>
                                 <ul class="flex flex-row gap-10 mb-5 pt-5">
                                     <li>
-                                        <p><?php echo $followedUser['username']; ?></p>
+                                        <p><?php echo htmlspecialchars($followedUser['username']); ?></p>
                                     </li>
                                     <li>
                                         <p class="text-[#0464A4]"><?php echo $followedUser["category"] ?></p>
@@ -182,17 +182,17 @@ $followedUsers = User::getFollowedCategories();
                                 <ul>
                                     <li><img class="rounded-3xl w-80 mb-5" src="<?php echo $url . $followedUser["photo_url"] ?>" alt="Prompt photo"></li>
                                     <li>
-                                        <p><b>Description: </b><?php echo $followedUser["description"] ?></p>
+                                        <p><b>Description: </b><?php echo htmlspecialchars($followedUser["description"]) ?></p>
                                     </li>
                                     <li>
                                         <p><b>Postdate: </b><?php echo $followedUser["postdate"] ?></p>
                                     </li>
                                     <!-- shouldnt be visible before buying -->
                                     <li>
-                                        <p><b>Prompt: </b><?php echo $followedUser["prompt"] ?></p>
+                                        <p><b>Prompt: </b><?php echo htmlspecialchars($followedUser["prompt"]); ?></p>
                                     </li>
                                     <li>
-                                        <p><b>Prompt description: </b><?php echo $followedUser["prompt_info"] ?></p>
+                                        <p><b>Prompt description: </b><?php echo htmlspecialchars($followedUser["prompt_info"]); ?></p>
                                     </li>
                                     <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                                     <li>

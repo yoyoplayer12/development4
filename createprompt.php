@@ -66,54 +66,55 @@ $url = $image->getUrl();
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1 class="text-[#0464A4] text-5xl my-10 flex justify-center">New Prompt</h1>
     <div class="flex justify-center">
-        <div class="flex justify-center items-center bg-blue-500 px-10 py-10 rounded-2xl text-white mb-10">
-            <form action="" method="post" enctype="multipart/form-data" class="">
-                <p class="text-blue-900 text-xl mb-4"><b>Give us some information about your prompt</b></p>
-                <div class="mb-5">
-                    <p>Choose a title for your prompt:</p>
-                    <input type="text" name="title" placeholder="Title" required class="mx-2 px-4 py-2 rounded-md bg-white text-blue-500">
-                </div>
-                <div class="mb-5">
-                    <p>Choose a price for your prompt:</p>
-                    <select name="prices" id="prices" required class="text-black px-4 py-4 bg-blue-800 px-5 py-3 rounded-lg text-white cursor-pointer">
-                        <option value="" disabled selected>Select a price</option>
-                        <?php foreach ($prices as $price) : ?>
-                            <option value="<?php echo $price['id']; ?>" class="text-black"><?php echo $price['price']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="mb-5">
-                    <p>Make a description for your prompt:</p>
-                    <input type="text" name="description" placeholder="Description" required class="mx-2 px-4 py-2 rounded-md bg-white text-blue-500">
-                </div>
-                <div class="mb-5">
-                    <p>Upload an image made with your prompt:</p>
-                    <input type="file" name="photo" id="photo" required class="mx-2 px-4 py-2 rounded-md bg-blue-800 text-white">
-                </div>
-                <div class="mb-5">
-                    <p>Select a category for your prompt:</p>
-                    <select name="categories" id="categories" required class="text-black px-4 py-4 bg-blue-800 px-5 py-3 rounded-lg text-white cursor-pointer">
-                        <option value="" disabled selected>Select a category</option>
-                        <?php foreach ($categories as $category) : ?>
-                            <option value="<?php echo $category['id']; ?>" class="text-black"><?php echo $category['category']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="mb-5">
-                    <p class="text-blue-900 text-xl mt-8 mb-4"><b>How do you make your prompt?</b></p>
-                    <p>Enter here what you entered to create this prompt:</p>
-                    <input type="text" name="prompt" placeholder="Prompt" required class="mx-2 px-4 py-2 rounded-md bg-white text-blue-500">
-                </div>
-                <div class="mb-5">
-                    <p>Enter any other information about your prompt e.g. made with?:</p>
-                    <input type="text" name="prompt_info" placeholder="Prompt info" required class="mx-2 px-4 py-2 rounded-md bg-white text-blue-500">
-                </div>
-                <div>
-                    <input type="submit" value="Create Prompt" class="mx-2 px-4 py-2 rounded-md bg-blue-800 hover:bg-blue-700 text-white cursor-pointer">
-                </div>
-            </form>
-        </div>
+    <div class="bg-white px-10 py-10 rounded-2xl text-blue-800 mb-10">
+        <form action="" method="post" enctype="multipart/form-data">
+            <p class="text-blue-900 text-xl mb-4"><b>Give us some information about your prompt</b></p>
+            <div class="mb-5">
+                <p>Choose a title for your prompt:</p>
+                <input type="text" name="title" placeholder="Title" required class="w-full px-4 py-2 rounded-md bg-slate-200 text-blue-500">
+            </div>
+            <div class="mb-5">
+                <p>Choose a price for your prompt:</p>
+                <select name="prices" id="prices" required class="w-full py-3 bg-blue-200 px-4 rounded-lg text-blue-500 cursor-pointer">
+                    <option value="" disabled selected>Select a price</option>
+                    <?php foreach ($prices as $price) : ?>
+                        <option value="<?php echo $price['id']; ?>" class="text-blue-500"><?php echo $price['price']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="mb-5">
+                <p>Make a description for your prompt:</p>
+                <input type="text" name="description" placeholder="Description" required class="w-full px-4 py-2 rounded-md bg-slate-200 text-blue-500">
+            </div>
+            <div class="mb-5">
+                <p>Upload an image made with your prompt:</p>
+                <input type="file" name="photo" id="photo" required class="w-full px-4 py-2 rounded-md bg-blue-200 text-blue-500">
+            </div>
+            <div class="mb-5">
+                <p>Select a category for your prompt:</p>
+                <select name="categories" id="categories" required class="w-full px-4 py-3 bg-blue-200 rounded-lg text-blue-500 cursor-pointer">
+                    <option value="" disabled selected>Select a category</option>
+                    <?php foreach ($categories as $category) : ?>
+                        <option value="<?php echo $category['id']; ?>" class="text-black"><?php echo $category['category']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="mb-5">
+                <p class="text-blue-900 text-xl mt-8 mb-4"><b>How do you make your prompt?</b></p>
+                <p>Enter here what you entered to create this prompt:</p>
+                <input type="text" name="prompt" placeholder="Prompt" required class="w-full px-4 py-2 rounded-md bg-slate-200 text-blue-500">
+            </div>
+            <div class="mb-5">
+                <p>Enter any other information about your prompt e.g. made with?:</p>
+                <input type="text" name="prompt_info" placeholder="Prompt info" required class="w-full px-4 py-2 rounded-md bg-slate-200 text-blue-500">
+            </div>
+            <div class="mb-5">
+                <input type="submit" value="Create Prompt" class="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-700 text-white cursor-pointer">
+            </div>
+        </form>
     </div>
+</div>
+
 </body>
 
 </html>
