@@ -69,7 +69,9 @@ class Action
         // check if username already exists in database
         $conn = Db::getInstance();
         $stmt = $conn->prepare('SELECT COUNT(*) FROM users WHERE email = ?');
+        // bind value to the query
         $stmt->execute(array($email));
+        // fetch the result
         $count = $stmt->fetchColumn();
         // return response as JSON
         if ($count > 0) {

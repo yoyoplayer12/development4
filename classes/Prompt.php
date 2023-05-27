@@ -41,7 +41,8 @@ class Prompt
     public static function getPromptsByUser($id)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM prompts WHERE user_id = $id AND active = 1 AND deleted = 0 AND rejected = 0 AND verified = 1 and reported = 0 ORDER BY postdate DESC");
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE user_id = :id AND active = 1 AND deleted = 0 AND rejected = 0 AND verified = 1 and reported = 0 ORDER BY postdate DESC");
+        $statement->bindValue(":id", $id);
         $statement->execute();
         $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $prompt;
@@ -183,7 +184,8 @@ class Prompt
     public static function getPromptCat($catid)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM categories WHERE active=1 AND id = $catid");
+        $statement = $conn->prepare("SELECT * FROM categories WHERE active=1 AND id = :catid");
+        $statement->bindValue(":catid", $catid);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
@@ -191,7 +193,8 @@ class Prompt
     public static function getPromptprice($priceid)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM prices WHERE active=1 AND id = $priceid");
+        $statement = $conn->prepare("SELECT * FROM prices WHERE active=1 AND id = :priceid");
+        $statement->bindValue(":priceid", $priceid);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
@@ -220,7 +223,8 @@ class Prompt
     public static function getPromptsByCategory($selectedCategory)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 AND cat_id = $selectedCategory AND deleted = 0 AND active = 1 AND reported = 0 ORDER BY postdate DESC");
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE verified = 1 AND cat_id = :selectedcat AND deleted = 0 AND active = 1 AND reported = 0 ORDER BY postdate DESC");
+        $statement->bindValue(":selectedcat", $selectedCategory);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
