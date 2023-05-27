@@ -1,39 +1,57 @@
 <?php
-class User
-{
-    private string $email;
-    private string $password;
-    private string $username;
-    private string $bio;
-    private string $avatar;
-    private string $token;
-    private string $psswdtoken;
-    private string $reportedId;
-    private string $reporterId;
-    private string $followedId;
-    private string $followerId;
-    private static function getConfig()
-    {
-        // get the config file
-        return parse_ini_file("config/config.ini");
-    }
-    public function canLogin($p_username, $p_password)
-    {
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND banned = 0");
-        $statement->bindValue(":username", $p_username);
-        $statement->execute();
-        $user = $statement->fetch(PDO::FETCH_ASSOC);
-        if ($user) {
-            $hash = $user["password"];
-            if (password_verify($p_password, $hash)) {
-                if ($user["active"] == 1) {
-                    //getting basic user info
-                    $_SESSION['username'] = $user["username"];
-                    $_SESSION["userid"] = $user["id"];
-                    $_SESSION["confirmed_email"] = $user["confirmed_email"];
-                    $_SESSION["email"] = $user["email"];
-                    $_SESSION["credits"] = $user["credits"];
+    class User{
+        private string $email;
+        private string $password;
+        private string $username;
+        private string $bio;
+        private string $avatar;
+        private string $token;
+        private string $psswdtoken;
+        
+        private string $followedId;
+        private string $followerId;
+        private static function getConfig(){
+            // get the config file
+            return parse_ini_file("config/config.ini");
+        }
+        public function canLogin($p_username, $p_password){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND banned = 0");
+            $statement->bindValue(":username", $p_username);
+            $statement->execute();
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
+            if($user){
+                $hash = $user["password"];
+                if(password_verify($p_password, $hash)){
+                    if($user["active"] == 1){
+                        //getting basic user info
+                        $_SESSION['username'] = $user["username"];
+                        $_SESSION["userid"] = $user["id"];
+                        $_SESSION["confirmed_email"] = $user["confirmed_email"];
+                        $_SESSION["email"] = $user["email"];
+                        $_SESSION["credits"] = $user["credits"];
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                else{
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        public function canLoginAdmin($p_username, $p_password){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM users WHERE username = :username AND banned = 0 AND admin = 1");
+            $statement->bindValue(":username", $p_username);
+            $statement->execute();
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
+            if($user){
+                $hash = $user["password"];
+                if(password_verify($p_password, $hash)){
                     return true;
                 } else {
                     return false;
@@ -155,6 +173,37 @@ class User
                 return false;
             }
         }
+        public function getId($username){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT id FROM users WHERE username = :username");
+            $statement->bindValue(":username", $username);
+            $statement->execute();
+            $result = $statement->fetch(\PDO::FETCH_ASSOC);
+            return $result["id"];
+        }
+        public static function getBalance(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT credits FROM users WHERE id = :id");
+            $statement->bindValue(":id", $_SESSION['userid']);
+            $statement->execute();
+            $result = $statement->fetch(\PDO::FETCH_ASSOC);
+            return $result["credits"];
+        }
+        public function ban($id){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("UPDATE users SET banned = 1 WHERE id = :id");
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+        }
+        public function bancheck($id){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT banned FROM users WHERE id = :id");
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+            $result = $statement->fetch(\PDO::FETCH_ASSOC);
+            return $result["banned"];
+        }    
+    public static function getPrices(){
     }
     public function setUsername($username)
     {

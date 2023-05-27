@@ -60,7 +60,7 @@ $reporteduserids = Moderator::getReportedUserIds();
 $rejectedpromptscount = count($rejectedprompts);
 $unverifiedpromptscount = count($unverifiedprompts);
 $reportedpromptscount = count($reportedprompts);
-$printReportedUsers = User::getReportedUsers();
+$printReportedUsers = Report::getReportedUsers();
 //setting up image getting
 $image = new Image();
 $url = $image->getUrl()
