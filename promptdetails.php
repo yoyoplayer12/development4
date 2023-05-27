@@ -7,6 +7,11 @@ $prompt = Prompt::getPromptById($postid);
 //setting up image getting
 $image = new Image();
 $url = $image->getUrl();
+
+//get comments
+$comments = Comment::getComments($postid);
+var_dump($comments);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,25 +43,63 @@ $url = $image->getUrl();
                     </li>
                     <li class="text-lg flex"><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><?php echo $promptUser["username"] ?></a></li>
                 </div>
-                <a href="promptdetails.php?pid=<?php echo $prompt['id'] ?>">
-                    <?php if (!empty($_SESSION["userid"])) : ?>
-                        <li><img class="rounded-3xl" src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
-                    <?php else : ?>
-                        <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
-                    <?php endif; ?>
-                    <li class="mt-5">
-                        <p><b>Description: </b><?php echo $prompt["description"] ?></p>
-                    </li>
-                    <li>
-                        <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
-                    </li>
-                    <li>
-                        <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
-                    </li>
-                </a>
+                <?php if (!empty($_SESSION["userid"])) : ?>
+                    <li><img class="rounded-3xl" src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
+                <?php else : ?>
+                    <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
+                <?php endif; ?>
+                <li class="mt-5">
+                    <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                </li>
+                <li>
+                    <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
+                </li>
+                <li>
+                    <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
+                </li>
+                <div>
+                    <input type="text" placeholder="add comment" id="inputComment">
+                    <button id="addComment" class="cursor-pointer" data-promptId="<?php echo $prompt['id'] ?>">Add comment</button>
+                </div>
+                <ul class="comments">
+                    <?php foreach ($comments as $comment) : ?>
+                    <li><?php echo $comment['text']; ?></li>
+                    <?php endforeach; ?>
+                </ul>
             </ul>
         </div>
     <?php } ?>
+    <script>
+        let addComment = document.querySelectorAll("#addComment");
+        addComment.forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                let currentBtn = this;
+
+                let text = document.querySelector("#inputComment").value;
+                let promptId = this.getAttribute("data-promptId");
+
+                let formData = new FormData();
+                formData.append("promptId", promptId);
+                formData.append("text", text);
+                fetch("ajax/AddComment.php", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(json) {
+                        if (json.status == 'success') {
+                            //currentBtn.innerHTML = json.message;
+                            let makeComment = document.createElement("li");
+                            makeComment.innerHTML = json.body;
+                            document.querySelector(".comments").appendChild(makeComment);
+                            document.querySelector("#inputComment").value = "";
+                        }
+                    });
+            });
+        });
+    </script>
 </body>
 
 </html>
