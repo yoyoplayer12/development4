@@ -62,7 +62,7 @@ $comments = Comment::getComments($postid);
                 </div>
                 <ul class="comments">
                     <?php foreach ($comments as $comment) : ?>
-                    <li><?php echo $comment['text']; ?></li>
+                        <li><?php echo $comment['text']; ?></li>
                     <?php endforeach; ?>
                 </ul>
             </ul>

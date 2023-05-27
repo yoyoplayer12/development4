@@ -79,4 +79,3 @@ class Moderator {
         return $count['COUNT(*)'];
     }
 }
-?>
