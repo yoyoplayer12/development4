@@ -53,7 +53,7 @@ $followedUsers = User::getFollowedCategories();
                         <a href="editprofile.php" class="mx-2 px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Edit profile</a>
                         <a href="changePassword.php" class="mx-2 px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Change password</a>
                         <a href="logout.php" class="mx-2 px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Log out</a>
-                        <a href="deleteprofile.action.php" class="mx-2 px-4 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white">Delete profile</a>
+                        <a href="deleteprofile.action.php?uid=<?php echo $_SESSION['userid']; ?>" class="mx-2 px-4 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white">Delete profile</a>
                     </div>
                 </div>
                 <div>
