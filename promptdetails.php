@@ -26,7 +26,7 @@ $comments = Comment::getComments($postid);
     <title><?php echo $prompt['title'] ?></title>
 </head>
 
-<body>
+<body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <?php if (empty($prompt)) {
         echo "<h1 class='noposts'>There are no prompts right now, try again later!</h1>";
