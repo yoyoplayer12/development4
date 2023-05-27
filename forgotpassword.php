@@ -1,15 +1,12 @@
 <?php
-    require_once 'vendor/autoload.php';
-    include_once(__DIR__ . "/classes/User.php");
-    include_once(__DIR__ . "/classes/Db.php");
-    $error = " ";
+    include_once(__DIR__ . "/bootstrap.php");
+    $error = "";
     $changed = false;
     $n = 5;
-    $config = parse_ini_file('config/config.ini', true);
+    $config = parse_ini_file('classes/config/config.ini', true);
     $key = $config['keys']['SENDGRID_API_KEY'];
     apache_setenv('SENDGRID_API_KEY', $key);
     $user = new User();
-    session_start();
     if(isset($_POST)){
         if(isset($_POST['btn'])){
                 try {
