@@ -79,7 +79,7 @@ $url = $image->getUrl()
     <title>EVE - Moderator Panel</title>
 </head>
 
-<body>
+<body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1 class="text-[#0464A4] text-5xl my-10 flex justify-center">Moderator Panel</h1>
     <div class="flex justify-center flex-row items-center gap-5">
