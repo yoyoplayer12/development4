@@ -1,6 +1,6 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
-    $loginwarning = " ";
+    $loginwarning = "";
     if(!empty($_POST)){
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -18,7 +18,7 @@
             }
         }
         else{
-            $loginwarning = "Username or password is incorrect, or email is not verified";
+            $loginwarning = "Username or password is incorrect, or email is not verified!";
         }
     }
     //setting up image getting
@@ -33,6 +33,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="<?php echo $url."evestore/assets/brand/zfgfkok4d1wqydimxrj7.png"?>">
     <title>Eve - Log in</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>

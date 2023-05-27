@@ -18,8 +18,6 @@ class Moderator {
         $usernames = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $usernames;
     }
-    
-
     public static function addModerator($id)
     {
         $conn = Db::getInstance();
@@ -27,7 +25,6 @@ class Moderator {
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
-
     public static function deleteModerator($id)
     {
         $conn = Db::getInstance();
@@ -35,8 +32,6 @@ class Moderator {
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
-    
-
     public static function getModerators() {
         $conn = Db::getInstance();
         $statement = $conn->query("SELECT * FROM users WHERE admin = 1");
@@ -84,5 +79,4 @@ class Moderator {
         return $count['COUNT(*)'];
     }
 }
-
 ?>

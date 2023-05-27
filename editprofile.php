@@ -64,6 +64,7 @@
                 $destination = "evestore/public/users/" . $randomstring . "." . $ext;
                 $user->resetAvatar($destination);
                 //saving to database
+                $user->updateAvatar();
                 $user->updateUser();
                 header("Location: profile.php");
             }
@@ -98,6 +99,12 @@
             echo "nothing to save";
         }
     }
+    else {
+        header("Location: login.php");
+    }
+    //setting up image getting
+    $image = new Image();
+    $url = $image->getUrl()
 } else {
     header("Location: login.php");
 }
@@ -116,6 +123,8 @@ $url = $image->getUrl()
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="<?php echo $url."evestore/assets/brand/zfgfkok4d1wqydimxrj7.png"?>">
+    <title>Eve - <?php echo $_SESSION['username']?>'s profile</title>
     <title>Eve - <?php echo $_SESSION['username'] ?>'s profile</title>
 </head>
 
@@ -147,10 +156,8 @@ $url = $image->getUrl()
                     <?php header("Location: ./profile.php"); ?>
                 <?php endif; ?>
                 </div>
-
         </div>
     </div>
-
 </body>
 
 </html>

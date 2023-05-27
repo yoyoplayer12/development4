@@ -4,7 +4,6 @@
         private $cloudinary;
         private $string;
         private $url = "https://res.cloudinary.com/de4kuz3ws/image/upload/v1/";
-
         private static function getConfig(){
             // get the config file
             return parse_ini_file(__DIR__ . "/config/config.ini");
@@ -18,7 +17,6 @@
             }
             return $randomString;
         }
-        
         public function setup(){
             $config = self::getConfig();
             $this->cloudinary = new Cloudinary(
