@@ -23,7 +23,7 @@ $comments = Comment::getComments($postid);
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="icon" type="image/png" href="<?php echo $url . "evestore/assets/brand/zfgfkok4d1wqydimxrj7.png" ?>">
-    <title><?php echo $prompt['title'] ?></title>
+    <title><?php echo htmlspecialchars($prompt['title']) ?></title>
 </head>
 
 <body class="bg-blue-200">
@@ -67,6 +67,42 @@ $comments = Comment::getComments($postid);
                             <li class="bg-slate-200 rounded-xl py-4 px-4"><?php echo $comment['text']; ?></li>
                         <?php endforeach; ?>
                     </ul>
+    <?php if (empty($prompt)) {
+        echo "<h1 class='noposts'>There are no prompts right now, try again later!</h1>";
+    } else { ?>
+        <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
+        <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
+        <?php $promptprice = Prompt::getPromptprice($prompt['price_id']); ?>
+        <div class="bg-white p-10 rounded-3xl">
+            <ul class="list-none flex flex-col">
+                <div class="flex flex-row justify-between mb-5">
+                    <li class="text-xl flex">
+                        <p><?php echo htmlspecialchars($prompt["title"]); ?></p>
+                    </li>
+                    <li class="text-lg flex"><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><?php echo htmlspecialchars($promptUser["username"]); ?></a></li>
+                </div>
+                <?php if (!empty($_SESSION["userid"])) : ?>
+                    <li><img class="rounded-3xl" src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
+                <?php else : ?>
+                    <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
+                <?php endif; ?>
+                <li class="mt-5">
+                    <p><b>Description: </b><?php echo htmlspecialchars($prompt["description"]); ?></p>
+                </li>
+                <li>
+                    <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
+                </li>
+                <li>
+                    <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
+                </li>
+                <div>
+                    <input type="text" placeholder="add comment" id="inputComment">
+                    <button id="addComment" class="cursor-pointer" data-promptId="<?php echo $prompt['id'] ?>">Add comment</button>
+                </div>
+                <ul class="comments">
+                    <?php foreach ($comments as $comment) : ?>
+                        <li><?php echo htmlspecialchars($comment['text']); ?></li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         <?php } ?>
