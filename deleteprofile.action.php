@@ -1,19 +1,18 @@
 <?php
 include_once("bootstrap.php");
 $user = new User();
+$id = $_GET['uid'];
 // Handle form submission
-if (!empty($_POST)) {
-  $id = $_SESSION['userid'];
+if ($id == $_SESSION['userid']) {
   $password = $_POST['password'];
-  if ($user->deleteProfile($username, $id)) {
+  if ($user->deleteProfile($id)) {
     // Logout the user and redirect to the register page
     session_destroy();
     header('Location: register.php');
-    exit();
   } else {
-    echo "Invalid password.";
+    echo "error";
   }
 }
 else {
-  echo "Please fill in your password.";
+  header('Location: profile.php');
 }
