@@ -293,18 +293,6 @@ class User
     public function deleteProfile($userid)
     {
         $conn = Db::getInstance();
-        // $statement = $conn->prepare('SELECT id, password FROM users WHERE id = :id');
-        // $statement->bindValue(':userid', $userid);
-        // $statement->execute();
-        // $result = $statement->fetch(PDO::FETCH_ASSOC);
-        // if (!$result) {
-        //     return false;
-        // }
-        // // Verify the password
-        // if (!password_verify($password, $result['password'])) {
-        //     return false;
-        // }
-        // Delete the user account
         $statement = $conn->prepare('DELETE FROM users WHERE id = :id');
         $statement->bindValue(':id', $userid);
         $statement->execute();
@@ -424,8 +412,6 @@ class User
     public static function getReportedUsers()
     {
         $conn = Db::getInstance();
-        // $statement = $conn->prepare("SELECT * FROM `reported-users`");
-        // statement with info about the reported user
         $statement = $conn->prepare("SELECT `reported-users`.id, `reported-users`.reported_id, `reported-users`.reporter_id, users.username, users.email, users.avatar_url, users.banned, users.id FROM `reported-users` INNER JOIN users ON `reported-users`.reported_id = users.id");
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
