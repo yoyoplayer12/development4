@@ -37,6 +37,11 @@ if (isset($_POST['removeFav'])) {
     header("Location: profile.php");
 }
 
+
+
+$followedUsers = User::getFollowedCategories();
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -172,6 +177,60 @@ if (isset($_POST['removeFav'])) {
                             </ul>
                         </div>
                     <?php endforeach; ?>
+                    
+
+
+
+                    <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Prompts from followed users</h2>
+                <?php if(empty($followedUsers)): ?>
+                    <?php echo "<h1 class='noposts'>No followed users yet...</h1>";?>
+                <?php else: ?>
+                    <?php foreach ($followedUsers as $followedUser): ?>
+
+                        <div class="bg-white px-10 rounded-3xl flex justify-center items-center flex-col py-5 mb-10">
+                            <p class="text-[#0464A4] text-xl"><?php echo $followedUser["title"] ?></p>
+                            <ul class="flex flex-row gap-10 mb-5 pt-5">
+                                <li>
+                                    <p><?php echo $followedUser['username']; ?></p>
+                                </li>
+                                <li>
+                                    <p class="text-[#0464A4]"><?php echo $followedUser["category"] ?></p>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li><img class="rounded-3xl w-80 mb-5" src="<?php echo $url . $followedUser["photo_url"] ?>" alt="Prompt photo"></li>
+                                <li>
+                                    <p><b>Description: </b><?php echo $followedUser["description"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Postdate: </b><?php echo $followedUser["postdate"] ?></p>
+                                </li>
+                                <!-- shouldnt be visible before buying -->
+                                <li>
+                                    <p><b>Prompt: </b><?php echo $followedUser["prompt"] ?></p>
+                                </li>
+                                <li>
+                                    <p><b>Prompt description: </b><?php echo $followedUser["prompt_info"] ?></p>
+                                </li>
+                                <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
+                                <li>
+                                    <p><b>Category: </b><?php echo $followedUser["category"] ?></p>
+                                </li>
+                                <div class="mt-5 flex flex-col gap-5 pb-5">
+                                    <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button>Buy</button></li>
+                                    <!-- make button that removes the prompt from favorites with the Prompt class -->
+                                    
+                                </div>
+
+                            </ul>
+                        </div>
+                <?php endforeach; ?>
+                <?php endif; ?>
+
+
+
+
+
                 </div>
             <?php else : ?>
                 <h1 class="text-2xl font-bold">Log in to see your profile</h1>
