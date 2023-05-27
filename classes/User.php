@@ -9,6 +9,8 @@
         private string $psswdtoken;
         private string $reportedId;
         private string $reporterId;
+        private string $followedId;
+        private string $followerId;
         private static function getConfig(){
             // get the config file
             return parse_ini_file("config/config.ini");
@@ -404,11 +406,91 @@
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
-        public static function getPrices(){
+    public static function getPrices(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prices");
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+        /**
+         * Get the value of followedId
+         */ 
+        public function getFollowedId()
+        {
+                return $this->followedId;
+        }
+
+        /**
+         * Set the value of followedId
+         *
+         * @return  self
+         */ 
+        public function setFollowedId($followedId)
+        {
+                $this->followedId = $followedId;
+
+                return $this;
+        }
+
+        /**
+         * Get the value of followerId
+         */ 
+        public function getFollowerId()
+        {
+                return $this->followerId;
+        }
+
+        /**
+         * Set the value of followerId
+         *
+         * @return  self
+         */ 
+        public function setFollowerId($followerId)
+        {
+                $this->followerId = $followerId;
+
+                return $this;
+        }
+
+        public static function checkFollowUser($id){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT * FROM prices");
+            $statement = $conn->prepare("SELECT * FROM `follow-users` WHERE followed_id = :followed_id AND follower_id = :follower_id");
+            $statement->bindValue(":followed_id", $id);
+            $statement->bindValue(":follower_id", $_SESSION['id']);
             $statement->execute();
-            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+
+        public function followUser(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("INSERT INTO `follow-users` (followed_id, follower_id) VALUES (:followed_id, :follower_id)");
+            $statement->bindValue(":followed_id", $this->followedId);
+            $statement->bindValue(":follower_id", $this->followerId);
+            $result = $statement->execute();
+            return $result;
+        }
+
+        public function deleteFollowUser($id){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("DELETE FROM `follow-users` WHERE followed_id = :followed_id AND follower_id = :follower_id");
+            $statement->bindValue(":followed_id", $id);
+            $statement->bindValue(":follower_id", $_SESSION['id']);
+            $result = $statement->execute();
+            return $result;
+        }
+
+        //function that gets categories from the prompts from users you follow
+        public static function getFollowedCategories(){
+            $conn = Db::getInstance();
+            //query thats gets all categories from prompts from users you follow
+            $statement = $conn->prepare("SELECT categories.id, categories.category, prompts.id, prompts.user_id, prompts.prompt, users.username, users.avatar_url, prompts.title, prompts.photo_url, prompts.description, prompts.postdate, prompts.prompt_info FROM `follow-users` INNER JOIN prompts ON `follow-users`.followed_id = prompts.user_id INNER JOIN users ON prompts.user_id = users.id INNER JOIN categories ON prompts.cat_id = categories.id WHERE `follow-users`.follower_id = :follower_id ORDER BY prompts.id DESC");
+            $statement->bindValue(":follower_id", $_SESSION['id']);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
 }
