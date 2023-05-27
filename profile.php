@@ -36,6 +36,7 @@ if (isset($_POST['removeFav'])) {
 
     header("Location: profile.php");
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
