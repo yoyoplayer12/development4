@@ -12,7 +12,6 @@ if ($id == $_SESSION['userid']) {
   } else {
     echo "error";
   }
-}
-else {
+} else {
   header('Location: profile.php');
 }
