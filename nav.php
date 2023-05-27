@@ -19,7 +19,7 @@
                     <h2 class="text-2xl mr-4 hover:text-[#0464A4]">New prompt</h2>
                 </a></li>
             <li><a href="profile.php">
-                    <h2 class="text-2xl mr-4 hover:text-[#0464A4]"><?php echo $_SESSION['username']; ?></h2>
+                    <h2 class="text-2xl mr-4 hover:text-[#0464A4]"><?php echo htmlspecialchars($_SESSION['username']); ?></h2>
                 </a></li>
             <li class="text-blue-500 text-2xl">
                 <p><?php $balance = User::getBalance();

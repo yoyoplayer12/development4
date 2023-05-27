@@ -23,7 +23,7 @@ $url = $image->getUrl();
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="icon" type="image/png" href="<?php echo $url . "evestore/assets/brand/zfgfkok4d1wqydimxrj7.png" ?>">
-    <title>Eve - <?php echo $User["username"] ?>'s profile</title>
+    <title>Eve - <?php echo htmlspecialchars($User["username"]); ?>'s profile</title>
 </head>
 
 <body>
@@ -32,19 +32,19 @@ $url = $image->getUrl();
         <div class="w-90 rounded-3xl bg-white px-10 py-10">
             <?php if (isset($_SESSION['loggedin'])) : ?>
                 <div class="flex justify-center flex-col items-center">
-                    <h1 class="text-2xl font-bold mb-5"><?php echo $User["username"] ?>'s profile</h1>
+                    <h1 class="text-2xl font-bold mb-5"><?php echo htmlspecialchars($User["username"]); ?>'s profile</h1>
                     <button class="reportUserbtn" id="reportUserbtnid" data-userId="<?php echo $User["id"]?>"><?php if(count(Report::checkReportUser($User['id'])) >=1 ){ echo "Reported";} else { echo "Report";} ?></button>
                     <button class="followUserId" id="followUserId" data-userId="<?php echo $User["id"]?>"><?php if(count(User::checkFollowUser($User['id'])) >=1 ){ echo "Following";} else { echo "Follow";} ?></button>
                     <img src="<?php echo $url . $User["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 flex justify-center mb-5">
                 </div>
                 <div>
-                    <p class="profile-bio">Bio: <?php echo $User["bio"]; ?></p>
+                    <p class="profile-bio">Bio: <?php echo htmlspecialchars($User["bio"]); ?></p>
                     <h2 class="text-[#0464A4] text-xl my-5 flex justify-center">Prompts</h2>
                     <?php foreach ($prompts as $prompt) : ?>
                         <div class="prompt bg-blue-500 text-white py-5 px-5 rounded-lg">
                             <a href="promptdetails.php?pid=<?php echo $prompt['id'] ?>">
-                                <h3>Title: <?php echo $prompt["title"]; ?></h3>
-                                <p>Description: <?php echo $prompt["description"]; ?></p>
+                                <h3>Title: <?php echo htmlspecialchars($prompt["title"]); ?></h3>
+                                <p>Description: <?php echo htmlspecialchars($prompt["description"]); ?></p>
                             </a>
                         </div>
                     <?php endforeach; ?>
