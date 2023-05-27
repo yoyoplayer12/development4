@@ -9,12 +9,60 @@
     } else {
         $search_query = "";
     }
-
     $limit = 6; // number of prompts to display per page
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // current page number
     $offset = ($page - 1) * $limit;
+    $prompts = [];
+    //filter
+    $minprice = Prompt::getMinPrice();
+    $maxprice = Prompt::getMaxPrice();
+    $minpriceid = Prompt::getPriceIdByPrice($minprice["MIN(price)"]);
+    $maxpriceid = Prompt::getPriceIdByPrice($maxprice["MAX(price)"]);
+    $promptids = Prompt::searchByPriceRange($minpriceid['id'], $maxpriceid['id']);
+    $minpricefilter = [];
+    $maxpricefilter = [];
+    $filterlabels = [];
+    if(isset($_POST['filter'])){
+        $limit = $_POST['limit'];
+        $pagefilterlabel = $_POST['limit']." posts per page";
+        array_push($filterlabels, $pagefilterlabel);
+        if($_POST['minprice'] != null && $_POST['maxprice'] != null){
+            if($_POST['minprice'] <= $_POST['maxprice']){
+                $minpricefilter = Prompt::getPriceIdByPrice($_POST['minprice']);
+                $maxpricefilter = Prompt::getPriceIdByPrice($_POST['maxprice']);
+                if($minpricefilter != false && $maxpricefilter != false){
+                    $promptids = Prompt::searchByPriceRange($minpricefilter['id'], $maxpricefilter['id']);
+                    $pricefilterlabel = "Price: " . $_POST['minprice'] . " to " . $_POST['maxprice'] . " Credits";
+                    array_push($filterlabels, $pricefilterlabel);
+                }
+            }
+        }
+    }
+    if(isset($_POST['reset'])){
+        $promptids = Prompt::searchByPriceRange($minpriceid['id'], $maxpriceid['id']);
+        $filterlabels = [];
+    }
+    //filter
 
-    $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query);
+
+
+
+    if(isset($_POST['filter'])){
+        $verfiedprompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query);
+        foreach($promptids as $promptid){
+            foreach($verfiedprompts as $verfiedprompt){
+                if($promptid['id'] == $verfiedprompt['id']){
+                    array_push($prompts, $verfiedprompt);
+                }
+            }
+        }
+
+    } 
+    else {
+        $prompts = Prompt::getVerifiedPrompts($limit, $offset, $search_query);
+
+    }
+
     
 
 
@@ -29,6 +77,7 @@
     //setting up image getting
     $image = new Image();
     $url = $image->getUrl();
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,6 +92,57 @@
 </head>
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
+    <!-- filters -->
+
+    <div>
+        <h3>Filters</h3>
+        <form action="" method="post" id="filter">
+            <div class="flex flex-col gap-5">
+                <div class="flex flex-row gap-5">
+                    <div>
+                        <label for="price"><b>Price: (<?php echo $minprice["MIN(price)"] ?> to <?php echo $maxprice['MAX(price)'] ?> Credits)</b></label>
+                        <input type="number" placeholder="Minumum price" name="minprice" value="<?php if(isset($_POST['minprice'])){echo $_POST['minprice'];} ?>">
+                        <input type="number" placeholder="Maximum price" name="maxprice" value="<?php if(isset($_POST['maxprice'])){echo $_POST['maxprice'];} ?>">
+                    </div>
+                </div>
+                <div class="flex flex-row gap-5">
+                    <div class="flex flex-col gap-5">
+                        <label for="limit"><b>Posts per page</b></label>
+                        <select name="limit" id="limit">
+                            <?php if(isset($_POST['limit'])): ?>
+                                <?php if($_POST['limit'] == 6): ?>
+                                    <option value="6" selected="selected">6</option>
+                                <?php elseif($_POST['limit'] == 12): ?>
+                                    <option value="12" selected="selected">12</option>
+                                <?php elseif($_POST['limit'] == 18): ?>
+                                    <option value="18" selected="selected">18</option>
+                                <?php elseif($_POST['limit'] == 24): ?>
+                                    <option value="24" selected="selected">24</option>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <option value="6" selected="selected">6</option>
+                                <option value="12">12</option>
+                                <option value="18">18</option>
+                                <option value="24">24</option>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-row gap-5">
+                <button type="submit" name="filter" class="btn btn-primary">Filter</button>
+                <button type="submit" name="reset" class="btn btn-primary">Reset</button>
+            </div>
+        </form>
+        <?php foreach($filterlabels as $label): ?>
+            <div>
+                <p><?php echo $label ?></p>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+
+    <!-- filters -->
     <h1 class=" text-[#0464A4] text-5xl my-10 flex justify-center">Prompt marketplace</h1>
     <div class="flex justify-center items-center">
     <form method="get" class="mr-2">
@@ -50,7 +150,7 @@
         <button type="submit" name="submit" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-3 px-8 rounded-lg mx-4 cursor-pointer">Search</button>
     </form>
     <form action="" method="post" id="categoryFilter">
-            <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required>
+            <select onchange="document.getElementById('categoryFilter').submit();" name="dropdown" id="dropdown" required class="bg-[#0464A4] px-5 py-3 rounded-lg text-white cursor-pointer">
                 <option value="" disabled selected>Select a category</option>
                 <option value="*">All categories</option>
                 <?php foreach($allCategories as $category): ?>
@@ -87,7 +187,7 @@
                 <div class="bg-white p-10 rounded-3xl">
                     <ul class="list-none flex flex-col">
                         <div class="flex flex-row justify-between mb-5">
-                        <li class="text-lg flex"><a id="likebtn" data-postid="<?php echo $prompt["id"]; ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#F5F5F5" width="24" height="24">
+                        <li class="text-lg flex"><a id="likebtn" data-postid="<?php echo $prompt["id"]; ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#C8C8CC" width="24" height="24">
                         <path d="M12 20.934l-1.414-1.414C5.045 14.319 2 11.238 2 7.5 2 4.364 4.364 2 7.5 2c1.899 0 3.728.929 4.854 2.475C13.772 2.929 15.601 2 17.5 2 20.636 2 23 4.364 23 7.5c0 3.738-3.045 6.819-8.586 12.02L12 20.934z"/>
                         </svg>
                         </a><p><?php echo Like::getLikes($prompt["id"])?></p></li>
@@ -99,14 +199,14 @@
                         <?php else: ?>
                             <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
                         <?php endif; ?>
-                        <li><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
+                        <li class="mt-5"><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
                         <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
                         <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
                         <!-- shouldnt be visible before buying -->
                         <?php if(isset($_SESSION["loggedin"])): ?>
                         <?php if(count(Prompt::checkBought($prompt['id'])) >=1 ):?>
                             <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
-                            <li><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
+                            <li class="mb-5"><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
                         <?php else: ?>
                             <li><p><b>Price: </b><?php echo $promptprice["price"] ?> Credits</p></li>
                         <?php endif; ?>
@@ -115,7 +215,7 @@
                         <?php if(isset($_SESSION["userid"])): ?>
                             <?php if($_SESSION['userid'] == $prompt['user_id']): ?>
                             <?php else: ?>
-                                <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" id="buybtnid" data-postid="<?php echo $prompt["id"]?>"><button><?php if(count(Prompt::checkBought($prompt['id'])) >=1 ){ echo "Bought";} else { echo "Buy";} ?></button></li>
+                                <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" id="buybtnid" data-postid="<?php echo $prompt["id"]?>" data-postuserid="<?php echo $prompt["user_id"]?>"><button><?php if(count(Prompt::checkBought($prompt['id'])) >=1 ){ echo "Bought";} else { echo "Buy";} ?></button></li>
                             <?php endif; ?>
                         <?php endif ?>
                         <!-- if username is logged in show this button  -->
@@ -124,7 +224,7 @@
                             <?php if($prompt["user_id"] == $_SESSION["userid"]):?>
                                 <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="deletepost.action.php?pid=<?php echo $prompt["id"] ?>&uid=<?php echo $prompt["user_id"] ?>">Delete</a></li>
                             <?php else: ?>
-                                <li><button class="reportbtn" id="reportbtnid" data-postid="<?php echo $prompt["id"]?>"><?php if(count(Prompt::checkReport($prompt['id'])) >=1 ){ echo "Reported";} else { echo "Report";} ?></button></li>
+                                <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button class="reportbtn" id="reportbtnid" data-postid="<?php echo $prompt["id"]?>"><?php if(count(Prompt::checkReport($prompt['id'])) >=1 ){ echo "Reported";} else { echo "Report";} ?></button></li>
                             <?php endif; ?>
                         <?php endif; ?>
                         <?php if(isset($_SESSION["admin"])):?>
@@ -178,10 +278,10 @@
                     .then(function(json){
                         siblingP.innerHTML = json.likes;
                         if (json.status == 'Unlike') {
-                            heartIcon.setAttribute('fill', '#00FF00');
+                            heartIcon.setAttribute('fill', '#0464A4');
                         }
                         else {
-                            heartIcon.setAttribute('fill', '#F5F5F5');
+                            heartIcon.setAttribute('fill', '#C8C8CC');
                         }
                     });
 
@@ -249,9 +349,11 @@
         btn.addEventListener("click", function () {
             let currentBtn = this;
             let postId = this.dataset.postid;
+            let payoutId = this.dataset.postuserid;
             //post naar database
             let formData = new FormData();
             formData.append("post_id", postId);
+            formData.append("post_payout_id", payoutId);
             fetch("ajax/buypost.php", {
                 method: "POST",
                 body: formData

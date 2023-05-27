@@ -372,7 +372,6 @@
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         return $result["banned"];
     }
-
     public static function checkReportUser($id){
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT * FROM `reported-users` WHERE reported_id = :id AND reporter_id = :reporter_id");
@@ -454,4 +453,11 @@
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
+    public static function getPrices(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prices");
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    }
 }

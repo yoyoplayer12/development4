@@ -108,10 +108,9 @@ $url = $image->getUrl()
     <div class="flex justify-center flex-row items-center gap-5">
         <a href="#users" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Users</a>
         <a href="#moderators" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Moderators</a>
-        <a href="#prompts" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Prompts</a>
         <a href="#bannedusers" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Banned users</a>
         <a href="#reportedusers" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Reported users</a>
-        
+        <a href="#prompts" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Prompts</a>
     </div>
     <div class="flex justify-center flex-col items-center">
         <div>
@@ -125,7 +124,7 @@ $url = $image->getUrl()
                 <!-- Display the list of matching usernames -->
                 <?php if (!empty($matchingUserIds)) : ?>
                     <div class="mt-2">
-                        <h2 class="text-[#0464A4] text-xl my-5 flex justify-center">Users:</h2>
+                        <h2 class="text-[#0464A4] text-2xl my-5 flex justify-center">Searched users:</h2>
                         <ul>
                             <?php foreach ($matchingUserIds as $userid) : ?>
                                 <?php $user = Moderator::getUserById($userid); ?>
@@ -157,7 +156,7 @@ $url = $image->getUrl()
 
             </div>
             <div>
-                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center" id="moderators">Moderators</h2>
+                <h2 class="text-[#0464A4] text-2xl mt-10 mb-5 flex justify-center" id="moderators">Moderators</h2>
                 <ul>
                     <?php foreach ($moderators as $moderator) : ?>
                         <li class="mb-5 mt-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
@@ -173,130 +172,8 @@ $url = $image->getUrl()
                     <?php endforeach; ?>
                 </ul>
             </div>
-            <div id="prompts">
-                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Prompts</h2>
-                <h1><?php echo $unverifiedpromptscount ?> To verify</h1>
-                <?php
-                if (empty($unverifiedprompts)) {
-                    echo "<h1 class='noposts'>Congrats, you verified them all!</h1>";
-                } else {
-                    foreach ($unverifiedprompts as $prompt) : ?>
-                        <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
-                        <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
-                        <?php $promptprice = Prompt::getPromptprice($prompt['price_id']); ?>
-                        <div class="prompt">
-                            <ul>
-                                <li>
-                                    <p><b>Title: </b><?php echo $prompt["title"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>User: </b><?php echo $promptUser['username'] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Price: </b><?php echo $promptprice["price"] ?></p>
-                                </li>
-                                <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
-                                <li>
-                                    <p><b>Description: </b><?php echo $prompt["description"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
-                                </li>
-                                <!-- Hier komt de verify button ==> if verify = 0 ==> andere backgroundcolor en text -->
-                                <a href="verify.action.php?id=<?php echo $prompt['id'] ?>&username=<?php echo $promptUser['username'] ?>&user_id=<?php echo $promptUser['id'] ?>">Approve</a>
-                                <a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a>
-                            </ul>
-                        </div>
-                <?php endforeach;
-                } ?>
-                <h1><?php echo $rejectedpromptscount ?> Rejected</h1>
-                <?php
-                if (empty($rejectedprompts)) {
-                    echo "<h1 class='noposts'>No rejected posts yet...</h1>";
-                } else {
-                    foreach ($rejectedprompts as $prompt) : ?>
-                        <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
-                        <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
-                        <div class="prompt">
-                            <ul>
-                                <li>
-                                    <p><b>Title: </b><?php echo $prompt["title"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>User: </b><?php echo $promptUser['username'] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
-                                </li>
-                                <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
-                                <li>
-                                    <p><b>Description: </b><?php echo $prompt["description"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
-                                </li>
-                            </ul>
-                        </div>
-                <?php endforeach;
-                } ?>
-                <h1><?php echo $reportedpromptscount ?> Reported</h1>
-                <?php
-                if (empty($reportedprompts)) {
-                    echo "<h1 class='noposts'>No reported posts yet...</h1>";
-                } else {
-                    foreach ($reportedprompts as $reportedprompt) : ?>
-                        <?php $prompt = Prompt::getPromptById($reportedprompt['prompt_id']) ?>
-                        <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
-                        <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
-                        <div class="prompt">
-                            <ul>
-                                <li>
-                                    <p><b>Title: </b><?php echo $prompt["title"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Report count: </b><?php echo $reportedprompt["count"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>User: </b><?php echo $promptUser['username'] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
-                                </li>
-                                <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
-                                <li>
-                                    <p><b>Description: </b><?php echo $prompt["description"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
-                                </li>
-                                <li>
-                                    <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
-                                </li>
-                            </ul>
-                        </div>
-                <?php endforeach;
-                } ?>
-            </div>
-            <div id="users" class="mb-10">
-                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Banned users</h2>
+            <div id="bannedusers" class="mb-20">
+                <h2 class="text-[#0464A4] text-2xl my-10 flex justify-center" id="bannedusers">Banned users</h2>
                 <?php foreach ($bannedusers as $user) : ?>
                     <form method="POST">
                         <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
@@ -346,6 +223,141 @@ $url = $image->getUrl()
             <div>
                 
 
+        </div>
+        <div class="mb-10">    
+            <div id="prompts">
+                <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Prompts</h2>
+                <h3 class="text-[#0464A4] text-2xl my-10 flex justify-center"><?php echo $unverifiedpromptscount ?> To verify</h3>
+                <div class="flex justify-center">
+                    <?php
+                    if (empty($unverifiedprompts)) {
+                        echo "<h1 class='noposts'>Congrats, you verified them all!</h1>";
+                    } else {
+                        foreach ($unverifiedprompts as $prompt) : ?>
+                            <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
+                            <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
+                            <?php $promptprice = Prompt::getPromptprice($prompt['price_id']); ?>
+                            <div class="prompt bg-white px-10 py-4 rounded-3xl flex justify-center items-center flex-col mt-5">
+                                <p class="text-[#0464A4] text-xl"><?php echo $prompt["title"] ?></p>
+                                <ul class="flex flex-row gap-10 mb-5 pt-5">
+                                    <li>
+                                        <p class="text-[#0464A4]"><?php echo $promptUser['username'] ?></p>
+                                    </li>
+                                    <li>
+                                        <p class="text-[#0464A4]"><?php echo $promptCat["category"] ?></p>
+                                    </li>
+                                    <li>
+                                        <p class="text-[#0464A4]"><?php echo $promptprice["price"] ?> credits</p>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo" class="w-80 mb-5 rounded rounded-xl"></li>
+                                    <li>
+                                        <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
+
+                                    </li>
+                                    <li>
+                                        <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                                    </li>
+                                    <li>
+                                        <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
+                                    </li>
+                                    <li>
+                                        <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
+                                    </li>
+
+                                </ul>
+                                <!-- Hier komt de verify button ==> if verify = 0 ==> andere backgroundcolor en text -->
+                                <div class="my-5 flex gap-5">
+                                    <a href="verify.action.php?id=<?php echo $prompt['id'] ?>&username=<?php echo $promptUser['username'] ?>&user_id=<?php echo $promptUser['id'] ?>" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-2 px-4 rounded-lg cursor-pointer">Approve</a>
+                                    <a href="reject.action.php?id=<?php echo $prompt["id"] ?>" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg cursor-pointer">Reject</a>
+                                </div>
+                            </div>
+                    <?php endforeach;
+                    } ?>
+                </div>
+                <h3 class="text-[#0464A4] text-2xl my-10 flex justify-center"><?php echo $rejectedpromptscount ?> Rejected</h3>
+                <div class="flex justify-center">
+                    <?php
+                    if (empty($rejectedprompts)) {
+                        echo "<h1 class='noposts'>No rejected posts yet...</h1>";
+                    } else {
+                        foreach ($rejectedprompts as $prompt) : ?>
+                            <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
+                            <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
+                            <div class="prompt bg-white px-10 rounded-3xl flex justify-center items-center flex-col py-5">
+                                <p class="text-[#0464A4] text-xl"><?php echo $prompt["title"] ?></p>
+                                <ul class="flex flex-row gap-10 mb-5 pt-5">
+                                    <li>
+                                        <p class="text-[#0464A4]"><?php echo $promptUser['username'] ?></p>
+                                    </li>
+                                    <li>
+                                        <p class="text-[#0464A4]"><?php echo $promptCat["category"] ?></p>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo" class="w-80 mb-5 rounded-xl"></li>
+                                    <li>
+                                        <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                                    </li>
+                                    <li>
+                                        <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
+                                    </li>
+                                    <li>
+                                        <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
+                                    </li>
+                                    <li>
+                                        <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
+                                    </li>
+                                </ul>
+                            </div>
+                    <?php endforeach;
+                    } ?>
+                </div>
+
+                <h3 class="text-[#0464A4] text-2xl my-10 flex justify-center"><?php echo $reportedpromptscount ?> Reported</h3>
+                <div class="flex justify-center">
+                    <?php
+                    if (empty($reportedprompts)) {
+                        echo "<h1 class='noposts'>No reported posts yet...</h1>";
+                    } else {
+                        foreach ($reportedprompts as $reportedprompt) : ?>
+                            <?php $prompt = Prompt::getPromptById($reportedprompt['prompt_id']) ?>
+                            <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
+                            <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
+                            <div class="prompt bg-white px-10 py-4 rounded-3xl flex justify-center items-center flex-col">
+                                <p class="text-[#0464A4] text-xl"><?php echo $prompt["title"] ?></p>
+                                <ul class="flex flex-row gap-10 mb-5 pt-5">
+                                    <li>
+                                        <p class="text-[#0464A4]"><b>Report count: </b><?php echo $reportedprompt["count"] ?></p>
+                                    </li>
+                                    <li>
+                                        <p class="text-[#0464A4]"><?php echo $promptUser['username'] ?></p>
+                                    </li>
+                                    <li>
+                                        <p class="text-[#0464A4]"><?php echo $promptCat["category"] ?></p>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li><img src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo" class="w-80 mb-5 rounded-xl"></li>
+                                    <li>
+                                        <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                                    </li>
+                                    <li>
+                                        <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
+                                    </li>
+                                    <li>
+                                        <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
+                                    </li>
+                                    <li>
+                                        <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
+                                    </li>
+                                </ul>
+                            </div>
+                    <?php endforeach;
+                    } ?>
+                </div>
+            </div>
         </div>
     </div>
 </body>
