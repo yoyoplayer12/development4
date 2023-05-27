@@ -14,6 +14,7 @@ $url = $image->getUrl();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,9 +22,10 @@ $url = $image->getUrl();
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="icon" type="image/png" href="<?php echo $url."evestore/assets/brand/zfgfkok4d1wqydimxrj7.png"?>">
+    <link rel="icon" type="image/png" href="<?php echo $url . "evestore/assets/brand/zfgfkok4d1wqydimxrj7.png" ?>">
     <title>Eve - <?php echo $User["username"] ?>'s profile</title>
 </head>
+
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <div class="flex justify-center items-center mt-20">
@@ -31,8 +33,16 @@ $url = $image->getUrl();
             <?php if (isset($_SESSION['loggedin'])) : ?>
                 <div class="flex justify-center flex-col items-center">
                     <h1 class="text-2xl font-bold mb-5"><?php echo $User["username"] ?>'s profile</h1>
-                    <button class="reportUserbtn" id="reportUserbtnid" data-userId="<?php echo $User["id"]?>"><?php if(count(User::checkReportUser($User['id'])) >=1 ){ echo "Reported";} else { echo "Report";} ?></button>
-                    <button class="followUserId" id="followUserId" data-userId="<?php echo $User["id"]?>"><?php if(count(User::checkFollowUser($User['id'])) >=1 ){ echo "Following";} else { echo "Follow";} ?></button>
+                    <button class="reportUserbtn" id="reportUserbtnid" data-userId="<?php echo $User["id"] ?>"><?php if (count(User::checkReportUser($User['id'])) >= 1) {
+                                                                                                                    echo "Reported";
+                                                                                                                } else {
+                                                                                                                    echo "Report";
+                                                                                                                } ?></button>
+                    <button class="followUserId" id="followUserId" data-userId="<?php echo $User["id"] ?>"><?php if (count(User::checkFollowUser($User['id'])) >= 1) {
+                                                                                                                echo "Following";
+                                                                                                            } else {
+                                                                                                                echo "Follow";
+                                                                                                            } ?></button>
                     <img src="<?php echo $url . $User["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 flex justify-center mb-5">
                 </div>
                 <div>
@@ -45,64 +55,66 @@ $url = $image->getUrl();
                         </div>
                     <?php endforeach; ?>
                 </div>
-            <?php else:?>
+            <?php else : ?>
                 <h1>Log in to see this profile</h1>
                 <a href="login.php">Log in</a>
-            <?php endif;?>
+            <?php endif; ?>
         </div>
     </div>
 </body>
+
 </html>
 <script>
     let reportUser = document.querySelectorAll("#reportUserbtnid");
-    reportUser.forEach(function (btn) {
-        btn.addEventListener("click", function () {
+    reportUser.forEach(function(btn) {
+        btn.addEventListener("click", function() {
             let currentBtn = this;
             let userId = this.dataset.userid;
             //post naar database
             let formData = new FormData();
             formData.append("reported_id", userId);
-            
+
             fetch("ajax/reportUser.php", {
-                method: "POST",
-                body: formData
-            })
-            .then(function(response){
-                return response.json();
-            })
-            .then(function(json){
-                if (json.status == 'success') {
-                    currentBtn.innerHTML = json.message;
-                }
-            });
+                    method: "POST",
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(json) {
+                    if (json.status == 'success') {
+                        currentBtn.innerHTML = json.message;
+                    }
+                });
         });
     });
     let followUser = document.querySelectorAll("#followUserId");
-    followUser.forEach(function (btn) {
-        btn.addEventListener("click", function () {
+    followUser.forEach(function(btn) {
+        btn.addEventListener("click", function() {
             let currentBtn = this;
             let userId = this.dataset.userid;
             console.log(userId);
-            
+
             //post naar database
             let formData = new FormData();
             formData.append("followed_id", userId);
-            
+
             fetch("ajax/followUser.php", {
-                method: "POST",
-                body: formData
-            })
-            .then(function(response){
-                return response.json();
-            })
-            .then(function(json){
-                if (json.status == 'success') {
-                    currentBtn.innerHTML = json.message;
-                    console.log(json.message);
-                }
-            });
+                    method: "POST",
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(json) {
+                    if (json.status == 'success') {
+                        currentBtn.innerHTML = json.message;
+                        console.log(json.message);
+                    }
+                });
         });
     });
 </script>
 </body>
+
 </html>
