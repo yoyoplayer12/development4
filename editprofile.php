@@ -1,51 +1,16 @@
 <?php
-    include_once(__DIR__ . "/bootstrap.php");
-    //logindetection
-    if(isset($_SESSION["loggedin"])) {
-        $warning = "";
-        $getUser = User::getSessionUser();
-        if(!empty($_POST)){
-            if(!empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
-                if (strlen($_POST['bio']) <= 19){
-                    $warning = "Bio is too short, has to have at least 20 characters.";
-                }
-                elseif (strlen($_POST['bio']) >= 501){
-                    $warning = "Bio is too long, can have a maximum of 500 characters.";
-                }
-                else{
-                    $bio = $_POST['bio'];
-                    $user = new User();
-                    $user->resetBio($bio);
-                    //set image
-                    $upload = new Image();
-                    $upload->setup();
-                    $upload->upload("public", "users", "avatar_url");
-                    $randomstring = $upload->getString();
-                    $ext = pathinfo($_FILES['avatar_url']['name'], PATHINFO_EXTENSION);
-                    $destination = "evestore/public/users/".$randomstring.".".$ext;
-                    $user->resetAvatar($destination);
-                    //saving to database
-                    $user->updateUser();
-                    header("Location: profile.php");
-                }
-            }
-            elseif(!empty($_POST['bio']) && empty($_FILES['avatar_url']["name"])){
-                if (strlen($_POST['bio']) <= 19){
-                    $warning = "Bio is too short, has to have at least 20 characters";
-                }
-                elseif (strlen($_POST['bio']) >= 501){
-                    $warning = "Bio is too long, can have a maximum of 500 characters";
-                }
-                else{
-                    $bio = $_POST['bio'];
-                    $user = new User();
-                    $user->resetBio($bio);
-                    $user->updateBio();
-                    header("Location: profile.php");
-                }
-            }
-            elseif(empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
-                $user = new User();
+include_once(__DIR__ . "/bootstrap.php");
+//logindetection
+if (isset($_SESSION["loggedin"])) {
+    $warning = "";
+    $getUser = User::getSessionUser();
+    if (!empty($_POST)) {
+        if (!empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])) {
+            if (strlen($_POST['bio']) <= 19) {
+                $warning = "Bio is too short, has to have at least 20 characters.";
+            } elseif (strlen($_POST['bio']) >= 501) {
+                $warning = "Bio is too long, can have a maximum of 500 characters.";
+            } else {
                 $bio = $_POST['bio'];
                 $user = new User();
                 $user->resetBio($bio);
@@ -58,51 +23,77 @@
                 $destination = "evestore/public/users/" . $randomstring . "." . $ext;
                 $user->resetAvatar($destination);
                 //saving to database
-                $user->updateAvatar();
                 $user->updateUser();
                 header("Location: profile.php");
-            } 
-            elseif (!empty($_POST['bio']) && empty($_FILES['avatar_url']["name"])) {
-                if (strlen($_POST['bio']) <= 19) {
-                    $warning = "Bio is too short, has to have at least 20 characters";
-                } elseif (strlen($_POST['bio']) >= 501) {
-                    $warning = "Bio is too long, can have a maximum of 500 characters";
-                } else {
-                    $bio = $_POST['bio'];
-                    $user = new User();
-                    $user->resetBio($bio);
-                    $user->updateBio();
-                    header("Location: profile.php");
-                }
-            }   
-            elseif (empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])) {
-                $user = new User();
-                //set image
-                $upload = new Image();
-                $upload->setup();
-                $upload->upload("public", "users", "avatar_url");
-                $randomstring = $upload->getString();
-                $ext = pathinfo($_FILES['avatar_url']['name'], PATHINFO_EXTENSION);
-                $destination = "evestore/public/users/" . $randomstring . "." . $ext;
-                $user->resetAvatar($destination);
-                //saving to database
-                $user->updateAvatar();
-                header("Location: profile.php");
-            } 
-            else {
-                echo "nothing to save";
             }
+        } elseif (!empty($_POST['bio']) && empty($_FILES['avatar_url']["name"])) {
+            if (strlen($_POST['bio']) <= 19) {
+                $warning = "Bio is too short, has to have at least 20 characters";
+            } elseif (strlen($_POST['bio']) >= 501) {
+                $warning = "Bio is too long, can have a maximum of 500 characters";
+            } else {
+                $bio = $_POST['bio'];
+                $user = new User();
+                $user->resetBio($bio);
+                $user->updateBio();
+                header("Location: profile.php");
+            }
+        } elseif (empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])) {
+            $user = new User();
+            $bio = $_POST['bio'];
+            $user = new User();
+            $user->resetBio($bio);
+            //set image
+            $upload = new Image();
+            $upload->setup();
+            $upload->upload("public", "users", "avatar_url");
+            $randomstring = $upload->getString();
+            $ext = pathinfo($_FILES['avatar_url']['name'], PATHINFO_EXTENSION);
+            $destination = "evestore/public/users/" . $randomstring . "." . $ext;
+            $user->resetAvatar($destination);
+            //saving to database
+            $user->updateAvatar();
+            $user->updateUser();
+            header("Location: profile.php");
+        } elseif (!empty($_POST['bio']) && empty($_FILES['avatar_url']["name"])) {
+            if (strlen($_POST['bio']) <= 19) {
+                $warning = "Bio is too short, has to have at least 20 characters";
+            } elseif (strlen($_POST['bio']) >= 501) {
+                $warning = "Bio is too long, can have a maximum of 500 characters";
+            } else {
+                $bio = $_POST['bio'];
+                $user = new User();
+                $user->resetBio($bio);
+                $user->updateBio();
+                header("Location: profile.php");
+            }
+        } elseif (empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])) {
+            $user = new User();
+            //set image
+            $upload = new Image();
+            $upload->setup();
+            $upload->upload("public", "users", "avatar_url");
+            $randomstring = $upload->getString();
+            $ext = pathinfo($_FILES['avatar_url']['name'], PATHINFO_EXTENSION);
+            $destination = "evestore/public/users/" . $randomstring . "." . $ext;
+            $user->resetAvatar($destination);
+            //saving to database
+            $user->updateAvatar();
+            header("Location: profile.php");
+        } else {
+            echo "nothing to save";
         }
     }
-    else {
-        header("Location: login.php");
-    }
-    //setting up image getting
-    $image = new Image();
-    $url = $image->getUrl()
+} else {
+    header("Location: login.php");
+}
+//setting up image getting
+$image = new Image();
+$url = $image->getUrl()
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -110,10 +101,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="icon" type="image/png" href="<?php echo $url."evestore/assets/brand/zfgfkok4d1wqydimxrj7.png"?>">
-    <title>Eve - <?php echo $_SESSION['username']?>'s profile</title>
+    <link rel="icon" type="image/png" href="<?php echo $url . "evestore/assets/brand/zfgfkok4d1wqydimxrj7.png" ?>">
+    <title>Eve - <?php echo $_SESSION['username'] ?>'s profile</title>
     <title>Eve - <?php echo $_SESSION['username'] ?>'s profile</title>
 </head>
+
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <div class="flex justify-center items-center mt-10">
@@ -138,8 +130,9 @@
                 </div>
             <?php else : ?>
                 <?php header("Location: ./profile.php"); ?>
-            <?php endif; ?>  
+            <?php endif; ?>
         </div>
     </div>
 </body>
+
 </html>
