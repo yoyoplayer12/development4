@@ -32,7 +32,7 @@ $url = $image->getUrl();
     <title>Change password</title>
 </head>
 
-<body>
+<body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <form action="" method="post">
         <h2>Change password from <?php echo $_SESSION['username'] ?>'s account</h2>
