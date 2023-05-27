@@ -223,10 +223,10 @@ $url = $image->getUrl();
                                 <?php if ($_SESSION['userid'] == $prompt['user_id']) : ?>
                                 <?php else : ?>
                                     <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" id="buybtnid" data-postid="<?php echo $prompt["id"] ?>" data-postuserid="<?php echo $prompt["user_id"] ?>"><button><?php if (count(Prompt::checkBought($prompt['id'])) >= 1) {
-                                                                                                                                                                                                                                                                                echo "Bought";
-                                                                                                                                                                                                                                                                            } else {
-                                                                                                                                                                                                                                                                                echo "Buy";
-                                                                                                                                                                                                                                                                            } ?></button></li>
+                                                                                                                                                                                                                                                                                    echo "Bought";
+                                                                                                                                                                                                                                                                                } else {
+                                                                                                                                                                                                                                                                                    echo "Buy";
+                                                                                                                                                                                                                                                                                } ?></button></li>
                                 <?php endif; ?>
                             <?php endif ?>
                             <!-- if username is logged in show this button  -->
