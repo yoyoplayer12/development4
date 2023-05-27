@@ -50,8 +50,10 @@ $url = $image->getUrl();
                     <h2 class="text-[#0464A4] text-xl my-5 flex justify-center">Prompts</h2>
                     <?php foreach ($prompts as $prompt) : ?>
                         <div class="prompt bg-blue-500 text-white py-5 px-5 rounded-lg">
-                            <h3>Title: <?php echo $prompt["title"]; ?></h3>
-                            <p>Description: <?php echo $prompt["description"]; ?></p>
+                            <a href="promptdetails.php?pid=<?php echo $prompt['id'] ?>">
+                                <h3>Title: <?php echo $prompt["title"]; ?></h3>
+                                <p>Description: <?php echo $prompt["description"]; ?></p>
+                            </a>
                         </div>
                     <?php endforeach; ?>
                 </div>
