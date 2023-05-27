@@ -10,7 +10,6 @@ $url = $image->getUrl();
 
 //get comments
 $comments = Comment::getComments($postid);
-var_dump($comments);
 
 ?>
 <!DOCTYPE html>
