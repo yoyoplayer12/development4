@@ -289,7 +289,7 @@ $url = $image->getUrl();
                 //post naar database
                 let formData = new FormData();
                 formData.append("post_id", postId);
-                fetch("ajax/like.php", {
+                fetch("ajax/Like.php", {
                         method: "POST",
                         body: formData
                     })
@@ -314,7 +314,7 @@ $url = $image->getUrl();
                 //post naar database
                 let formData = new FormData();
                 formData.append("post_id", postId);
-                fetch("ajax/saveFavorite.php", {
+                fetch("ajax/Savefavorite.php", {
                         method: "POST",
                         body: formData
                     })
@@ -336,7 +336,7 @@ $url = $image->getUrl();
                 //post naar database
                 let formData = new FormData();
                 formData.append("post_id", postId);
-                fetch("ajax/report.php", {
+                fetch("ajax/Report.php", {
                         method: "POST",
                         body: formData
                     })
@@ -360,7 +360,7 @@ $url = $image->getUrl();
                 let formData = new FormData();
                 formData.append("post_id", postId);
                 formData.append("post_payout_id", payoutId);
-                fetch("ajax/buypost.php", {
+                fetch("ajax/Buypost.php", {
                         method: "POST",
                         body: formData
                     })
