@@ -1,10 +1,8 @@
 <?php
 include_once("./bootstrap.php");
-
 if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $searchedUsername = isset($_POST["username"]) ? $_POST["username"] : ""; // Searched username
-
         // Get all usernames from the database
         $usernames = Moderator::getUsernames($searchedUsername);
         $users = Moderator::getUsers($searchedUsername);
@@ -14,13 +12,11 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
                 $matchingUserIds[] = $user["id"];
             }
         }
-
         // Check if the "addMod" button is clicked
         if (isset($_POST["addMod"]) && isset($_POST["selectedUserId"])) {
             $selectedUserId = $_POST["selectedUserId"];
             Moderator::addModerator($selectedUserId);
         }
-
         // Check if the "deleteMod" button is clicked
         if (isset($_POST["deleteMod"]) && isset($_POST["selectedUserId"])) {
             $selectedUserId = $_POST["selectedUserId"];
@@ -30,8 +26,6 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
         if (isset($_POST["banuser"]) && isset($_POST["selectedUserId"])) {
             
             $selectedUserId = $_POST["selectedUserId"];
-            var_dump($selectedUserId);
-            var_dump($_POST['banuser']);
             Moderator::ban($selectedUserId);
         }
         //unban user
@@ -43,17 +37,13 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] == true) {
             $selectedUserId = $_POST["selectedUserId"];
             Moderator::unban($selectedUserId);
         } 
-
     }
-
     // Fetch and display the list of moderators
     $moderators = Moderator::getModerators();
 } else {
     header("Location: index.php");
     exit;
 }
-
-
 $unverifiedprompts = [];
 $rejectedprompts = [];
 $reportedprompts = [];
@@ -70,28 +60,13 @@ $reporteduserids = Moderator::getReportedUserIds();
 $rejectedpromptscount = count($rejectedprompts);
 $unverifiedpromptscount = count($unverifiedprompts);
 $reportedpromptscount = count($reportedprompts);
-
 $printReportedUsers = User::getReportedUsers();
-// var_dump($printReportedUsers);
-
-
-
-
-
-
-
-
-
-
 //setting up image getting
 $image = new Image();
 $url = $image->getUrl()
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -99,9 +74,9 @@ $url = $image->getUrl()
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="<?php echo $url."evestore/assets/brand/zfgfkok4d1wqydimxrj7.png"?>">
     <title>EVE - Moderator Panel</title>
 </head>
-
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1 class="text-[#0464A4] text-5xl my-10 flex justify-center">Moderator Panel</h1>
@@ -120,7 +95,6 @@ $url = $image->getUrl()
                     <input type="text" name="username" class="p-3 border-2 rounded-lg border-[#0464A4] w-96" placeholder="Search">
                     <button type="submit" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-3 px-8 rounded-lg mx-4 cursor-pointer">Search</button>
                 </form>
-
                 <!-- Display the list of matching usernames -->
                 <?php if (!empty($matchingUserIds)) : ?>
                     <div class="mt-2">
@@ -152,8 +126,6 @@ $url = $image->getUrl()
                         <h2>No users were found.</h2>
                     </div>
                 <?php endif; ?>
-
-
             </div>
             <div>
                 <h2 class="text-[#0464A4] text-2xl mt-10 mb-5 flex justify-center" id="moderators">Moderators</h2>
@@ -166,9 +138,6 @@ $url = $image->getUrl()
                                 <button type="submit" name="deleteMod" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer ">Remove Moderator</button>
                             </form>
                         </li>
-
-                        </form>
-
                     <?php endforeach; ?>
                 </ul>
             </div>
@@ -192,37 +161,32 @@ $url = $image->getUrl()
                 <?php if(empty($printReportedUsers)): ?>
                     <?php echo "<h1 class='noposts'>No reported users yet...</h1>";?>
                 <?php else: ?>
-                <?php foreach ($printReportedUsers as $reportedUser): ?>
-                <form action="" method="post">
-                    <div class="flex justify-center items-center mt-20">
-                        <div>
-                            <div class=" w-90 rounded-lg bg-white px-10 py-10 ">
-                                <h1 class="text-2xl font-bold text-center"><?php echo $reportedUser['username'] ?></h1>
-                                <div class="flex flex-col items-center my-4">
-                                    <img src="<?php echo $url.$reportedUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover m-10">
+                    <?php foreach ($printReportedUsers as $reportedUser): ?>
+                    <form action="" method="post">
+                        <div class="flex justify-center items-center mt-20">
+                            <div>
+                                <div class=" w-90 rounded-lg bg-white px-10 py-10 ">
+                                    <h1 class="text-2xl font-bold text-center"><?php echo $reportedUser['username'] ?></h1>
+                                    <div class="flex flex-col items-center my-4">
+                                        <img src="<?php echo $url.$reportedUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover m-10">
+                                    </div>
+                                    <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($reportedUser['reported_id']); ?>">
+                                    <button type="submit" name="<?php if ($reportedUser['banned'] == 0) {
+                                        echo "banuser";
+                                    } else {
+                                        echo "unbanuser";
+                                    } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($reportedUser['banned'] == 0) {
+                                        echo "Ban";
+                                    } else {
+                                        echo "Unban";
+                                    } ?></button>
                                 </div>
-                                <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($reportedUser['reported_id']); ?>">
-                                <button type="submit" name="<?php if ($reportedUser['banned'] == 0) {
-                                    echo "banuser";
-                                } else {
-                                    echo "unbanuser";
-                                } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($reportedUser['banned'] == 0) {
-                                    echo "Ban";
-                                } else {
-                                    echo "Unban";
-                                } ?></button>
-
                             </div>
-                        <div>
-                </form>
-                        
-                </div>
-                <?php endforeach; ?>
+                        </div>
+                    </form>  
+                    <?php endforeach; ?>
                 <?php endif; ?>
-                
-            <div>
-                
-
+            </div>
         </div>
         <div class="mb-10">    
             <div id="prompts">
@@ -265,7 +229,6 @@ $url = $image->getUrl()
                                     <li>
                                         <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
                                     </li>
-
                                 </ul>
                                 <!-- Hier komt de verify button ==> if verify = 0 ==> andere backgroundcolor en text -->
                                 <div class="my-5 flex gap-5">
@@ -273,8 +236,7 @@ $url = $image->getUrl()
                                     <a href="reject.action.php?id=<?php echo $prompt["id"] ?>" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg cursor-pointer">Reject</a>
                                 </div>
                             </div>
-                    <?php endforeach;
-                    } ?>
+                    <?php endforeach;} ?>
                 </div>
                 <h3 class="text-[#0464A4] text-2xl my-10 flex justify-center"><?php echo $rejectedpromptscount ?> Rejected</h3>
                 <div class="flex justify-center">
@@ -311,10 +273,8 @@ $url = $image->getUrl()
                                     </li>
                                 </ul>
                             </div>
-                    <?php endforeach;
-                    } ?>
+                    <?php endforeach;} ?>
                 </div>
-
                 <h3 class="text-[#0464A4] text-2xl my-10 flex justify-center"><?php echo $reportedpromptscount ?> Reported</h3>
                 <div class="flex justify-center">
                     <?php
@@ -354,12 +314,10 @@ $url = $image->getUrl()
                                     </li>
                                 </ul>
                             </div>
-                    <?php endforeach;
-                    } ?>
+                    <?php endforeach;} ?>
                 </div>
             </div>
         </div>
     </div>
 </body>
-
 </html>

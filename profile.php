@@ -1,51 +1,33 @@
 <?php
 include_once(__DIR__ . "/bootstrap.php");
-include_once(__DIR__ . "/classes/Prompt.php");
-
-
-
 //logindetection
 if (isset($_SESSION["loggedin"])) {
     $getUser = User::getSessionUser();
 } else {
     header("Location: login.php");
 }
-
 //setting up image getting
 $image = new Image();
 $url = $image->getUrl();
-
 $printFavorites = Prompt::getFavorites();
-// var_dump($printFavorites[0]['postId']);
 $boughtpromptids = Prompt::getBoughtPromptIds();
 if ($boughtpromptids != false) {
     $boughtprompts = Prompt::getBoughtPrompts($boughtpromptids['prompt_id']);
 } else {
     $boughtprompts = [];
 }
-
-
-
 //remove favorites after click on button
 if (isset($_POST['removeFav'])) {
-    var_dump($printFavorites[0]['postId']);
-
     $promptId = $printFavorites[0]['postId'];
-    //var_dump($promptId);
     $test = Prompt::deleteFavorite($promptId);
-
     header("Location: profile.php");
 }
 
-
-
 $followedUsers = User::getFollowedCategories();
-
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,9 +35,9 @@ $followedUsers = User::getFollowedCategories();
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="<?php echo $url."evestore/assets/brand/zfgfkok4d1wqydimxrj7.png"?>">
     <title>Eve - <?php echo $_SESSION['username'] ?>'s profile</title>
 </head>
-
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <div class="flex justify-center items-center mt-20">
@@ -119,7 +101,6 @@ $followedUsers = User::getFollowedCategories();
                                         </li>
                                     </form>
                                 </div>
-
                             </ul>
                         </div>
                     <?php endforeach; ?>
@@ -164,7 +145,6 @@ $followedUsers = User::getFollowedCategories();
                                 <li>
                                     <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
                                 </li>
-
                                 <div class="mt-5 flex flex-col gap-5 pb-5">
                                     <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button>Buy</button></li>
                                     <!-- make button that removes the prompt from favorites with the Prompt class -->
@@ -237,6 +217,7 @@ $followedUsers = User::getFollowedCategories();
                 <a href="logout.php" class="mx-2 px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Log in</a>
             <?php endif; ?>
         </div>
+    </div>
 </body>
 
 

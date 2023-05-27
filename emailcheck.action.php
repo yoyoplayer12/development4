@@ -4,4 +4,3 @@
     $email = $_POST['email'];
     $emailcheck = new Action();
     $emailcheck->emailcheck($email);
-?>

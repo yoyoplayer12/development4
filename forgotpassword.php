@@ -1,15 +1,12 @@
 <?php
-    require_once 'vendor/autoload.php';
-    include_once(__DIR__ . "/classes/User.php");
-    include_once(__DIR__ . "/classes/Db.php");
-    $error = " ";
+    include_once(__DIR__ . "/bootstrap.php");
+    $error = "";
     $changed = false;
     $n = 5;
-    $config = parse_ini_file('config/config.ini', true);
+    $config = parse_ini_file('classes/config/config.ini', true);
     $key = $config['keys']['SENDGRID_API_KEY'];
     apache_setenv('SENDGRID_API_KEY', $key);
     $user = new User();
-    session_start();
     if(isset($_POST)){
         if(isset($_POST['btn'])){
                 try {
@@ -36,7 +33,7 @@
                 $code = true;
             }
             else{
-                $error = "Invalid code";
+                $error = "Invalid code!";
             }
         }
         if(isset($_POST['reset-password'])){
@@ -48,12 +45,14 @@
                 $changed = true;
             }
             else{
-                $error = "Passwords don't match";
+                $error = "Passwords don't match!";
                 $code = true;
             }
         }
-        
     }
+    //setting up image getting
+    $image = new Image();
+    $url = $image->getUrl()
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,6 +63,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="<?php echo $url."evestore/assets/brand/zfgfkok4d1wqydimxrj7.png"?>">
     <title>Reset your password</title>
 </head>
 <body>
@@ -71,19 +71,17 @@
     
     <div class = "w-full h-80 flex justify-center items-center">
             <?php if($changed == true):?>
-                <h1>Password changed</h1>
+                <h1>Password changed!</h1>
                 <a href="login.php">Log in</a>
             <?php elseif(!isset($code)): ?>
-
             <form action="" method="post">
-                    <h1 class="mb-15 text-[#0464A4] text-5xl">Reset your password</h1>
+                    <h1 class="mb-15 text-[#0464A4] text-5xl">Reset your password:</h1>
                     <ul>
                         <li><input class="border-2 flex w-full justify-center rounded-md mb-5 mt-20 py-2" type="text" name="email" placeholder="Email" required></li>
                         <li><input class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer" type="submit" value="Send email" name="btn"></li>
                     </ul>
-                    
                     <?php if(isset($nomail)): ?>
-                        <div> <?php echo $nomail ?></div>        
+                        <div><?php echo $nomail ?></div>        
                     <?php endif; ?>
             </form>
             <?php elseif($code == false): ?>
@@ -97,7 +95,7 @@
             </form>
             <?php elseif($code == true):?>
             <form action="" method="post">
-                <h1>Reset your password</h1>
+                <h1>Reset your password:</h1>
                 <ul>
                     <li><input type="password" name="password" placeholder="password" required></li>
                     <li><input type="password" name="password2" placeholder="confirm password" required></li>

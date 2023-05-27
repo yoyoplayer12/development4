@@ -1,9 +1,7 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
-    require_once(__DIR__ . '/vendor/autoload.php');
     //logindetection
     if(isset($_SESSION["loggedin"])) {
-
     }
     else {
         header("Location: login.php");
@@ -49,6 +47,9 @@
             echo $e->getMessage();
           }
     }
+    //setting up image getting
+    $image = new Image();
+    $url = $image->getUrl();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,13 +60,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="<?php echo $url."evestore/assets/brand/zfgfkok4d1wqydimxrj7.png"?>">
     <title>Eve - Home</title>
 </head>
 <body class="bg-[#C8C8CC]">
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1 class="text-[#0464A4] text-5xl my-10 flex justify-center">New Prompt</h1>
     <div class="flex justify-center">
-
         <div class="flex justify-center items-center bg-blue-500 px-10 py-10 rounded-2xl text-white mb-10">
         <form action="" method="post" enctype="multipart/form-data" class="">
         <p class="text-blue-900 text-xl mb-4"><b>Give us some information about your prompt</b></p>
@@ -100,21 +101,19 @@
                 </select>
             </div>
             <div class="mb-5">
-            <p class="text-blue-900 text-xl mt-8 mb-4"><b>How do you make your prompt?</b></p>
-            <p>Enter here what you entered to create this prompt:</p>
-            <input type="text" name="prompt" placeholder="Prompt" required class="mx-2 px-4 py-2 rounded-md bg-white text-blue-500">
+                <p class="text-blue-900 text-xl mt-8 mb-4"><b>How do you make your prompt?</b></p>
+                <p>Enter here what you entered to create this prompt:</p>
+                <input type="text" name="prompt" placeholder="Prompt" required class="mx-2 px-4 py-2 rounded-md bg-white text-blue-500">
             </div>
             <div class="mb-5">
-            <p>Enter any other information about your prompt e.g. made with?:</p>
-            <input type="text" name="prompt_info" placeholder="Prompt info" required class="mx-2 px-4 py-2 rounded-md bg-white text-blue-500">
+                <p>Enter any other information about your prompt e.g. made with?:</p>
+                <input type="text" name="prompt_info" placeholder="Prompt info" required class="mx-2 px-4 py-2 rounded-md bg-white text-blue-500">
             </div>
             <div>
-            <input type="submit" value="Create Prompt" class="mx-2 px-4 py-2 rounded-md bg-blue-800 hover:bg-blue-700 text-white cursor-pointer">
+                <input type="submit" value="Create Prompt" class="mx-2 px-4 py-2 rounded-md bg-blue-800 hover:bg-blue-700 text-white cursor-pointer">
             </div>
         </form>
         </div>
-
-        
     </div>
 </body>
 </html>

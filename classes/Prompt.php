@@ -14,7 +14,6 @@
         private $price;
         private $payoutid;
         private $verified;
-      
         public static function getUnverifiedPrompts()
         {
             $conn = Db::getInstance();
@@ -135,7 +134,6 @@
             }
             //add limit & offset
             $sql .= " ORDER BY postdate DESC LIMIT :limit OFFSET :offset";
-
             $statement = $conn->prepare($sql);
             if ($search_query != '') {
                 $statement->bindValue(":search_query", "%".$search_query."%");
@@ -155,7 +153,6 @@
             }
             //add limit & offset
             $sql .= " ORDER BY postdate DESC LIMIT :limit OFFSET :offset";
-
             $statement = $conn->prepare($sql);
             if ($search_query != '') {
                 $statement->bindValue(":search_query", "%".$search_query."%");
@@ -173,7 +170,6 @@
             if ($search_query != '') {
                 $sql .= " AND title LIKE :search_query";
             }
-
             $statement = $conn->prepare($sql);
             if ($search_query != '') {
                 $statement->bindValue(":search_query", "%".$search_query."%");
@@ -182,7 +178,6 @@
             $prompt = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $prompt;
         }
-
         public static function getPromptCat($catid)
         {
             $conn = Db::getInstance();
@@ -214,13 +209,11 @@
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
-
         public function setCategoryId($catid)
         {
             $this->categoryid = $catid;
             return $this;
         }
-
         public static function getPromptsByCategory($selectedCategory)
         {
             $conn = Db::getInstance();
@@ -236,7 +229,6 @@
         {
             return $this->postId;
         }
-
         /**
          * Set the value of postId
          *
@@ -248,8 +240,6 @@
 
             return $this;
         }
-
-
         /**
          * Get the value of userId
          */
@@ -257,21 +247,16 @@
         {
             return $this->userId;
         }
-
         //save favorites to database
-
         public function saveFavorite()
         {
             $conn = Db::getInstance();
             $statement = $conn->prepare("INSERT INTO favorites (userId, postId) VALUES (:userId, :postId)");
-
             $statement->bindValue(":userId", $this->userId);
             $statement->bindValue(":postId", $this->postId);
             $result = $statement->execute();
-
             return $result;
         }
-
         public static function getFavorites()
         {
             $conn = Db::getInstance();
@@ -282,7 +267,6 @@
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
             return $result;
         }
-
         public static function checkFavorite($promptId)
         {
             $conn = Db::getInstance();
@@ -291,7 +275,6 @@
             $statement->bindValue(":postId", $promptId);
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-
             return $result;
         }
         public static function deleteFavorite($promptId)
@@ -301,7 +284,6 @@
             $statement->bindValue(":userId", $_SESSION['id']);
             $statement->bindValue(":postId", $promptId);
             $result = $statement->execute();
-            
             return $result;
         }
         public static function checkReport($promptId){
@@ -407,7 +389,6 @@
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
-
         /**
          * Get the value of verified
          */ 
@@ -415,7 +396,6 @@
         {
             return $this->verified;
         }
-
         /**
          * Set the value of verified
          *
@@ -424,7 +404,6 @@
         public function setVerified($verified)
         {
             $this->verified = $verified;
-
             return $this;
         }
         public static function getMinPrice(){
