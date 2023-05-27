@@ -157,9 +157,6 @@ $url = $image->getUrl();
         </form>
     </div>
     <div class="mx-auto mt-5 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 sm:mt-5 sm:pt-16 lg:mx-10 lg:max-w-none lg:grid-cols-3">
-        <?php if (isset($notPrompt)) : ?>
-            <p><?php echo $notPrompt ?></p>
-        <?php endif; ?>
         <?php
         if (empty($prompts)) {
             echo "<h1 class='noposts'>There are no prompts right now, try again later!</h1>";
@@ -187,9 +184,9 @@ $url = $image->getUrl();
                                 <p><?php echo Like::getLikes($prompt["id"]) ?></p>
                             </li>
                             <li class="text-xl flex">
-                                <p><?php echo $prompt["title"] ?></p>
+                                <p><?php echo htmlspecialchars($prompt["title"]) ?></p>
                             </li>
-                            <li class="text-lg flex"><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><?php echo $promptUser["username"] ?></a></li>
+                            <li class="text-lg flex"><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><?php echo htmlspecialchars($promptUser["username"]) ?></a></li>
                         </div>
                         <a href="promptdetails.php?pid=<?php echo $prompt['id'] ?>">
                             <?php if (!empty($_SESSION["userid"])) : ?>
@@ -198,7 +195,7 @@ $url = $image->getUrl();
                                 <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
                             <?php endif; ?>
                             <li class="mt-5">
-                                <p><b>Description: </b><?php echo $prompt["description"] ?></p>
+                                <p><b>Description: </b><?php echo htmlspecialchars($prompt["description"]) ?></p>
                             </li>
                             <li>
                                 <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
@@ -210,10 +207,10 @@ $url = $image->getUrl();
                             <?php if (isset($_SESSION["loggedin"])) : ?>
                                 <?php if (count(Prompt::checkBought($prompt['id'])) >= 1) : ?>
                                     <li>
-                                        <p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p>
+                                        <p><b>Prompt: </b><?php echo htmlspecialchars($prompt["prompt"]) ?></p>
                                     </li>
                                     <li class="mb-5">
-                                        <p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p>
+                                        <p><b>Prompt description: </b><?php echo htmlspecialchars($prompt["prompt_info"]) ?></p>
                                     </li>
                                 <?php else : ?>
                                     <li>
