@@ -76,60 +76,9 @@ $url = $image->getUrl();
     <title>Eve - Home</title>
 </head>
 
-<body>
+<body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
-    <!-- filters -->
-    <div>
-        <h3>Filters</h3>
-        <form action="" method="post" id="filter">
-            <div class="flex flex-col gap-5">
-                <div class="flex flex-row gap-5">
-                    <div>
-                        <label for="price"><b>Price: (<?php echo $minprice["MIN(price)"] ?> to <?php echo $maxprice['MAX(price)'] ?> Credits)</b></label>
-                        <input type="number" placeholder="Minumum price" name="minprice" value="<?php if (isset($_POST['minprice'])) {
-                                                                                                    echo $_POST['minprice'];
-                                                                                                } ?>">
-                        <input type="number" placeholder="Maximum price" name="maxprice" value="<?php if (isset($_POST['maxprice'])) {
-                                                                                                    echo $_POST['maxprice'];
-                                                                                                } ?>">
-                    </div>
-                </div>
-                <div class="flex flex-row gap-5">
-                    <div class="flex flex-col gap-5">
-                        <label for="limit"><b>Posts per page</b></label>
-                        <select name="limit" id="limit">
-                            <?php if (isset($_POST['limit'])) : ?>
-                                <?php if ($_POST['limit'] == 6) : ?>
-                                    <option value="6" selected="selected">6</option>
-                                <?php elseif ($_POST['limit'] == 12) : ?>
-                                    <option value="12" selected="selected">12</option>
-                                <?php elseif ($_POST['limit'] == 18) : ?>
-                                    <option value="18" selected="selected">18</option>
-                                <?php elseif ($_POST['limit'] == 24) : ?>
-                                    <option value="24" selected="selected">24</option>
-                                <?php endif; ?>
-                            <?php else : ?>
-                                <option value="6" selected="selected">6</option>
-                                <option value="12">12</option>
-                                <option value="18">18</option>
-                                <option value="24">24</option>
-                            <?php endif; ?>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="flex flex-row gap-5">
-                <button type="submit" name="filter" class="btn btn-primary">Filter</button>
-                <button type="submit" name="reset" class="btn btn-primary">Reset</button>
-            </div>
-        </form>
-        <?php foreach ($filterlabels as $label) : ?>
-            <div>
-                <p><?php echo $label ?></p>
-            </div>
-        <?php endforeach; ?>
-    </div>
-    <!-- filters -->
+
     <h1 class=" text-[#0464A4] text-5xl my-10 flex justify-center">Prompt marketplace</h1>
     <div class="flex justify-center items-center">
         <form method="get" class="mr-2">
@@ -155,7 +104,74 @@ $url = $image->getUrl();
             <?php endif; ?>
 
         </form>
+
     </div>
+    <!-- filters -->
+    <div class="mt-10">
+        <div class="flex justify-center">
+            <div class="bg-white px-5 py-5 rounded-2xl">
+                <h3 class="flex justify-center mb-5 text-2xl text-[#0464A4]">Filters</h3>
+                <form action="" method="post" id="filter" >
+                    <div class="flex flex-col gap-5 flex-row">
+                        <div class="flex justify-center flex-row gap-5">
+                            <div class="flex gap-5 items-center">
+                                <label for="price"><b>Price: (<?php echo $minprice["MIN(price)"] ?> to <?php echo $maxprice['MAX(price)'] ?> Credits)</b></label>
+                                <input type="number" class="px-2 py-2 rounded-lg text-center bg-slate-200" placeholder="Minimum price" name="minprice" value="<?php if (isset($_POST['minprice'])) {
+                                                                                                                                                        echo $_POST['minprice'];
+                                                                                                                                                    } ?>">
+                                <input type="number" class="px-2 py-2 rounded-lg text-center bg-slate-200" placeholder="Maximum price" name="maxprice" value="<?php if (isset($_POST['maxprice'])) {
+                                                                                                                                                        echo $_POST['maxprice'];
+                                                                                                                                                    } ?>">
+                            </div>
+                        </div>
+                        <div class="flex flex-row justify-center mb-5 gap-5">
+                            <div class="flex flex-row items-center gap-5">
+                                <label for="limit"><b>Posts per page</b></label>
+                                <select name="limit" id="limit" class="px-2 py-2 rounded-lg text-center bg-slate-200">
+                                    <?php if (isset($_POST['limit'])) : ?>
+                                        <?php if ($_POST['limit'] == 6) : ?>
+                                            <option value="6" selected="selected">6</option>
+                                        <?php elseif ($_POST['limit'] == 12) : ?>
+                                            <option value="12" selected="selected">12</option>
+                                        <?php elseif ($_POST['limit'] == 18) : ?>
+                                            <option value="18" selected="selected">18</option>
+                                        <?php elseif ($_POST['limit'] == 24) : ?>
+                                            <option value="24" selected="selected">24</option>
+                                        <?php endif; ?>
+                                    <?php else : ?>
+                                        <option value="6" selected="selected">6</option>
+                                        <option value="12">12</option>
+                                        <option value="18">18</option>
+                                        <option value="24">24</option>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="flex justify-center">
+                            <button type="submit" name="filter" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-2 px-4 rounded-lg mx-4 cursor-pointer">Filter</button>
+                            <button type="submit" name="reset" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-2 px-4 rounded-lg mx-4 cursor-pointer">Reset</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+    <?php foreach ($filterlabels as $label) : ?>
+        <div>
+            <p><?php echo $label ?></p>
+        </div>
+    <?php endforeach; ?>
+    </div>
+    <!-- filters -->
+    <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 sm:mt-5 sm:pt-40 lg:mx-10 lg:max-w-none lg:grid-cols-3">
+        <?php if (isset($notPrompt)) : ?>
+            <p><?php echo $notPrompt ?></p>
+        <?php endif; ?>
     <div class="mx-auto mt-5 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 sm:mt-5 sm:pt-16 lg:mx-10 lg:max-w-none lg:grid-cols-3">
         <?php
         if (empty($prompts)) {
@@ -267,7 +283,9 @@ $url = $image->getUrl();
                 <a href="index.php?page=<?php echo $page - 1 ?>" class="px-3 py-2 bg-[#0464A4] hover:bg-[#0242A2] text-white rounded-l-md">Previous</a>
             <?php endif; ?>
             <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                <a href="index.php?page=<?php echo $i ?>" class="px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 <?php if ($i === $page) echo 'text-black font-bold'; ?>"><?php echo $i ?></a>
+                <a href="index.php?page=<?php echo $i ?>" class="px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 <?php if ($i === $page) {
+                                                                                                                            echo 'text-black font-bold';
+                                                                                                                        } ?>"><?php echo $i ?></a>
             <?php endfor; ?>
             <?php if ($page < $totalPages) : ?>
                 <a href="index.php?page=<?php echo $page + 1 ?>" class="px-3 py-2 bg-[#0464A4] hover:bg-[#0242A2] text-white rounded-r-md">Next</a>

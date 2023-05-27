@@ -124,7 +124,7 @@ $url = $image->getUrl()
                         </ul>
                     </div>
                 <?php else : ?>
-                    <div class="mt-5">
+                    <div class="mt-5 flex justify-center">
                         <h2>No users were found.</h2>
                     </div>
                 <?php endif; ?>
@@ -161,7 +161,7 @@ $url = $image->getUrl()
             </div>
             <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Reported users</h2>
             <?php if (empty($printReportedUsers)) : ?>
-                <?php echo "<h1 class='noposts'>No reported users yet...</h1>"; ?>
+                <?php echo "<h1 class='noposts flex justify-center'>No reported users yet...</h1>"; ?>
             <?php else : ?>
                 <?php foreach ($printReportedUsers as $reportedUser) : ?>
                     <form action="" method="post">
