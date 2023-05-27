@@ -7,8 +7,6 @@
                 $statement = $conn->prepare("UPDATE prompts SET verified = 1, rejected = 0 WHERE id = :id AND active = 1");
                 $statement->bindValue(":id", $id);
                 $statement->execute();
-        
-        
                 $statement = $conn->prepare("SELECT credits FROM users WHERE username = :username");
                 $statement->bindValue(":username", $_GET['username']);
                 $statement->execute();
@@ -16,22 +14,16 @@
                 $credits = $result['credits'];
                 $credits = $credits + 1;
                 $_SESSION["credits"] = $credits;
-                // var_dump($credits);
-        
-        
                 $statement = $conn->prepare("UPDATE users SET credits = :credits WHERE username = :username");
                 $statement->bindValue(":credits", $credits);
                 $statement->bindValue(":username", $_GET['username']);
                 $result = $statement->execute();
-                // var_dump($result);
-
                 //check if user has 3 or more approved prompts
                 $statement = $conn->prepare("SELECT COUNT(*) FROM prompts WHERE user_id = :user_id AND verified = 1");
                 $statement->bindValue(":user_id", $_GET['user_id']);
                 $statement->execute();
                 $result = $statement->fetch(PDO::FETCH_ASSOC);
                 $count = $result['COUNT(*)'];
-        
                 //if the user has 3 or more approved prompts, set verified to 1
                 if($count >= 3){
                     $statement = $conn->prepare("UPDATE users SET verified = 1 WHERE username = :username");
@@ -65,7 +57,6 @@
                 $statement = $conn->prepare("UPDATE prompts SET deleted = 1, verified = 0 WHERE id = :id AND active = 1");
                 $statement->bindValue(":id", $post_id);
                 $statement->execute();
-                var_dump($statement->execute());
                 header("Location: index.php");
             }
             else {

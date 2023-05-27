@@ -47,6 +47,9 @@
             echo $e->getMessage();
           }
     }
+    //setting up image getting
+    $image = new Image();
+    $url = $image->getUrl();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,6 +60,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="<?php echo $url."evestore/assets/brand/zfgfkok4d1wqydimxrj7.png"?>">
     <title>Eve - Home</title>
 </head>
 <body class="bg-[#C8C8CC]">

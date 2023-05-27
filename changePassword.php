@@ -18,12 +18,17 @@
             $error = "Please fill in all fields.";
         }
     }
-?><!DOCTYPE html>
+    //setting up image getting
+    $image = new Image();
+    $url = $image->getUrl();
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="<?php echo $url."evestore/assets/brand/zfgfkok4d1wqydimxrj7.png"?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Change password</title>
 </head>

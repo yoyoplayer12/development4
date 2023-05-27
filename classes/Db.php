@@ -1,13 +1,10 @@
 <?php
     abstract class Db {
         private static $conn;
-
         private static function getConfig(){
             // get the config file
             return parse_ini_file(__DIR__ . "/config/config.ini");
         }
-        
-
         public static function getInstance() {
             if(self::$conn != null) {
                 // REUSE our connection

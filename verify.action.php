@@ -1,8 +1,5 @@
 <?php
-
     include_once(__DIR__ . "/bootstrap.php");
-    //logindetectione
+    //logindetection in verify function
     $verify = new Action();
     $verify->verify();
-
-    

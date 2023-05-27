@@ -1,6 +1,5 @@
 <?php
     class User{
-
         private string $email;
         private string $password;
         private string $username;
@@ -10,7 +9,6 @@
         private string $psswdtoken;
         private string $reportedId;
         private string $reporterId;
-        
         private static function getConfig(){
             // get the config file
             return parse_ini_file("config/config.ini");
@@ -24,7 +22,6 @@
             if($user){
                 $hash = $user["password"];
                 if(password_verify($p_password, $hash)){
-
                     if($user["active"] == 1){
                         //getting basic user info
                         $_SESSION['username'] = $user["username"];
@@ -94,7 +91,6 @@
             $statement->bindValue(":username", $_SESSION['username']);
             $statement->execute();
             return $statement;
-
         }
         public function updateBio(){
             $conn = Db::getInstance();
@@ -112,18 +108,17 @@
             $statement->execute();
             return $statement;
         }
-
         public function getEmail()
         {
-                return $this->email;
+            return $this->email;
         }
         public function getUsername()
         {
-                return $this->username;
+            return $this->username;
         }
         public function getPassword()
         {
-                return $this->password;
+            return $this->password;
         }
         public function userExcistanceCheck($email){
             $conn = Db::getInstance();
@@ -139,7 +134,6 @@
                 return false;
             }
         }
-
         public function setEmail($email){
             if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
                 return false;
@@ -152,10 +146,8 @@
                 else{
                     return false;
                 }
-                
             }
         }
-        
         public function setUsername($username){
             if(empty($username)){
                 throw new Exception("Username is required");
@@ -163,25 +155,20 @@
             else {
                 $this->username = $username;
             }
-            
         }
-        
         public function setPassword($password){
             if(empty($password)){
                 throw new Exception("Password is required");
-                
             }
             else {
                  //hash password with bcrypt and cost 12
-            $options = [
-                'cost'=>12,
+                $options = [
+                    'cost'=>12,
             ];
             $password = password_hash($password, PASSWORD_DEFAULT, $options);
             $this->password = $password;
             }
         }
-        
-
         public function save(){
             $conn = Db::getInstance();
             $statement = $conn->prepare("INSERT INTO users (email, username, password, activation_code) VALUES (:email, :username, :password, :activation_code)");
@@ -191,13 +178,12 @@
             $statement->bindValue(":activation_code", $this->token);
             $statement->execute();
         }
-
         public function setPsswdToken($token){
             $this->psswdtoken = $token;
             return $this;
         }
         public function getPsswdToken(){
-                return $this->psswdtoken;
+            return $this->psswdtoken;
         }
         public function setRandomString($n){
             $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -219,7 +205,6 @@
         public function sendResetEmail(){
             $config = self::getConfig();
             $sender = $config['SENDER_EMAIL'];
-            
             //using sengrid api to send email
             $email = new \SendGrid\Mail\Mail(); 
             $email->setFrom($sender, "Prompt website");
@@ -227,19 +212,16 @@
             $email->addTo($this->email);
             $email->addContent("text/plain", "Here's your password reset code: <br> <h1>$this->psswdtoken</h1>");
             $email->addContent("text/html", "Here's your password reset code: <br> <h1>$this->psswdtoken</h1>");
-            
             $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
             try {
                 $response = $sendgrid->send($email);
                 //print $response->statusCode() . "\n";
                 //print_r($response->headers());
                 //print $response->body() . "\n";
-                
             } catch (Exception $e) {
                 echo 'Caught exception: '. $e->getMessage() ."\n";
             }
         }
-
         public function sendConfirmEmail(){
             $config = self::getConfig();
             $sender = $config['SENDER_EMAIL'];
@@ -249,21 +231,16 @@
             $email->addTo($this->email);
             $email->addContent("text/plain", "Hey, Click the link below to confirm your account: localhost/php/promptdev/development4/verifyAcc.php?token=$this->token");
             $email->addContent("text/html", "Hey, Click the link below to confirm your account: localhost/php/promptdev/development4/verifyAcc.php?token=$this->token");
-            
             $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
             try {
                 $response = $sendgrid->send($email);
                 //print $response->statusCode() . "\n";
                 //print_r($response->headers());
                 //print $response->body() . "\n";
-                
             } catch (Exception $e) {
                 echo 'Caught exception: '. $e->getMessage() ."\n";
             }
         }
-
-
-
         /**
          * Get the value of token
          */ 
@@ -271,7 +248,6 @@
         {
                 return $this->token;
         }
-
         /**
          * Set the value of token
          *
@@ -280,10 +256,8 @@
         public function setToken($token)
         {
                 $this->token = $token;
-
                 return $this;
         }
-
         public function checkToken($token){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT * FROM users WHERE activation_code = :token");
@@ -292,7 +266,6 @@
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             return $result;
         } 
-
         public function activateUser($token){
             $conn = Db::getInstance();
             $statement = $conn->prepare("UPDATE users SET active = 1, activation_code = NULL WHERE activation_code = :token");
@@ -300,90 +273,78 @@
             $statement->execute();
             header("Location: index.php");
         }
-
-  public function deleteProfile($userid, $password) {
-    $conn = Db::getInstance();
-    $statement = $conn->prepare('SELECT id, password FROM users WHERE id = :id');
-    $statement->bindValue(':userid', $userid);
-    $statement->execute();
-    $result = $statement->fetch(PDO::FETCH_ASSOC);
-    if (!$result) {
-        return false;
-      }
-    
-      // Verify the password
-      if (!password_verify($password, $result['password'])) {
-        return false;
-      }
-
-      // Delete the user account
-      $statement = $conn->prepare('DELETE FROM users WHERE id = :id');
-      $statement->bindValue(':id', $result['id']);
-      $statement->execute();
-    
-      return true;
-  }
-
-    public function comparePassword(){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT password FROM users WHERE email = :email AND banned = 0");
-        $statement->bindValue(":email", $_SESSION['email']);
-        $statement->execute();
-        $result = $statement->fetch();
-
-
-
-        $password = $result['password'];
-        
-        if(password_verify($_POST['currentPassword'], $password )){
+        public function deleteProfile($userid, $password) {
+            $conn = Db::getInstance();
+            $statement = $conn->prepare('SELECT id, password FROM users WHERE id = :id');
+            $statement->bindValue(':userid', $userid);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            if (!$result) {
+                return false;
+            }
+            // Verify the password
+            if (!password_verify($password, $result['password'])) {
+                return false;
+            }
+            // Delete the user account
+            $statement = $conn->prepare('DELETE FROM users WHERE id = :id');
+            $statement->bindValue(':id', $result['id']);
+            $statement->execute();
             return true;
-        } else {
-            return false;
         }
-    }
-    public function getId($username)
-    {
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT id FROM users WHERE username = :username");
-        $statement->bindValue(":username", $username);
-        $statement->execute();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        return $result["id"];
-    }
-    public static function getBalance(){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT credits FROM users WHERE id = :id");
-        $statement->bindValue(":id", $_SESSION['userid']);
-        $statement->execute();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        return $result["credits"];
-    }
-    public function ban($id){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("UPDATE users SET banned = 1 WHERE id = :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
-    }
-    public function bancheck($id){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT banned FROM users WHERE id = :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        return $result["banned"];
-    }
-    public static function checkReportUser($id){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM `reported-users` WHERE reported_id = :id AND reporter_id = :reporter_id");
-        $statement->bindValue(":id", $id);
-        $statement->bindValue(":reporter_id", $_SESSION['id']);
-        
-        $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        // var_dump($result);
-        return $result;
-    }
 
+        public function comparePassword(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT password FROM users WHERE email = :email AND banned = 0");
+            $statement->bindValue(":email", $_SESSION['email']);
+            $statement->execute();
+            $result = $statement->fetch();
+            $password = $result['password'];
+            if(password_verify($_POST['currentPassword'], $password )){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        public function getId($username){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT id FROM users WHERE username = :username");
+            $statement->bindValue(":username", $username);
+            $statement->execute();
+            $result = $statement->fetch(\PDO::FETCH_ASSOC);
+            return $result["id"];
+        }
+        public static function getBalance(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT credits FROM users WHERE id = :id");
+            $statement->bindValue(":id", $_SESSION['userid']);
+            $statement->execute();
+            $result = $statement->fetch(\PDO::FETCH_ASSOC);
+            return $result["credits"];
+        }
+        public function ban($id){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("UPDATE users SET banned = 1 WHERE id = :id");
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+        }
+        public function bancheck($id){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT banned FROM users WHERE id = :id");
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+            $result = $statement->fetch(\PDO::FETCH_ASSOC);
+            return $result["banned"];
+        }
+        public static function checkReportUser($id){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM `reported-users` WHERE reported_id = :id AND reporter_id = :reporter_id");
+            $statement->bindValue(":id", $id);
+            $statement->bindValue(":reporter_id", $_SESSION['id']);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
         /**
          * Get the value of reportedId
          */ 
@@ -391,7 +352,6 @@
         {
                 return $this->reportedId;
         }
-
         /**
          * Set the value of reportedId
          *
@@ -400,10 +360,8 @@
         public function setReportedId($reportedId)
         {
                 $this->reportedId = $reportedId;
-
                 return $this;
         }
-
         /**
          * Get the value of reporterId
          */ 
@@ -411,7 +369,6 @@
         {
                 return $this->reporterId;
         }
-
         /**
          * Set the value of reporterId
          *
@@ -420,10 +377,8 @@
         public function setReporterId($reporterId)
         {
                 $this->reporterId = $reporterId;
-
                 return $this;
         }
-
         public function deleteReportUser($id){
             $conn = Db::getInstance();
             $statement = $conn->prepare("DELETE FROM `reported-users` WHERE reported_id = :reported_id AND reporter_id = :reporter_id");
@@ -431,9 +386,7 @@
             $statement->bindValue(":reporter_id", $_SESSION['id']);
             $result = $statement->execute();
             return $result;
-            var_dump($result);
         }
-
         public function reportUser(){
             $conn = Db::getInstance();
             $statement = $conn->prepare("INSERT INTO `reported-users` (reported_id, reporter_id) VALUES (:reported_id, :reporter_id)");
@@ -441,9 +394,7 @@
             $statement->bindValue(":reporter_id", $this->reporterId);
             $result = $statement->execute();
             return $result;
-            var_dump($result);
         }
-
         public static function getReportedUsers(){
             $conn = Db::getInstance();
             // $statement = $conn->prepare("SELECT * FROM `reported-users`");
@@ -453,11 +404,11 @@
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
-    public static function getPrices(){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM prices");
-        $statement->execute();
-        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        return $result;
-    }
+        public static function getPrices(){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT * FROM prices");
+            $statement->execute();
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            return $result;
+        }
 }

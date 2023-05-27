@@ -47,7 +47,6 @@
             }
             elseif(empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
                 $user = new User();
-
                 //set image
                 $upload = new Image();
                 $upload->setup();
@@ -57,10 +56,8 @@
                 $destination = "evestore/public/users/".$randomstring.".".$ext;
                 $user->resetAvatar($destination);
                 //saving to database
-
                 $user->updateAvatar();
                 header("Location: profile.php");
-                
             }
             else{
                 echo "nothing to save";
@@ -70,7 +67,6 @@
     else {
         header("Location: login.php");
     }
-
     //setting up image getting
     $image = new Image();
     $url = $image->getUrl()
@@ -83,11 +79,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="<?php echo $url."evestore/assets/brand/zfgfkok4d1wqydimxrj7.png"?>">
     <title>Eve - <?php echo $_SESSION['username']?>'s profile</title>
 </head>
 <body>
     <?php include_once(__DIR__ . "/nav.php"); ?>
-
     <?php if(isset($_SESSION['loggedin'])):?>
         <h1><?php echo $_SESSION['username']?>'s profile</h1>
         <form action="" method="post" enctype="multipart/form-data">
@@ -104,7 +100,6 @@
             <p class="editprofilewarning"><?php echo $warning ?></p>
             <input type="submit" value="Save">
         </form>
-
     <?php else:?>
         <?php header("Location: ./profile.php"); ?>
     <?php endif;?>
