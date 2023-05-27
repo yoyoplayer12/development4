@@ -1,18 +1,17 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
-    require_once(__DIR__ . '/vendor/autoload.php');
     //logindetection
     if(isset($_SESSION["loggedin"])) {
-        $warning = " ";
+        $warning = "";
         $getUser = User::getSessionUser();
         if(!empty($_POST)){
             if(!empty($_POST['bio']) && !empty($_FILES['avatar_url']["name"])){
     
                 if (strlen($_POST['bio']) <= 19){
-                    $warning = "Bio is too short, has to have at least 20 characters";
+                    $warning = "Bio is too short, has to have at least 20 characters.";
                 }
                 elseif (strlen($_POST['bio']) >= 501){
-                    $warning = "Bio is too long, can have a maximum of 500 characters";
+                    $warning = "Bio is too long, can have a maximum of 500 characters.";
                 }
                 else{
                     $bio = $_POST['bio'];
