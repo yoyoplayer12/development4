@@ -62,7 +62,7 @@
     $allCategories = Prompt::getCategories();
     //setting up image getting
     $image = new Image();
-    $url = $image->getUrl();
+    $url = $image->getUrl();    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -168,7 +168,17 @@
                 <div class="bg-white p-10 rounded-3xl">
                     <ul class="list-none flex flex-col">
                         <div class="flex flex-row justify-between mb-5">
-                            <li class="text-lg flex"><a id="likebtn" data-postid="<?php echo $prompt["id"]; ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#C8C8CC" width="24" height="24">
+                            <?php
+                                //settinglikecolor
+                                $like = new Like();
+                                if($like->checkLike($prompt['id']) === true){
+                                    $heartcolor = "#0464A4";
+                                }
+                                elseif($like->checkLike($prompt['id']) === false){
+                                    $heartcolor = "#C8C8CC";
+                                }
+                            ?>
+                            <li class="text-lg flex"><a id="likebtn" data-postid="<?php echo $prompt["id"]; ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="<?php echo $heartcolor; ?>" width="24" height="24">
                             <path d="M12 20.934l-1.414-1.414C5.045 14.319 2 11.238 2 7.5 2 4.364 4.364 2 7.5 2c1.899 0 3.728.929 4.854 2.475C13.772 2.929 15.601 2 17.5 2 20.636 2 23 4.364 23 7.5c0 3.738-3.045 6.819-8.586 12.02L12 20.934z"/>
                             </svg>
                             </a><p><?php echo Like::getLikes($prompt["id"])?></p></li>
