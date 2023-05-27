@@ -65,7 +65,7 @@ $url = $image->getUrl()
     <title>Reset your password</title>
 </head>
 
-<body>
+<body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
 
     <div class="w-full h-80 flex justify-center items-center">
