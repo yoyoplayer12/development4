@@ -74,7 +74,7 @@ $url = $image->getUrl();
             let formData = new FormData();
             formData.append("reported_id", userId);
 
-            fetch("ajax/reportUser.php", {
+            fetch("ajax/Reportuser.php", {
                     method: "POST",
                     body: formData
                 })
@@ -99,7 +99,7 @@ $url = $image->getUrl();
             let formData = new FormData();
             formData.append("followed_id", userId);
 
-            fetch("ajax/followUser.php", {
+            fetch("ajax/Followuser.php", {
                     method: "POST",
                     body: formData
                 })
