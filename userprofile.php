@@ -26,7 +26,7 @@ $url = $image->getUrl();
     <title>Eve - <?php echo $User["username"] ?>'s profile</title>
 </head>
 
-<body>
+<body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <div class="flex justify-center items-center mt-20">
         <div class="w-90 rounded-3xl bg-white px-10 py-10">
