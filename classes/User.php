@@ -447,8 +447,9 @@
 
         public static function getReportedUsers(){
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT * FROM `reported-users` WHERE reported_id = :reported_id");
-            $statement->bindValue(":reported_id", reported_id);
+            // $statement = $conn->prepare("SELECT * FROM `reported-users`");
+            // statement with info about the reported user
+            $statement = $conn->prepare("SELECT `reported-users`.id, `reported-users`.reported_id, `reported-users`.reporter_id, users.username, users.email, users.avatar_url, users.banned, users.id FROM `reported-users` INNER JOIN users ON `reported-users`.reported_id = users.id");
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $result;
