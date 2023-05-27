@@ -51,7 +51,7 @@ $url = $image->getUrl();
     <link rel="icon" type="image/png" href="<?php echo $url . "evestore/assets/brand/zfgfkok4d1wqydimxrj7.png" ?>">
 </head>
 
-<body>
+<body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <div class="form flex flex-row justify-center items-center">
         <div class="w-1/2 h-screen flex justify-center items-center">
