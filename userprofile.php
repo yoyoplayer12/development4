@@ -54,7 +54,7 @@ $url = $image->getUrl();
                 <?php endif; ?>
     <?php if(isset($_SESSION['loggedin'])):?>
         <h1><?php echo $User["username"]?>'s profile</h1>
-        
+        <button class="followUser" id="followUserId" data-userId="<?php echo $User["id"]?>"><?php if(count(User::checkFollowUser($User['id'])) >=1 ){ echo "Unfollow";} else { echo "Follow";} ?></button>
         <button class="reportUserbtn" id="reportUserbtnid" data-userId="<?php echo $User["id"]?>"><?php if(count(User::checkReportUser($User['id'])) >=1 ){ echo "Reported";} else { echo "Report";} ?></button>
         
         <p class="profile-bio">Bio: <?php echo $User["bio"];?></p>
@@ -79,7 +79,7 @@ $url = $image->getUrl();
     let reportUser = document.querySelectorAll("#reportUserbtnid");
     reportUser.forEach(function (btn) {
         btn.addEventListener("click", function () {
-            console.log("test");
+            // console.log("test");
             let currentBtn = this;
             let userId = this.dataset.userid;
             //post naar database
@@ -103,9 +103,39 @@ $url = $image->getUrl();
 
         });
     });
+
+    let followUser = document.querySelectorAll("#followUserId");
+    followUser.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            let currentBtn = this;
+            let userId = this.dataset.userid;
+            console.log(userId);
+            
+            //post naar database
+            let formData = new FormData();
+            formData.append("followed_id", userId);
+            
+            fetch("ajax/followUser.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(json){
+                if (json.status == 'success') {
+                    currentBtn.innerHTML = json.message;
+                    console.log(json.message);
+                }
+
+            });
+
+        });
+    });
+    
+
 </script>
-        </div>
-    </div>
+
 </body>
 
 </html>
