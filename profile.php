@@ -40,7 +40,7 @@ $followedUsers = User::getFollowedCategories();
     <title>Eve - <?php echo $_SESSION['username'] ?>'s profile</title>
 </head>
 
-<body>
+<body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <div class="flex justify-center items-center mt-20">
         <div>
