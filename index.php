@@ -175,61 +175,64 @@
                             <li class="text-xl flex"><p><?php echo $prompt["title"] ?></p></li>
                             <li class="text-lg flex"><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><?php echo $promptUser["username"] ?></a></li>
                         </div>
-                        <?php if(!empty($_SESSION["userid"])): ?>
-                            <li><img  class="rounded-3xl" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
-                        <?php else: ?>
-                            <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
-                        <?php endif; ?>
-                        <li class="mt-5"><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
-                        <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
-                        <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
-                        <!-- shouldnt be visible before buying -->
-                        <?php if(isset($_SESSION["loggedin"])): ?>
-                            <?php if(count(Prompt::checkBought($prompt['id'])) >=1):?>
-                                <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
-                                <li class="mb-5"><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
+                        <a href="promptdetails.php?pid=<?php echo $prompt['id'] ?>">
+                            <?php if(!empty($_SESSION["userid"])): ?>
+                                <li><img  class="rounded-3xl" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
                             <?php else: ?>
-                                <li><p><b>Price: </b><?php echo $promptprice["price"] ?> Credits</p></li>
+                                <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url.$prompt["photo_url"]?>" alt="Prompt photo"></li>
                             <?php endif; ?>
-                        <?php endif; ?>
-                        <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
-                        <?php if(isset($_SESSION["userid"])): ?>
-                            <?php if($_SESSION['userid'] == $prompt['user_id']): ?>
-                            <?php else: ?>
-                                <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" id="buybtnid" data-postid="<?php echo $prompt["id"]?>" data-postuserid="<?php echo $prompt["user_id"]?>"><button><?php if(count(Prompt::checkBought($prompt['id'])) >=1) {
-                                    echo "Bought";
-                                } else {
-                                    echo "Buy";
-                                } ?></button></li>
-                            <?php endif; ?>
-                        <?php endif ?>
-                        <!-- if username is logged in show this button  -->
-                        <?php if(isset($_SESSION["username"])):?>
-                            <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" style="margin-top: 10px;margin-bottom:10px;"><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?>><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1) {
-                                echo "Remove from favorites";
-                            } else {
-                                echo "Add to favorites";
-                            } ?></button></li>
-                            <?php if($prompt["user_id"] == $_SESSION["userid"]):?>
-                                <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="deletepost.action.php?pid=<?php echo $prompt["id"] ?>&uid=<?php echo $prompt["user_id"] ?>">Delete</a></li>
-                            <?php else: ?>
-                                <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button class="reportbtn" id="reportbtnid" data-postid="<?php echo $prompt["id"]?>"><?php if(count(Prompt::checkReport($prompt['id'])) >=1) {
-                                    echo "Reported";
-                                } else {
-                                    echo "Report";
-                                } ?></button></li>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                        <?php if(isset($_SESSION["admin"])):?>
-                            <?php if($_SESSION['admin'] == true): ?>
-                                <?php if($_SESSION["admin"] == true):?>
-                                    <p style="margin-top: 30px;"><b>Moderation:</b></p>
-                                    <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a></li>
+                            <li class="mt-5"><p><b>Description: </b><?php echo $prompt["description"] ?></p></li>
+                            <li><p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p></li>
+                            <li><p><b>Category: </b><?php echo $promptCat["category"] ?></p></li>
+                            <!-- shouldnt be visible before buying -->
+                            <?php if(isset($_SESSION["loggedin"])): ?>
+                                <?php if(count(Prompt::checkBought($prompt['id'])) >=1):?>
+                                    <li><p><b>Prompt: </b><?php echo $prompt["prompt"] ?></p></li>
+                                    <li class="mb-5"><p><b>Prompt description: </b><?php echo $prompt["prompt_info"] ?></p></li>
+                                <?php else: ?>
+                                    <li><p><b>Price: </b><?php echo $promptprice["price"] ?> Credits</p></li>
                                 <?php endif; ?>
                             <?php endif; ?>
-                        <?php endif; ?>
+                            <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
+                            <?php if(isset($_SESSION["userid"])): ?>
+                                <?php if($_SESSION['userid'] == $prompt['user_id']): ?>
+                                <?php else: ?>
+                                    <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" id="buybtnid" data-postid="<?php echo $prompt["id"]?>" data-postuserid="<?php echo $prompt["user_id"]?>"><button><?php if(count(Prompt::checkBought($prompt['id'])) >=1) {
+                                        echo "Bought";
+                                    } else {
+                                        echo "Buy";
+                                    } ?></button></li>
+                                <?php endif; ?>
+                            <?php endif ?>
+                            <!-- if username is logged in show this button  -->
+                            <?php if(isset($_SESSION["username"])):?>
+                                <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" style="margin-top: 10px;margin-bottom:10px;"><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?>><?php if(count(Prompt::checkFavorite($prompt['id'])) >=1) {
+                                    echo "Remove from favorites";
+                                } else {
+                                    echo "Add to favorites";
+                                } ?></button></li>
+                                <?php if($prompt["user_id"] == $_SESSION["userid"]):?>
+                                    <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="deletepost.action.php?pid=<?php echo $prompt["id"] ?>&uid=<?php echo $prompt["user_id"] ?>">Delete</a></li>
+                                <?php else: ?>
+                                    <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button class="reportbtn" id="reportbtnid" data-postid="<?php echo $prompt["id"]?>"><?php if(count(Prompt::checkReport($prompt['id'])) >=1) {
+                                        echo "Reported";
+                                    } else {
+                                        echo "Report";
+                                    } ?></button></li>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                            <?php if(isset($_SESSION["admin"])):?>
+                                <?php if($_SESSION['admin'] == true): ?>
+                                    <?php if($_SESSION["admin"] == true):?>
+                                        <p style="margin-top: 30px;"><b>Moderation:</b></p>
+                                        <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="reject.action.php?id=<?php echo $prompt["id"] ?>">Reject</a></li>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </a>
                     </ul>
                 </div>
+
             <?php endforeach;?>
         <?php } ?>
     </div>
