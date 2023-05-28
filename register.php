@@ -66,19 +66,19 @@ $url = $image->getUrl();
                 <div>
                     <input type="text" name="email" placeholder="Email" class="border-2 px-4 py-2 rounded-md mb-15 text-base" id="email" onkeyup="checkEmailAvailability()">
                     <?php if (isset($emailError)) : ?>
-                        <p><?php echo $emailError; ?></p>
+                        <p class="text-[#FF0000]"><?php echo $emailError; ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
                     <input type="text" name="username" placeholder="Username" class="border-2 px-4 py-2 rounded-md mb-15 text-base">
                     <?php if (isset($usernameError)) : ?>
-                        <p><?php echo $usernameError; ?></p>
+                        <p class="text-[#FF0000]"><?php echo $usernameError; ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
                     <input type="password" name="password" placeholder="Password" class="border-2 px-4 py-2 rounded-md mb-15 text-base">
                     <?php if (isset($passwordError)) : ?>
-                        <p><?php echo $passwordError; ?></p>
+                        <p class="text-[#FF0000]"><?php echo $passwordError; ?></p>
                     <?php endif; ?>
                     <div id="feedback"></div>
                 </div>
