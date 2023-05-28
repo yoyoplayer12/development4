@@ -73,6 +73,9 @@ $url = $image->getUrl();
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="icon" type="image/png" href="<?php echo $url . "evestore/assets/brand/zfgfkok4d1wqydimxrj7.png" ?>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
     <title>Eve - Home</title>
 </head>
 
@@ -186,7 +189,7 @@ $url = $image->getUrl();
                                             <path d="M12 20.934l-1.414-1.414C5.045 14.319 2 11.238 2 7.5 2 4.364 4.364 2 7.5 2c1.899 0 3.728.929 4.854 2.475C13.772 2.929 15.601 2 17.5 2 20.636 2 23 4.364 23 7.5c0 3.738-3.045 6.819-8.586 12.02L12 20.934z" />
                                         </svg>
                                     </a>
-                                    <p><?php echo Like::getLikes($prompt["id"]) ?></p>
+                                    <p class="flex gap-5"><?php echo Like::getLikes($prompt["id"]) ?></p>
                                 </li>
                                 <li class="text-xl flex">
                                     <p><?php echo htmlspecialchars($prompt["title"]) ?></p>
