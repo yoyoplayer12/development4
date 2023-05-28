@@ -16,7 +16,7 @@ if (!empty($_POST)) {
             header("Location: index.php");
         }
     } else {
-        $loginwarning = "Username or password is <br>incorrect,or email is not verified!";
+        $loginwarning = "Username or password is incorrect,<br>or email is not verified!";
 
     }
 }
@@ -36,6 +36,9 @@ $url = $image->getUrl();
     <link rel="icon" type="image/png" href="<?php echo $url . "evestore/assets/brand/zfgfkok4d1wqydimxrj7.png" ?>">
     <title>Eve - Log in</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
 </head>
 
 <body class="bg-blue-200">
@@ -47,7 +50,7 @@ $url = $image->getUrl();
             <img src="<?php echo $url . 'evestore/assets/brand/od3krbvhegihsaahirrz.png' ?>" class="sm:block w-50 ml-10 mb-10">
             <h1 class="mb-15 text-[#0464A4] text-5xl mb-10 text-center">Log in</h1>
             <ul class="flex flex-col items-center">
-                <li><input class="border-2 px-4 py-2 rounded-md mb-5 text-base" type="text" name="username" placeholder="Username" required></li>
+                <li><input class="border-2 px-4 py-2 rounded-md mb-5 text-base font-montserrat" type="text" name="username" placeholder="Username" required></li>
                 <li><input class="border-2 px-4 py-2 rounded-md mb-15 text-base" type="password" name="password" placeholder="Password" required></li>
                 <li class="text-[#FF0000] mb-5"><?php echo $loginwarning ?></li>
                 <li><input type="submit" value="Log in" class="px-8 py-3 rounded-md bg-[#0464A4] hover:bg-[#0444A4] font-semibold text-white cursor-pointer mb-5"></li>
