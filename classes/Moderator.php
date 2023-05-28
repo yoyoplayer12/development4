@@ -1,4 +1,5 @@
 <?php
+
 class Moderator
 {
     public static function getUsernames($username)

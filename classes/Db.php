@@ -1,4 +1,5 @@
 <?php
+
 abstract class Db
 {
     private static $conn;
