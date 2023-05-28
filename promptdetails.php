@@ -23,6 +23,9 @@ $comments = Comment::getComments($postid);
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="icon" type="image/png" href="<?php echo $url . "evestore/assets/brand/zfgfkok4d1wqydimxrj7.png" ?>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
     <title><?php echo htmlspecialchars($prompt['title']) ?></title>
 </head>
 
@@ -67,6 +70,7 @@ $comments = Comment::getComments($postid);
                             <li class="bg-slate-200 rounded-xl py-4 px-4"><?php echo $comment['text']; ?></li>
                         <?php endforeach; ?>
                     </ul>
+
     <?php if (empty($prompt)) {
         echo "<h1 class='noposts'>There are no prompts right now, try again later!</h1>";
     } else { ?>
