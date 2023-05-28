@@ -174,15 +174,17 @@ $url = $image->getUrl();
                     <div class="bg-white p-10 rounded-3xl">
                         <ul class="list-none flex flex-col">
                             <div class="flex flex-row justify-between mb-5">
-                                <?php
-                                //settinglikecolor
-                                $like = new Like();
-                                if ($like->checkLike($prompt['id']) === true) {
-                                    $heartcolor = "#0464A4";
-                                } elseif ($like->checkLike($prompt['id']) === false) {
-                                    $heartcolor = "#C8C8CC";
-                                }
-                                ?>
+                                <?php if(isset($_SESSION['userid'])):?>
+                                    <?php
+                                    //settinglikecolor
+                                    $like = new Like();
+                                    if ($like->checkLike($prompt['id']) === true) {
+                                        $heartcolor = "#0464A4";
+                                    } elseif ($like->checkLike($prompt['id']) === false) {
+                                        $heartcolor = "#C8C8CC";
+                                    }
+                                    ?>
+                                <?php endif; ?>
                                 <li class="text-lg flex"><a id="likebtn" data-postid="<?php echo $prompt["id"]; ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="<?php echo $heartcolor; ?>" width="24" height="24">
                                             <path d="M12 20.934l-1.414-1.414C5.045 14.319 2 11.238 2 7.5 2 4.364 4.364 2 7.5 2c1.899 0 3.728.929 4.854 2.475C13.772 2.929 15.601 2 17.5 2 20.636 2 23 4.364 23 7.5c0 3.738-3.045 6.819-8.586 12.02L12 20.934z" />
                                         </svg>
@@ -224,6 +226,7 @@ $url = $image->getUrl();
                                         </li>
                                     <?php endif; ?>
                                 <?php endif; ?>
+                            </a>
                                 <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                                 <?php if (isset($_SESSION["userid"])) : ?>
                                     <?php if ($_SESSION['userid'] == $prompt['user_id']) : ?>
@@ -260,7 +263,6 @@ $url = $image->getUrl();
                                         <?php endif; ?>
                                     <?php endif; ?>
                                 <?php endif; ?>
-                            </a>
                         </ul>
                     </div>
 
