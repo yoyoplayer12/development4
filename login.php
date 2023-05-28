@@ -50,7 +50,7 @@ $url = $image->getUrl();
                 <li><input class="border-2 px-4 py-2 rounded-md mb-5 text-base" type="text" name="username" placeholder="Username" required></li>
                 <li><input class="border-2 px-4 py-2 rounded-md mb-15 text-base" type="password" name="password" placeholder="Password" required></li>
                 <li class="text-[#FF0000] mb-5"><?php echo $loginwarning ?></li>
-                <li><input type="submit" value="Log in" class=" px-8 py-3 rounded-md bg-[#0464A4] hover:bg-[#0444A4] font-semibold text-white cursor-pointer mb-5"></li>
+                <li><input type="submit" value="Log in" class="px-8 py-3 rounded-md bg-[#0464A4] hover:bg-[#0444A4] font-semibold text-white cursor-pointer mb-5"></li>
                 <li class="mb-5 text-[#0464A4]"><a href="forgotpassword.php">Forgot password?</a></li>
                 <li>Don't have an account? <a href="register.php" class="text-[#0464A4]">Register</a></li>
             </ul>
