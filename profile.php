@@ -152,12 +152,6 @@ $followedUsers = User::getFollowedCategories();
                                 </li>
                                 <div class="mt-5 flex flex-col gap-5 pb-5">
                                     <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button>Buy</button></li>
-                                    <!-- make button that removes the prompt from favorites with the Prompt class -->
-                                    <form method="POST" action="profile.php">
-                                        <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center">
-                                            <input type="submit" value="Remove from favorites" name="removeFav"> </input>
-                                        </li>
-                                    </form>
                                 </div>
                             </ul>
                         </div>
