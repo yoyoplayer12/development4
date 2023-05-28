@@ -82,21 +82,23 @@ $url = $image->getUrl()
 <body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <h1 class="text-[#0464A4] text-5xl my-10 flex justify-center">Moderator Panel</h1>
-    <div class="flex justify-center flex-row items-center gap-5">
+    <div class="flex justify-center flex-row items-center gap-5 flex-wrap">
         <a href="#users" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Users</a>
         <a href="#moderators" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Moderators</a>
         <a href="#bannedusers" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Banned users</a>
         <a href="#reportedusers" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Reported users</a>
         <a href="#prompts" class="px-5 py-2 text-[#0464A4] underline bg-white rounded">Prompts</a>
     </div>
+
     <div class="flex justify-center flex-col items-center">
         <div>
             <div id="users">
                 <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Users</h2>
-                <form method="POST" class="mr-2">
-                    <input type="text" name="username" class="p-3 border-2 rounded-lg border-[#0464A4] w-96" placeholder="Search">
-                    <button type="submit" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-3 px-8 rounded-lg mx-4 cursor-pointer">Search</button>
+                <form method="POST" class="flex flex-col items-center sm:flex-row sm:items-start">
+                    <input type="text" name="username" class="p-3 border-2 rounded-lg border-[#0464A4] w-full sm:w-96" placeholder="Search">
+                    <button type="submit" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-3 px-8 rounded-lg mt-4 sm:mt-0 sm:ml-4 cursor-pointer">Search</button>
                 </form>
+
                 <!-- Display the list of matching usernames -->
                 <?php if (!empty($matchingUserIds)) : ?>
                     <div class="mt-2">
@@ -105,19 +107,11 @@ $url = $image->getUrl()
                             <?php foreach ($matchingUserIds as $userid) : ?>
                                 <?php $user = Moderator::getUserById($userid); ?>
                                 <form method="POST">
-                                    <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
-                                        <?php echo htmlspecialchars($user['username']); ?>
+                                    <li class="mb-5 bg-white px-4 py-4 rounded-lg flex flex-col sm:flex-row items-center justify-between">
+                                        <div class="mb-3 sm:mb-0"><?php echo htmlspecialchars($user['username']); ?></div>
                                         <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
                                         <button type="submit" name="addMod" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer">Add as Moderator</button>
-                                        <button type="submit" name="<?php if ($user['banned'] == 0) {
-                                                                        echo "banuser";
-                                                                    } else {
-                                                                        echo "unbanuser";
-                                                                    } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
-                                                                                                                                                                                    echo "Ban";
-                                                                                                                                                                                } else {
-                                                                                                                                                                                    echo "Unban";
-                                                                                                                                                                                } ?></button>
+                                        <button type="submit" name="<?php echo ($user['banned'] == 0) ? 'banuser' : 'unbanuser'; ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php echo ($user['banned'] == 0) ? 'Ban' : 'Unban'; ?></button>
                                     </li>
                                 </form>
                             <?php endforeach; ?>
@@ -129,66 +123,70 @@ $url = $image->getUrl()
                     </div>
                 <?php endif; ?>
             </div>
-            <div>
-                <h2 class="text-[#0464A4] text-2xl mt-10 mb-5 flex justify-center" id="moderators">Moderators</h2>
-                <ul>
-                    <?php foreach ($moderators as $moderator) : ?>
-                        <li class="mb-5 mt-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
-                            <?php echo htmlspecialchars($moderator["username"]); ?>
-                            <form method="POST">
-                                <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($moderator["id"]); ?>">
-                                <button type="submit" name="deleteMod" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer ">Remove Moderator</button>
-                            </form>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-            <div id="bannedusers" class="mb-20">
-                <h2 class="text-[#0464A4] text-2xl my-10 flex justify-center" id="bannedusers">Banned users</h2>
-                <?php foreach ($bannedusers as $user) : ?>
+        </div>
+    </div>
+
+    <div class="w-full max-w-xl mx-auto">
+        <h2 class="text-[#0464A4] text-2xl mt-10 mb-5 flex justify-center" id="moderators">Moderators</h2>
+        <ul class="w-full">
+            <?php foreach ($moderators as $moderator) : ?>
+                <li class="mb-5 mt-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
+                    <?php echo htmlspecialchars($moderator["username"]); ?>
                     <form method="POST">
-                        <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
-                            <?php echo htmlspecialchars($user['username']); ?>
-                            <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
-                            <button type="submit" name="unban" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
+                        <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($moderator["id"]); ?>">
+                        <button type="submit" name="deleteMod" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer">Remove Moderator</button>
+                    </form>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+    <div id="bannedusers" class="mb-20">
+        <h2 class="text-[#0464A4] text-2xl my-10 flex justify-center" id="bannedusers">Banned users</h2>
+        <?php foreach ($bannedusers as $user) : ?>
+            <form method="POST">
+                <li class="mb-5 bg-white px-4 py-4 rounded-lg flex items-center justify-between">
+                    <?php echo htmlspecialchars($user['username']); ?>
+                    <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
+                    <button type="submit" name="unban" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
+                                                                                                                                                                echo "Ban";
+                                                                                                                                                            } else {
+                                                                                                                                                                echo "Unban";
+                                                                                                                                                            } ?></button>
+                </li>
+            </form>
+        <?php endforeach; ?>
+    </div>
+    <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Reported users</h2>
+    <?php if (empty($printReportedUsers)) : ?>
+        <?php echo "<h1 class='noposts flex justify-center'>No reported users yet...</h1>"; ?>
+    <?php else : ?>
+        <?php foreach ($printReportedUsers as $reportedUser) : ?>
+            <form action="" method="post">
+                <div class="flex justify-center items-center mt-20">
+                    <div>
+                        <div class=" w-90 rounded-lg bg-white px-10 py-10 ">
+                            <h1 class="text-2xl font-bold text-center"><?php echo htmlspecialchars($reportedUser['username']) ?></h1>
+                            <div class="flex flex-col items-center my-4">
+                                <img src="<?php echo $url . $reportedUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover m-10">
+                            </div>
+                            <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($reportedUser['reported_id']); ?>">
+                            <button type="submit" name="<?php if ($reportedUser['banned'] == 0) {
+                                                            echo "banuser";
+                                                        } else {
+                                                            echo "unbanuser";
+                                                        } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($reportedUser['banned'] == 0) {
                                                                                                                                                                         echo "Ban";
                                                                                                                                                                     } else {
                                                                                                                                                                         echo "Unban";
                                                                                                                                                                     } ?></button>
-                        </li>
-                    </form>
-                <?php endforeach; ?>
-            </div>
-            <h2 class="text-[#0464A4] text-3xl my-10 flex justify-center">Reported users</h2>
-            <?php if (empty($printReportedUsers)) : ?>
-                <?php echo "<h1 class='noposts flex justify-center'>No reported users yet...</h1>"; ?>
-            <?php else : ?>
-                <?php foreach ($printReportedUsers as $reportedUser) : ?>
-                    <form action="" method="post">
-                        <div class="flex justify-center items-center mt-20">
-                            <div>
-                                <div class=" w-90 rounded-lg bg-white px-10 py-10 ">
-                                    <h1 class="text-2xl font-bold text-center"><?php echo htmlspecialchars($reportedUser['username']) ?></h1>
-                                    <div class="flex flex-col items-center my-4">
-                                        <img src="<?php echo $url . $reportedUser["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 object-cover m-10">
-                                    </div>
-                                    <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($reportedUser['reported_id']); ?>">
-                                    <button type="submit" name="<?php if ($reportedUser['banned'] == 0) {
-                                                                    echo "banuser";
-                                                                } else {
-                                                                    echo "unbanuser";
-                                                                } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($reportedUser['banned'] == 0) {
-                                                                                                                                                                                echo "Ban";
-                                                                                                                                                                            } else {
-                                                                                                                                                                                echo "Unban";
-                                                                                                                                                                            } ?></button>
-                                </div>
-                            </div>
                         </div>
-                    </form>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
+                    </div>
+                </div>
+            </form>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    </div>
     </div>
     <div class="mb-10">
         <div id="prompts">
