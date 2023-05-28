@@ -53,40 +53,44 @@ $url = $image->getUrl();
 
 <body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
-    <div class="form flex flex-row justify-center items-center">
-        <div class="w-1/2 h-screen flex justify-center items-center">
-            <form action="" method="post">
-                <img src="<?php echo $url . "evestore/assets/brand/od3krbvhegihsaahirrz.png" ?>" class="flex justify-center w-50 ml-10 mb-10">
-                <h1 class="text-[#0464A4] text-5xl mb-20">Sign Up</h1>
+<!-- Sign-up Page -->
+<div class="form flex flex-row justify-center items-center">
+    <div class="w-full sm:w-1/2 h-screen flex justify-center items-center">
+        <form action="" method="post">
+            <img src="<?php echo $url . 'evestore/assets/brand/od3krbvhegihsaahirrz.png' ?>" class="sm:block w-50 ml-10 mb-10">
+            <h1 class="text-[#0464A4] text-5xl mb-20 text-center">Sign Up</h1>
+            <div class="flex flex-col items-center gap-5">
                 <div>
-                    <input type="text" name="email" placeholder="Email" class="border-2 py-2 flex w-full justify-center rounded-md mb-5" id="email" onkeyup="checkEmailAvailability()">
+                    <input type="text" name="email" placeholder="Email" class="border-2 px-4 py-2 rounded-md mb-15 text-base" id="email" onkeyup="checkEmailAvailability()">
                     <?php if (isset($emailError)) : ?>
                         <p><?php echo $emailError; ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
-                    <input type="text" name="username" placeholder="Username" class="border-2 py-2 flex w-full justify-center rounded-md mb-5">
+                    <input type="text" name="username" placeholder="Username" class="border-2 px-4 py-2 rounded-md mb-15 text-base">
                     <?php if (isset($usernameError)) : ?>
                         <p><?php echo $usernameError; ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
-                    <input type="password" name="password" placeholder="Password" class="border-2 py-2 flex w-full justify-center rounded-md mb-10">
+                    <input type="password" name="password" placeholder="Password" class="border-2 px-4 py-2 rounded-md mb-15 text-base">
                     <?php if (isset($passwordError)) : ?>
                         <p><?php echo $passwordError; ?></p>
                     <?php endif; ?>
                     <div id="feedback"></div>
                 </div>
                 <div>
-                    <input type="submit" value="Sign up" name="registerBtn" class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] hover:bg-[#0444A4] py-3 text-sm font-semibold text-white cursor-pointer">
+                    <input type="submit" value="Sign up" name="registerBtn" class="px-8 py-3 rounded-md bg-[#0464A4] hover:bg-[#0444A4] font-semibold text-white cursor-pointer mb-5">
                 </div>
-                <p>already have an account? <a href="login.php" class="text-[#0464A4]">Log in</a></p>
-            </form>
-        </div>
-        <div class="w-1/2">
-            <img src="<?php echo $url . "evestore/assets/images/nz01zmtboksuyko7cmam.jpg" ?>" class="w-full h-screen">
-        </div>
+                <p>Already have an account? <a href="login.php" class="text-[#0464A4]">Log in</a></p>
+            </div>
+        </form>
     </div>
+    <div class="hidden sm:block w-1/2">
+        <img src="<?php echo $url . 'evestore/assets/images/nz01zmtboksuyko7cmam.jpg' ?>" class="w-full h-screen">
+    </div>
+</div>
+
 </body>
 <script>
     function checkEmailAvailability() {
