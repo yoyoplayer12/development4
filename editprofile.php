@@ -123,7 +123,7 @@ $url = $image->getUrl()
                         </div>
                         <div class="flex justify-center flex-col items-center gap-2 mb-5">
                             <label for="bio">Bio</label>
-                            <input type="text" name="bio" class="bg-blue-500 px-4 py-2 rounded-xl text-white" placeholder="typ your bio here">
+                            <input type="text" name="bio" class="mx-2 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white placeholder-white" placeholder="typ your bio here">
                             <p class="profile-bio">Preview bio: <?php echo htmlspecialchars($getUser["bio"]); ?></p>
                         </div>
                         <p class="editprofilewarning"><?php echo $warning ?></p>

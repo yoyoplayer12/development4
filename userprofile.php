@@ -37,15 +37,15 @@ $url = $image->getUrl();
                 <div class="flex justify-center flex-col items-center">
                     <h1 class="text-2xl font-bold mb-5"><?php echo htmlspecialchars($User["username"]); ?>'s profile</h1>
                     <button class="reportUserbtn" id="reportUserbtnid" data-userId="<?php echo $User["id"] ?>"><?php if (count(Report::checkReportUser($User['id'])) >= 1) {
-                                                                                                                    echo "Reported";
-                                                                                                                } else {
-                                                                                                                    echo "Report";
-                                                                                                                } ?></button>
+                        echo "Reported";
+                    } else {
+                        echo "Report";
+                    } ?></button>
                     <button class="followUserId" id="followUserId" data-userId="<?php echo $User["id"] ?>"><?php if (count(User::checkFollowUser($User['id'])) >= 1) {
-                                                                                                                echo "Following";
-                                                                                                            } else {
-                                                                                                                echo "Follow";
-                                                                                                            } ?></button>
+                        echo "Following";
+                    } else {
+                        echo "Follow";
+                    } ?></button>
                     <img src="<?php echo $url . $User["avatar_url"] ?>" alt="Avatar" class="rounded-full w-40 h-40 flex justify-center mb-5">
                 </div>
                 <div>

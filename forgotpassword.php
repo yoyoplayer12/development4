@@ -20,10 +20,10 @@ if (isset($_POST)) {
                 $_SESSION['psswdToken'] = $confirmation_code;
                 $code = false;
             } else {
-                echo "User does not exist!";
+                $userDontExist = "User does not exist!";
             }
         } catch (\Throwable $th) {
-            //throw $th; 
+            //throw $th;
             $nomail = $th->getMessage();
         }
     }
@@ -71,44 +71,53 @@ $url = $image->getUrl()
 <body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
 
-    <div class="w-full h-80 flex justify-center items-center">
+    <div >
         <?php if ($changed == true) : ?>
-            <h1>Password changed!</h1>
-            <a href="login.php">Log in</a>
+            <h1 class="mb-15 text-[#0464A4] text-5xl flex justify-center my-10">Password changed!</h1>
+            <div class="flex justify-center">
+                <div class="flex justify-center rounded-md bg-[#0464A4] py-3 text-sm w-80">
+                    <a href="login.php" class="font-semibold text-white hover:bg-[#0444A4] cursor-pointer justify-center">Log in</a>
+                </div>
+            </div>
         <?php elseif (!isset($code)) : ?>
-            <form action="" method="post">
-                <h1 class="mb-15 text-[#0464A4] text-5xl">Reset your password:</h1>
+            <h1 class="mb-15 text-[#0464A4] text-5xl flex justify-center my-10">Reset your password</h1>
+            <form action="" method="post" class="flex justify-center">
                 <ul>
-                    <li><input class="border-2 flex w-full justify-center rounded-md mb-5 mt-20 py-2" type="text" name="email" placeholder="Email" required></li>
-                    <li><input class="flex w-full justify-center mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer" type="submit" value="Send email" name="btn"></li>
+                    <li><input class="border-2 flex w-80 justify-center rounded-md mb-5 mt-5 py-2 p-2" type="text" name="email" placeholder="Email" required></li>
+                    <li><input class="w-80 mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer" type="submit" value="Send email" name="btn"></li>
                 </ul>
                 <?php if (isset($nomail)) : ?>
-                    <div><?php echo $nomail ?></div>
+                    <div class="flex justify-center text-[#FF0000] mb-5"><?php echo $nomail ?></div>
                 <?php endif; ?>
             </form>
         <?php elseif ($code == false) : ?>
-            <form action="" method="post">
-                <h1>Email has been sent!</h1>
+            <h1 class="mb-15 text-[#0464A4] text-5xl flex justify-center my-10">Email has been sent!</h1>
+            <form action="" method="post" class="flex justify-center">
                 <ul>
-                    <li><input type="text" name="code" placeholder="code" required></li>
-                    <li><input type="submit" value="reset password" name="reset-code"></li>
+                    <li><input type="text" name="code" placeholder="code" required class="border-2 flex w-80 justify-center rounded-md mb-5 mt-5 py-2 p-2"></li>
+                    <li><input type="submit" value="reset password" name="reset-code" class="w-80 mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer"></li>
                     <li>
-                        <p><?php echo $error ?></p>
+                        <p class="flex justify-center text-[#FF0000] mb-5"><?php echo $error ?></p>
                     </li>
                 </ul>
             </form>
         <?php elseif ($code == true) : ?>
-            <form action="" method="post">
-                <h1>Reset your password:</h1>
+            <h1 class="mb-15 text-[#0464A4] text-5xl flex justify-center my-10">Reset your password:</h1>
+            <form action="" method="post" class="flex justify-center">
                 <ul>
-                    <li><input type="password" name="password" placeholder="password" required></li>
-                    <li><input type="password" name="password2" placeholder="confirm password" required></li>
-                    <li><input type="submit" value="reset password" name="reset-password"></li>
+                    <li><input type="password" name="password" placeholder="password" required class="border-2 flex w-80 justify-center rounded-md mb-5 mt-5 py-2 p-2"></li>
+                    <li><input type="password" name="password2" placeholder="confirm password" required class="border-2 flex w-80 justify-center rounded-md mb-5 mt-5 py-2 p-2"></li>
+                    <li><input type="submit" value="reset password" name="reset-password" class="w-80 mb-5 rounded-md bg-[#0464A4] py-3 text-sm font-semibold text-white hover:bg-[#0444A4] cursor-pointer"></li>
                     <li>
-                        <p><?php echo $error ?></p>
+                        <p class="flex justify-center text-[#FF0000] mb-5"><?php echo $error ?></p>
                     </li>
                 </ul>
             </form>
+        <?php endif; ?>
+
+        <!-- error message if user dont exist -->
+        <?php if (isset($userDontExist)) : ?>
+            <div class="flex justify-center text-[#FF0000] mb-5"><?php echo $userDontExist ?></div>
         <?php endif; ?>
     </div>
 </body>

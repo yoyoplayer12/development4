@@ -114,11 +114,11 @@ $url = $image->getUrl();
                     <label for="price" class="flex justify-center"><b>Price: (<?php echo $minprice["MIN(price)"] ?> to <?php echo $maxprice['MAX(price)'] ?> Credits)</b></label>
                     <div class="flex flex-col sm:flex-row items-center gap-5">
                         <input type="number" class="px-2 py-2 rounded-lg text-center bg-slate-200 mb-2 sm:mb-0" placeholder="Minimum price" name="minprice" value="<?php if (isset($_POST['minprice'])) {
-                                                                                                                                                                        echo $_POST['minprice'];
-                                                                                                                                                                    } ?>">
+                            echo $_POST['minprice'];
+                        } ?>">
                         <input type="number" class="px-2 py-2 rounded-lg text-center bg-slate-200" placeholder="Maximum price" name="maxprice" value="<?php if (isset($_POST['maxprice'])) {
-                                                                                                                                                            echo $_POST['maxprice'];
-                                                                                                                                                        } ?>">
+                            echo $_POST['maxprice'];
+                        } ?>">
                     </div>
                 </div>
                 <div class="flex flex-row items-center gap-5 justify-center">
@@ -232,27 +232,27 @@ $url = $image->getUrl();
                                     <?php if ($_SESSION['userid'] == $prompt['user_id']) : ?>
                                     <?php else : ?>
                                         <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" id="buybtnid" data-postid="<?php echo $prompt["id"] ?>" data-postuserid="<?php echo $prompt["user_id"] ?>"><button><?php if (count(Prompt::checkBought($prompt['id'])) >= 1) {
-                                                                                                                                                                                                                                                                                        echo "Bought";
-                                                                                                                                                                                                                                                                                    } else {
-                                                                                                                                                                                                                                                                                        echo "Buy";
-                                                                                                                                                                                                                                                                                    } ?></button></li>
+                                            echo "Bought";
+                                        } else {
+                                            echo "Buy";
+                                        } ?></button></li>
                                     <?php endif; ?>
                                 <?php endif ?>
                                 <!-- if username is logged in show this button  -->
                                 <?php if (isset($_SESSION["username"])) : ?>
                                     <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" style="margin-top: 10px;margin-bottom:10px;"><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?>><?php if (count(Prompt::checkFavorite($prompt['id'])) >= 1) {
-                                                                                                                                                                                                                                                                                                echo "Remove from favorites";
-                                                                                                                                                                                                                                                                                            } else {
-                                                                                                                                                                                                                                                                                                echo "Add to favorites";
-                                                                                                                                                                                                                                                                                            } ?></button></li>
+                                        echo "Remove from favorites";
+                                    } else {
+                                        echo "Add to favorites";
+                                    } ?></button></li>
                                     <?php if ($prompt["user_id"] == $_SESSION["userid"]) : ?>
                                         <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="deletepost.action.php?pid=<?php echo $prompt["id"] ?>&uid=<?php echo $prompt["user_id"] ?>">Delete</a></li>
                                     <?php else : ?>
                                         <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button class="reportbtn" id="reportbtnid" data-postid="<?php echo $prompt["id"] ?>"><?php if (count(Prompt::checkReport($prompt['id'])) >= 1) {
-                                                                                                                                                                                                                                                        echo "Reported";
-                                                                                                                                                                                                                                                    } else {
-                                                                                                                                                                                                                                                        echo "Report";
-                                                                                                                                                                                                                                                    } ?></button></li>
+                                            echo "Reported";
+                                        } else {
+                                            echo "Report";
+                                        } ?></button></li>
                                     <?php endif; ?>
                                 <?php endif; ?>
                                 <?php if (isset($_SESSION["admin"])) : ?>
@@ -277,8 +277,8 @@ $url = $image->getUrl();
             <?php endif; ?>
             <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
                 <a href="index.php?page=<?php echo $i ?>" class="px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 <?php if ($i === $page) {
-                                                                                                                            echo 'text-black font-bold';
-                                                                                                                        } ?>"><?php echo $i ?></a>
+                    echo 'text-black font-bold';
+                } ?>"><?php echo $i ?></a>
             <?php endfor; ?>
             <?php if ($page < $totalPages) : ?>
                 <a href="index.php?page=<?php echo $page + 1 ?>" class="px-3 py-2 bg-[#0464A4] hover:bg-[#0242A2] text-white rounded-r-md">Next</a>

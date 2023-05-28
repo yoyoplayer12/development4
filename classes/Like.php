@@ -1,4 +1,5 @@
 <?php
+
 class Like
 {
     public static function getLikes($id)

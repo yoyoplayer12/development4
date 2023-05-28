@@ -152,10 +152,10 @@ $url = $image->getUrl()
                     <?php echo htmlspecialchars($user['username']); ?>
                     <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($user['id']); ?>">
                     <button type="submit" name="unban" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($user['banned'] == 0) {
-                                                                                                                                                                echo "Ban";
-                                                                                                                                                            } else {
-                                                                                                                                                                echo "Unban";
-                                                                                                                                                            } ?></button>
+                        echo "Ban";
+                    } else {
+                        echo "Unban";
+                    } ?></button>
                 </li>
             </form>
         <?php endforeach; ?>
@@ -175,14 +175,14 @@ $url = $image->getUrl()
                             </div>
                             <input type="hidden" name="selectedUserId" value="<?php echo htmlspecialchars($reportedUser['reported_id']); ?>">
                             <button type="submit" name="<?php if ($reportedUser['banned'] == 0) {
-                                                            echo "banuser";
-                                                        } else {
-                                                            echo "unbanuser";
-                                                        } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($reportedUser['banned'] == 0) {
-                                                                                                                                                                        echo "Ban";
-                                                                                                                                                                    } else {
-                                                                                                                                                                        echo "Unban";
-                                                                                                                                                                    } ?></button>
+                                echo "banuser";
+                            } else {
+                                echo "unbanuser";
+                            } ?>" class="bg-red-500 hover:bg-[#0242A2] text-white font-bold py-1 px-4 rounded-lg mx-4 cursor-pointer"><?php if ($reportedUser['banned'] == 0) {
+                                echo "Ban";
+                            } else {
+                                echo "Unban";
+                            } ?></button>
                         </div>
                     </div>
                 </div>
