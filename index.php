@@ -114,11 +114,11 @@ $url = $image->getUrl();
                     <label for="price" class="flex justify-center"><b>Price: (<?php echo $minprice["MIN(price)"] ?> to <?php echo $maxprice['MAX(price)'] ?> Credits)</b></label>
                     <div class="flex flex-col sm:flex-row items-center gap-5">
                         <input type="number" class="px-2 py-2 rounded-lg text-center bg-slate-200 mb-2 sm:mb-0" placeholder="Minimum price" name="minprice" value="<?php if (isset($_POST['minprice'])) {
-                                                                                                                                                                        echo $_POST['minprice'];
-                                                                                                                                                                    } ?>">
+                            echo $_POST['minprice'];
+                        } ?>">
                         <input type="number" class="px-2 py-2 rounded-lg text-center bg-slate-200" placeholder="Maximum price" name="maxprice" value="<?php if (isset($_POST['maxprice'])) {
-                                                                                                                                                            echo $_POST['maxprice'];
-                                                                                                                                                        } ?>">
+                            echo $_POST['maxprice'];
+                        } ?>">
                     </div>
                 </div>
                 <div class="flex flex-row items-center gap-5 justify-center">
@@ -177,12 +177,12 @@ $url = $image->getUrl();
                                 <?php
                                 //settinglikecolor
                                 $like = new Like();
-                                if ($like->checkLike($prompt['id']) === true) {
-                                    $heartcolor = "#0464A4";
-                                } elseif ($like->checkLike($prompt['id']) === false) {
-                                    $heartcolor = "#C8C8CC";
-                                }
-                                ?>
+                    if ($like->checkLike($prompt['id']) === true) {
+                        $heartcolor = "#0464A4";
+                    } elseif ($like->checkLike($prompt['id']) === false) {
+                        $heartcolor = "#C8C8CC";
+                    }
+                    ?>
                                 <li class="text-lg flex"><a id="likebtn" data-postid="<?php echo $prompt["id"]; ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="<?php echo $heartcolor; ?>" width="24" height="24">
                                             <path d="M12 20.934l-1.414-1.414C5.045 14.319 2 11.238 2 7.5 2 4.364 4.364 2 7.5 2c1.899 0 3.728.929 4.854 2.475C13.772 2.929 15.601 2 17.5 2 20.636 2 23 4.364 23 7.5c0 3.738-3.045 6.819-8.586 12.02L12 20.934z" />
                                         </svg>
@@ -229,27 +229,27 @@ $url = $image->getUrl();
                                     <?php if ($_SESSION['userid'] == $prompt['user_id']) : ?>
                                     <?php else : ?>
                                         <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" id="buybtnid" data-postid="<?php echo $prompt["id"] ?>" data-postuserid="<?php echo $prompt["user_id"] ?>"><button><?php if (count(Prompt::checkBought($prompt['id'])) >= 1) {
-                                                                                                                                                                                                                                                                                        echo "Bought";
-                                                                                                                                                                                                                                                                                    } else {
-                                                                                                                                                                                                                                                                                        echo "Buy";
-                                                                                                                                                                                                                                                                                    } ?></button></li>
+                                            echo "Bought";
+                                        } else {
+                                            echo "Buy";
+                                        } ?></button></li>
                                     <?php endif; ?>
                                 <?php endif ?>
                                 <!-- if username is logged in show this button  -->
                                 <?php if (isset($_SESSION["username"])) : ?>
                                     <li class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center" style="margin-top: 10px;margin-bottom:10px;"><button class="btnTest" id="btnFavorites" data-postid=<?php echo $prompt["id"] ?>><?php if (count(Prompt::checkFavorite($prompt['id'])) >= 1) {
-                                                                                                                                                                                                                                                                                                echo "Remove from favorites";
-                                                                                                                                                                                                                                                                                            } else {
-                                                                                                                                                                                                                                                                                                echo "Add to favorites";
-                                                                                                                                                                                                                                                                                            } ?></button></li>
+                                        echo "Remove from favorites";
+                                    } else {
+                                        echo "Add to favorites";
+                                    } ?></button></li>
                                     <?php if ($prompt["user_id"] == $_SESSION["userid"]) : ?>
                                         <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><a href="deletepost.action.php?pid=<?php echo $prompt["id"] ?>&uid=<?php echo $prompt["user_id"] ?>">Delete</a></li>
                                     <?php else : ?>
                                         <li class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer flex justify-center"><button class="reportbtn" id="reportbtnid" data-postid="<?php echo $prompt["id"] ?>"><?php if (count(Prompt::checkReport($prompt['id'])) >= 1) {
-                                                                                                                                                                                                                                                        echo "Reported";
-                                                                                                                                                                                                                                                    } else {
-                                                                                                                                                                                                                                                        echo "Report";
-                                                                                                                                                                                                                                                    } ?></button></li>
+                                            echo "Reported";
+                                        } else {
+                                            echo "Report";
+                                        } ?></button></li>
                                     <?php endif; ?>
                                 <?php endif; ?>
                                 <?php if (isset($_SESSION["admin"])) : ?>
@@ -275,8 +275,8 @@ $url = $image->getUrl();
             <?php endif; ?>
             <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
                 <a href="index.php?page=<?php echo $i ?>" class="px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 <?php if ($i === $page) {
-                                                                                                                            echo 'text-black font-bold';
-                                                                                                                        } ?>"><?php echo $i ?></a>
+                    echo 'text-black font-bold';
+                } ?>"><?php echo $i ?></a>
             <?php endfor; ?>
             <?php if ($page < $totalPages) : ?>
                 <a href="index.php?page=<?php echo $page + 1 ?>" class="px-3 py-2 bg-[#0464A4] hover:bg-[#0242A2] text-white rounded-r-md">Next</a>
