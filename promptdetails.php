@@ -29,44 +29,6 @@ $comments = Comment::getComments($postid);
 <body class="bg-blue-200">
     <?php include_once(__DIR__ . "/nav.php"); ?>
     <div class="flex justify-center mt-10 mb-10">
-        <?php if (empty($prompt)) {
-            echo "<h1 class='noposts'>There are no prompts right now, try again later!</h1>";
-        } else { ?>
-            <?php $promptUser = Prompt::getPromptUser($prompt['user_id']); ?>
-            <?php $promptCat = Prompt::getPromptCat($prompt['cat_id']); ?>
-            <?php $promptprice = Prompt::getPromptprice($prompt['price_id']); ?>
-            <div class="bg-white p-10 rounded-3xl">
-                <ul class="list-none flex flex-col">
-                    <div class="flex flex-row justify-between mb-5">
-                        <li class="text-xl flex">
-                            <p><?php echo $prompt["title"] ?></p>
-                        </li>
-                        <li class="text-lg flex"><a href="userprofile.php?user=<?php echo $prompt['user_id'] ?>"><?php echo $promptUser["username"] ?></a></li>
-                    </div>
-                    <?php if (!empty($_SESSION["userid"])) : ?>
-                        <li><img class="rounded-xl" src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
-                    <?php else : ?>
-                        <li><img class="blur-lg rounded-3xl w-15 h-15" src="<?php echo $url . $prompt["photo_url"] ?>" alt="Prompt photo"></li>
-                    <?php endif; ?>
-                    <li class="mt-5">
-                        <p><b>Description: </b><?php echo $prompt["description"] ?></p>
-                    </li>
-                    <li>
-                        <p><b>Postdate: </b><?php echo $prompt["postdate"] ?></p>
-                    </li>
-                    <li class="mb-5">
-                        <p><b>Category: </b><?php echo $promptCat["category"] ?></p>
-                    </li>
-                    <div>
-                        <input type="text" placeholder="add comment" id="inputComment" class="px-4 py-4 bg-white border-2 border-blue-500 px-5 py-3 rounded-lg text-white cursor-pointer">
-                        <button id="addComment" class="bg-[#0464A4] hover:bg-[#0242A2] text-white font-bold py-3 px-8 rounded-lg mx-4 cursor-pointer" data-promptId="<?php echo $prompt['id'] ?>">Add comment</button>
-                    </div>
-                    <ul class="comments mt-5 flex flex-col gap-5">
-                        <p>Comments</p>
-                        <?php foreach ($comments as $comment) : ?>
-                            <li class="bg-slate-200 rounded-xl py-4 px-4"><?php echo $comment['text']; ?></li>
-                        <?php endforeach; ?>
-                    </ul>
     <?php if (empty($prompt)) {
         echo "<h1 class='noposts'>There are no prompts right now, try again later!</h1>";
     } else { ?>
