@@ -223,6 +223,7 @@ $url = $image->getUrl();
                                         </li>
                                     <?php endif; ?>
                                 <?php endif; ?>
+                            </a>
                                 <!-- Hier komt de buy button ==> zorgen dat je alleen kan kopen when loggedin-->
                                 <?php if (isset($_SESSION["userid"])) : ?>
                                     <?php if ($_SESSION['userid'] == $prompt['user_id']) : ?>
@@ -259,7 +260,6 @@ $url = $image->getUrl();
                                         <?php endif; ?>
                                     <?php endif; ?>
                                 <?php endif; ?>
-                            </a>
                         </ul>
                     </div>
 
